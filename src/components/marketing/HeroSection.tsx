@@ -348,7 +348,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
         loading={active ? "eager" : "lazy"}
         width={1024}
         height={1408}
-        className="pointer-events-none absolute -left-[6%] top-[4%] z-10 h-[118%] w-auto max-w-none object-contain object-top drop-shadow-2xl sm:-left-[10%] sm:h-[124%]"
+        className="pointer-events-none absolute -left-[10%] top-[2%] z-10 h-[150%] w-auto max-w-none object-contain object-top drop-shadow-2xl sm:-left-[14%] sm:h-[155%]"
       />
 
 
@@ -471,7 +471,7 @@ export function HeroSection() {
           onMouseLeave={() => setPaused(false)}
         >
           <div
-            className="relative mx-auto aspect-[3/4] w-full max-w-[460px]"
+            className="relative mx-auto aspect-[4/4] w-full max-w-[460px] overflow-hidden"
             style={{ transformStyle: "preserve-3d" }}
           >
             {APPLICANTS.map((applicant, i) => (
