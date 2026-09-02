@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
 import { CheckCircle2, HeartPulse, Play, Sparkles, Star, Users } from "lucide-react";
 import applicant1 from "@/assets/applicant-lukas-cutout.png";
 import applicant2 from "@/assets/applicant-elena-cutout.png";
@@ -377,6 +378,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
 }
 
 export function HeroSection() {
+  const { t } = useI18n();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
