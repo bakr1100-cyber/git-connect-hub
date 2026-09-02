@@ -44,7 +44,8 @@ function AuthPage() {
           {t("brand.name")}
         </Link>
       </header>
-      <main className="flex flex-1 items-center justify-center p-4">
+      <main className="flex flex-1 flex-col items-center justify-center gap-6 p-4">
+        <h1 className="text-2xl font-bold text-foreground">{t("brand.name")} — Anmelden oder registrieren</h1>
         <div className="w-full max-w-3xl overflow-hidden rounded-xl border border-border bg-card shadow-sm">
           <AuthPanel redirectPath={returnPath} onAuthenticated={finishAuthReturn} />
         </div>
