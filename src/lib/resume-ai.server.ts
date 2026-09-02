@@ -134,34 +134,62 @@ export async function runExperienceSuggestions(data: {
   position: string;
   company?: string | undefined;
   language: Locale;
+  uiLanguage?: Locale | undefined;
 }) {
   const target = languageName(data.language);
+  const uiLocale = data.uiLanguage ?? data.language;
+  const bilingual = uiLocale !== data.language;
+  const uiTarget = languageName(uiLocale);
   const result = await generateText({
     model: gateway()(MODEL),
     system:
-      "You are a career coach helping a CV writer. Generate realistic, role-specific bullet point ideas. " +
-      'Return valid JSON only in the shape {"suggestions":["..."]}. Return exactly 6 concise suggestions in the requested language. ' +
+      "You are a career coach helping a CV writer. Generate realistic, role-specific ideas for a CV. " +
+      'Return valid JSON only in the shape {"suggestions":[{"text":"...","translation":"..."}]}. Return exactly 6 suggestions. ' +
+      "Each suggestion must be ONE short flowing sentence of at most 14 words. " +
+      "Never use bullet characters, dashes, numbering, line breaks or lists inside a suggestion. " +
       "Do not invent the candidate's employers, dates, metrics or achievements; phrase ideas so the user can confirm and adapt them.",
-    prompt: `Role: ${data.position}\nCompany (optional context): ${data.company || "not provided"}\nLanguage: ${target}\n\nGenerate six distinct CV bullet-point ideas covering typical responsibilities, tools or outcomes for this role.`,
+    prompt: `Role: ${data.position}\nCompany (optional context): ${data.company || "not provided"}\n\nGenerate six distinct, compact CV suggestions covering typical responsibilities, tools or outcomes for this role.\n"text" must be written in ${target}.\n${
+      bilingual
+        ? `"translation" must be the faithful translation of "text" into ${uiTarget}.`
+        : `"translation" must be an empty string.`
+    }`,
   });
   const raw = result.text
     .trim()
     .replace(/^```(?:json)?/i, "")
     .replace(/```$/, "")
     .trim();
+  const clean = (value: string) =>
+    value
+      .replace(/^\s*[•\-–*\d.]+\s*/, "")
+      .replace(/\s+/g, " ")
+      .trim();
   try {
     const parsed = JSON.parse(raw) as { suggestions?: unknown };
     if (!Array.isArray(parsed.suggestions) || parsed.suggestions.length < 1)
       throw new Error("invalid suggestions");
-    return {
-      suggestions: parsed.suggestions
-        .filter((item): item is string => typeof item === "string")
-        .slice(0, 6),
-    };
+    const suggestions = parsed.suggestions
+      .map((item) => {
+        if (typeof item === "string") return { text: clean(item), translation: "" };
+        if (item && typeof item === "object") {
+          const record = item as { text?: unknown; translation?: unknown };
+          return {
+            text: typeof record.text === "string" ? clean(record.text) : "",
+            translation:
+              bilingual && typeof record.translation === "string" ? clean(record.translation) : "",
+          };
+        }
+        return { text: "", translation: "" };
+      })
+      .filter((item) => item.text.length > 0)
+      .slice(0, 6);
+    if (!suggestions.length) throw new Error("invalid suggestions");
+    return { suggestions };
   } catch {
     throw new Error("Experience suggestions failed");
   }
 }
+
 
 export async function runComposeExperience(data: {
   position: string;
