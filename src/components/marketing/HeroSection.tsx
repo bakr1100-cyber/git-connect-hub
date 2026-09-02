@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, HeartPulse, Play, Sparkles, Star, Users } from "lucide-react";
-import applicant1 from "@/assets/applicant-lukas-cutout.png";
-import applicant2 from "@/assets/applicant-elena-cutout.png";
-import applicant3 from "@/assets/applicant-amara-cutout.png";
-import applicant4 from "@/assets/applicant-youssef-cutout.png";
+import applicant1 from "@/assets/applicant-lukas-bust.png";
+import applicant2 from "@/assets/applicant-elena-bust.png";
+import applicant3 from "@/assets/applicant-amara-bust.png";
+import applicant4 from "@/assets/applicant-youssef-bust.png";
 
 type ExperienceItem = { role: string; company: string; period: string; bullets: string[] };
 type EducationItem = { degree: string; school: string; period: string };
