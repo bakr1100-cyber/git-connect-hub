@@ -2,6 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, HeartPulse, Play, Sparkles, Star, Users } from "lucide-react";
+import applicant1 from "@/assets/applicant-1.png";
+import applicant2 from "@/assets/applicant-2.png";
+import applicant3 from "@/assets/applicant-3.png";
+import applicant4 from "@/assets/applicant-4.png";
+
+type ExperienceItem = { role: string; company: string; period: string; bullets: string[] };
+type EducationItem = { degree: string; school: string; period: string };
 
 type Applicant = {
   id: string;
@@ -13,12 +20,24 @@ type Applicant = {
   ink: string;
   rule: string;
   bar: string;
-  rtl?: boolean;
   headline: string;
   target: string;
   targetIcon?: boolean;
   badgePrimary: string;
   badgeSecondary: string;
+  contact: string;
+  summary: string;
+  experience: ExperienceItem[];
+  education: EducationItem[];
+  skills: string[];
+  labels: { profile: string; experience: string; education: string; skills: string };
+};
+
+const DE_LABELS = {
+  profile: "Profil",
+  experience: "Berufserfahrung",
+  education: "Ausbildung",
+  skills: "Kenntnisse",
 };
 
 const APPLICANTS: Applicant[] = [
@@ -26,8 +45,7 @@ const APPLICANTS: Applicant[] = [
     id: "a1",
     name: "Lukas Berger",
     role: "Fachkraft IT",
-    photo:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=640&q=80",
+    photo: applicant1,
     paper: "bg-white",
     ink: "text-emerald-900",
     rule: "bg-emerald-800",
@@ -36,29 +54,70 @@ const APPLICANTS: Applicant[] = [
     target: "Systemadministrator (m/w/d)",
     badgePrimary: "ATS-GEPRÜFT (94%)",
     badgeSecondary: "Fachkraft IT",
+    contact: "Wien, AT · lukas.berger@mail.com · +43 660 112 233",
+    summary:
+      "IT-Fachkraft mit 6 Jahren Erfahrung in Linux-Administration, Netzwerksicherheit und Automatisierung.",
+    experience: [
+      {
+        role: "Systemadministrator",
+        company: "NordCloud GmbH",
+        period: "2021 – heute",
+        bullets: ["Betrieb von 120+ Linux-Servern", "Ausfallzeit um 38 % reduziert"],
+      },
+      {
+        role: "IT-Support Specialist",
+        company: "Alpen Systems",
+        period: "2018 – 2021",
+        bullets: ["2nd-Level-Support für 400 Nutzer"],
+      },
+    ],
+    education: [
+      { degree: "B.Sc. Informatik", school: "TU Wien", period: "2014 – 2018" },
+    ],
+    skills: ["Linux", "Kubernetes", "Bash", "Zabbix", "Deutsch C1", "Englisch B2"],
+    labels: DE_LABELS,
   },
   {
     id: "a2",
-    name: "Yasmine Haddad",
+    name: "Elena Nowak",
     role: "Projektmanagement",
-    photo:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=640&q=80",
+    photo: applicant2,
     paper: "bg-[#fdf3ef]",
     ink: "text-rose-900",
     rule: "bg-rose-400",
     bar: "bg-rose-900/12",
-    rtl: true,
-    headline: "السيرة الذاتية",
-    target: "إدارة المشاريع",
-    badgePrimary: "٩٢ / ١٠٠",
+    headline: "Lebenslauf",
+    target: "Projektmanagerin (m/w/d)",
+    badgePrimary: "92 / 100 MATCH",
     badgeSecondary: "Projektmanagement",
+    contact: "Kraków, PL · elena.nowak@mail.com · +48 512 884 190",
+    summary:
+      "Zertifizierte Projektmanagerin (PMP) mit Schwerpunkt auf agilen Transformationen in internationalen Teams.",
+    experience: [
+      {
+        role: "Senior Project Manager",
+        company: "Vistula Consulting",
+        period: "2020 – heute",
+        bullets: ["Budgetverantwortung 2,4 Mio. €", "14 Projekte termingerecht geliefert"],
+      },
+      {
+        role: "Junior Projektmanagerin",
+        company: "Baltic Retail Group",
+        period: "2017 – 2020",
+        bullets: ["Rollout in 5 Ländern koordiniert"],
+      },
+    ],
+    education: [
+      { degree: "M.A. Management", school: "Uniwersytet Jagielloński", period: "2012 – 2017" },
+    ],
+    skills: ["Scrum", "PMP", "Jira", "Stakeholder-Mgmt", "Deutsch B2", "Englisch C1"],
+    labels: DE_LABELS,
   },
   {
     id: "a3",
     name: "Lena Hoffmann",
     role: "Marketing Manager",
-    photo:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=640&q=80",
+    photo: applicant3,
     paper: "bg-white",
     ink: "text-blue-900",
     rule: "bg-blue-700",
@@ -67,13 +126,34 @@ const APPLICANTS: Applicant[] = [
     target: "Marketing Manager (m/w/d)",
     badgePrimary: "Perfektes Match",
     badgeSecondary: "Marketing Manager",
+    contact: "Hamburg, DE · lena.hoffmann@mail.com · +49 151 220 447",
+    summary:
+      "Marketing Managerin mit Fokus auf Performance-Kampagnen, Content-Strategie und Employer Branding.",
+    experience: [
+      {
+        role: "Marketing Manager",
+        company: "Elbe Digital AG",
+        period: "2021 – heute",
+        bullets: ["Leads um 61 % gesteigert", "Team von 4 Personen geführt"],
+      },
+      {
+        role: "Campaign Specialist",
+        company: "Nordlicht Media",
+        period: "2018 – 2021",
+        bullets: ["SEA-Budget von 600 T€ verantwortet"],
+      },
+    ],
+    education: [
+      { degree: "B.A. Kommunikation", school: "Universität Hamburg", period: "2015 – 2018" },
+    ],
+    skills: ["SEO/SEA", "HubSpot", "Analytics", "Copywriting", "Deutsch C2", "Englisch C1"],
+    labels: DE_LABELS,
   },
   {
     id: "a4",
     name: "Youssef El Amrani",
     role: "Pflegefachmann",
-    photo:
-      "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&w=640&q=80",
+    photo: applicant4,
     paper: "bg-[#f0f9f6]",
     ink: "text-teal-900",
     rule: "bg-teal-600",
@@ -83,12 +163,35 @@ const APPLICANTS: Applicant[] = [
     targetIcon: true,
     badgePrimary: "Visum & Dokumente bereit",
     badgeSecondary: "Deutsch B2 zertifiziert",
+    contact: "Casablanca, MA · y.elamrani@mail.com · +212 661 004 512",
+    summary:
+      "Pflegekraft mit 4 Jahren Klinikerfahrung, anerkennungsbereite Dokumente und Sprachzertifikat B2.",
+    experience: [
+      {
+        role: "Pflegekraft Innere Medizin",
+        company: "CHU Ibn Rochd",
+        period: "2020 – heute",
+        bullets: ["Betreuung von 18 Patienten pro Schicht", "Einarbeitung neuer Kolleg:innen"],
+      },
+      {
+        role: "Praktikum Intensivstation",
+        company: "Clinique Al Madina",
+        period: "2019 – 2020",
+        bullets: ["Monitoring & Dokumentation"],
+      },
+    ],
+    education: [
+      { degree: "Diplom Krankenpflege", school: "ISPITS Casablanca", period: "2016 – 2019" },
+    ],
+    skills: ["Grundpflege", "Monitoring", "Dokumentation", "Deutsch B2", "Französisch C1"],
+    labels: DE_LABELS,
   },
 ];
 
 const CYCLE_MS = 4000;
 
 function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boolean }) {
+  const { labels } = applicant;
   return (
     <div
       className={[
@@ -97,49 +200,125 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
       ].join(" ")}
       aria-hidden={!active}
     >
-      {/* Background layer: tilted 3D resume document */}
+      {/* Background layer: tilted 3D resume document, full sections */}
       <div
         className={[
-          "absolute left-[6%] top-[4%] h-[86%] w-[76%] overflow-hidden rounded-2xl border border-white/60 p-5 shadow-2xl",
+          "absolute inset-x-[2%] top-0 h-full overflow-hidden rounded-2xl border border-white/60 px-5 py-4 shadow-2xl",
           applicant.paper,
         ].join(" ")}
-        style={{ transform: "perspective(1200px) rotateY(-15deg) rotateX(10deg)" }}
-        dir={applicant.rtl ? "rtl" : "ltr"}
+        style={{ transform: "perspective(1400px) rotateY(-11deg) rotateX(6deg)" }}
       >
-        <div className={["text-[11px] font-bold uppercase tracking-[0.2em]", applicant.ink].join(" ")}>
-          {applicant.headline}
+        {/* Header */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className={["text-[9px] font-bold uppercase tracking-[0.2em] opacity-70", applicant.ink].join(" ")}>
+              {applicant.headline}
+            </div>
+            <div className={["mt-0.5 text-lg font-bold tracking-tight sm:text-xl", applicant.ink].join(" ")}>
+              {applicant.name}
+            </div>
+            <div className="mt-1.5 flex items-center gap-1.5">
+              {applicant.targetIcon && <HeartPulse className={["h-3 w-3 shrink-0", applicant.ink].join(" ")} />}
+              <span className={["text-[10px] font-semibold sm:text-[11px]", applicant.ink].join(" ")}>
+                {applicant.target}
+              </span>
+            </div>
+            <div className={["mt-1 truncate text-[8px] opacity-70 sm:text-[9px]", applicant.ink].join(" ")}>
+              {applicant.contact}
+            </div>
+          </div>
+          <img
+            src={applicant.photo}
+            alt={`${applicant.name} — ${applicant.role}`}
+            loading={active ? "eager" : "lazy"}
+            width={640}
+            height={800}
+            className="h-16 w-14 shrink-0 object-contain object-top sm:h-20 sm:w-16"
+          />
         </div>
-        <div className={["mt-1 text-lg font-bold tracking-tight sm:text-xl", applicant.ink].join(" ")}>
-          {applicant.name}
-        </div>
-        <div className={["mt-2 h-[3px] w-16 rounded", applicant.rule].join(" ")} />
 
-        <div className="mt-4 flex items-center gap-1.5">
-          {applicant.targetIcon && <HeartPulse className={["h-3.5 w-3.5 shrink-0", applicant.ink].join(" ")} />}
-          <span className={["text-[11px] font-semibold sm:text-xs", applicant.ink].join(" ")}>
-            {applicant.target}
-          </span>
+        <div className={["mt-2 h-[3px] w-full rounded", applicant.rule].join(" ")} />
+
+        {/* Profile */}
+        <div className="mt-2.5">
+          <div className={["text-[8px] font-bold uppercase tracking-[0.16em]", applicant.ink].join(" ")}>
+            {labels.profile}
+          </div>
+          <p className={["mt-1 text-[8.5px] leading-snug opacity-80 sm:text-[9.5px]", applicant.ink].join(" ")}>
+            {applicant.summary}
+          </p>
         </div>
 
-        <div className="mt-5 space-y-4">
-          {[0, 1, 2].map((block) => (
-            <div key={block} className="space-y-1.5">
-              <div className={["h-[5px] w-[38%] rounded", applicant.rule, "opacity-70"].join(" ")} />
-              <div className={["h-[4px] w-full rounded", applicant.bar].join(" ")} />
-              <div className={["h-[4px] w-[88%] rounded", applicant.bar].join(" ")} />
-              <div className={["h-[4px] w-[64%] rounded", applicant.bar].join(" ")} />
+        {/* Experience */}
+        <div className="mt-2.5">
+          <div className={["text-[8px] font-bold uppercase tracking-[0.16em]", applicant.ink].join(" ")}>
+            {labels.experience}
+          </div>
+          <div className={["mt-0.5 h-[2px] w-8 rounded", applicant.rule].join(" ")} />
+          <div className="mt-1.5 space-y-1.5">
+            {applicant.experience.map((item) => (
+              <div key={`${item.company}-${item.period}`}>
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className={["text-[9px] font-bold sm:text-[10px]", applicant.ink].join(" ")}>
+                    {item.role}
+                  </span>
+                  <span className={["shrink-0 text-[8px] opacity-70", applicant.ink].join(" ")}>{item.period}</span>
+                </div>
+                <div className={["text-[8.5px] italic opacity-75", applicant.ink].join(" ")}>{item.company}</div>
+                <ul className="mt-0.5 space-y-0.5">
+                  {item.bullets.map((b) => (
+                    <li
+                      key={b}
+                      className={["flex gap-1 text-[8px] leading-snug opacity-80 sm:text-[9px]", applicant.ink].join(" ")}
+                    >
+                      <span className="opacity-60">•</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Education */}
+        <div className="mt-2.5">
+          <div className={["text-[8px] font-bold uppercase tracking-[0.16em]", applicant.ink].join(" ")}>
+            {labels.education}
+          </div>
+          <div className={["mt-0.5 h-[2px] w-8 rounded", applicant.rule].join(" ")} />
+          {applicant.education.map((edu) => (
+            <div key={edu.school} className="mt-1">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className={["text-[9px] font-bold sm:text-[10px]", applicant.ink].join(" ")}>{edu.degree}</span>
+                <span className={["shrink-0 text-[8px] opacity-70", applicant.ink].join(" ")}>{edu.period}</span>
+              </div>
+              <div className={["text-[8.5px] italic opacity-75", applicant.ink].join(" ")}>{edu.school}</div>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Foreground layer: applicant portrait */}
-      <img
-        src={applicant.photo}
-        alt={`${applicant.name} — ${applicant.role}`}
-        loading={active ? "eager" : "lazy"}
-        className="absolute bottom-[6%] right-[4%] z-10 h-[62%] w-[46%] rounded-[1.75rem] border-4 border-white/80 object-cover shadow-2xl"
-      />
+        {/* Skills */}
+        <div className="mt-2.5">
+          <div className={["text-[8px] font-bold uppercase tracking-[0.16em]", applicant.ink].join(" ")}>
+            {labels.skills}
+          </div>
+          <div className="mt-1.5 flex flex-wrap gap-1">
+            {applicant.skills.map((skill) => (
+              <span
+                key={skill}
+                className={[
+                  "rounded-full px-1.5 py-0.5 text-[7.5px] font-semibold sm:text-[8.5px]",
+                  applicant.bar,
+                  applicant.ink,
+                ].join(" ")}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* UI badge layer */}
       <div className="absolute -left-2 -top-3 z-20 rounded-full border border-emerald-400/40 bg-emerald-500/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-200 shadow-xl backdrop-blur-md sm:text-[11px]">
@@ -148,7 +327,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
         </span>
         {applicant.badgePrimary}
       </div>
-      <div className="absolute bottom-[2%] left-[8%] z-20 rounded-xl border border-white/15 bg-slate-900/80 px-3.5 py-2 text-[11px] font-semibold text-slate-100 shadow-2xl backdrop-blur-md">
+      <div className="absolute -bottom-3 left-[8%] z-20 rounded-xl border border-white/15 bg-slate-900/80 px-3.5 py-2 text-[11px] font-semibold text-slate-100 shadow-2xl backdrop-blur-md">
         {applicant.badgeSecondary}
       </div>
     </div>
@@ -234,7 +413,7 @@ export function HeroSection() {
                   alt=""
                   aria-hidden
                   loading="lazy"
-                  className="h-9 w-9 rounded-full border-2 border-slate-900 object-cover"
+                  className="h-9 w-9 rounded-full border-2 border-slate-900 bg-slate-800 object-contain object-top"
                   style={{ zIndex: avatars.length - i }}
                 />
               ))}
@@ -260,7 +439,7 @@ export function HeroSection() {
           onMouseLeave={() => setPaused(false)}
         >
           <div
-            className="relative mx-auto aspect-[4/5] w-full max-w-[520px]"
+            className="relative mx-auto aspect-[3/4] w-full max-w-[460px]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {APPLICANTS.map((applicant, i) => (
@@ -269,7 +448,7 @@ export function HeroSection() {
           </div>
 
           {/* Step indicators */}
-          <div className="mt-6 flex items-center justify-center gap-3">
+          <div className="mt-8 flex items-center justify-center gap-3">
             {APPLICANTS.map((applicant, i) => (
               <button
                 key={applicant.id}
