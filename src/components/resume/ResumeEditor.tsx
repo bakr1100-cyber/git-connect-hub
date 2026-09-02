@@ -70,6 +70,11 @@ export function ResumeEditor() {
   const isLastStep = stepIndex === totalSteps - 1;
 
   useEffect(() => {
+    if (typeof window === "undefined" || !isAuthenticated) return;
+    void import("@/lib/email-triggers").then((m) => m.maybeSendUnfinishedReminder());
+  }, [isAuthenticated]);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
     try {
       const saved = localStorage.getItem(STORAGE_KEY);

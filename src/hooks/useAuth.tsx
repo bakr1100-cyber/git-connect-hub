@@ -8,10 +8,13 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, nextSession) => {
       setSession(nextSession);
       setUser(nextSession?.user ?? null);
       setLoading(false);
+      if (event === "SIGNED_IN" && nextSession?.user) {
+        void import("@/lib/email-triggers").then((m) => m.maybeSendWelcomeEmail(nextSession.user));
+      }
     });
 
     void supabase.auth.getSession().then(({ data }) => {
