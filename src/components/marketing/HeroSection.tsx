@@ -430,7 +430,7 @@ export function HeroSection() {
             >
               <Link to="/editor">
                 <span className="absolute inset-0 -z-10 animate-pulse bg-white/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                Start Free Trial
+                {t("hero.ctaPrimary")}
               </Link>
             </Button>
             <Button
@@ -439,8 +439,8 @@ export function HeroSection() {
               variant="outline"
               className="border-white/20 bg-white/5 font-semibold text-white transition-colors hover:bg-white/10 hover:text-white"
             >
-              <a href="#funktionen">
-                <Play className="mr-2 h-4 w-4" /> Watch Demo
+              <a href="#so-gehts">
+                <Play className="mr-2 h-4 w-4" /> {t("how.title")}
               </a>
             </Button>
           </div>
