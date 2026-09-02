@@ -95,8 +95,8 @@ export function ModernTemplate({ data }: TemplateProps) {
       {/* Summary */}
       {personalDetails.summary && (
         <section className="mb-6">
-          <h2 className="mb-2 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-            <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+          <h2 className="mb-2 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
             {tr("resume.profile")}
           </h2>
           <p className="whitespace-pre-wrap text-[10.5pt] text-slate-700">{personalDetails.summary}</p>
@@ -106,8 +106,8 @@ export function ModernTemplate({ data }: TemplateProps) {
       {/* Work Experience */}
       {workExperience.length > 0 && (
         <section className="mb-6">
-          <h2 className="mb-3 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-            <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+          <h2 className="mb-3 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
             {tr("resume.experience")}
           </h2>
           <div className="space-y-4">
@@ -135,8 +135,8 @@ export function ModernTemplate({ data }: TemplateProps) {
       {/* Education */}
       {education.length > 0 && (
         <section className="mb-6">
-          <h2 className="mb-3 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-            <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+          <h2 className="mb-3 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
             {tr("resume.education")}
           </h2>
           <div className="space-y-4">
@@ -165,8 +165,8 @@ export function ModernTemplate({ data }: TemplateProps) {
       <div className="grid gap-6 sm:grid-cols-2">
         {skills.length > 0 && (
           <section>
-            <h2 className="mb-2 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-              <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+            <h2 className="mb-2 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
               {tr("resume.skills")}
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -180,8 +180,8 @@ export function ModernTemplate({ data }: TemplateProps) {
         )}
         {languages.length > 0 && (
           <section>
-            <h2 className="mb-2 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-              <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+            <h2 className="mb-2 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
               {tr("resume.languages")}
             </h2>
             <div className="space-y-1">
