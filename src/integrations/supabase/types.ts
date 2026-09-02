@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      resumes: {
+        Row: {
+          cover_letter: string | null
+          created_at: string
+          education: Json
+          id: string
+          languages: Json
+          payment_status: string
+          personal_details: Json
+          settings: Json
+          skills: Json
+          updated_at: string
+          user_id: string | null
+          work_experience: Json
+        }
+        Insert: {
+          cover_letter?: string | null
+          created_at?: string
+          education?: Json
+          id?: string
+          languages?: Json
+          payment_status?: string
+          personal_details?: Json
+          settings?: Json
+          skills?: Json
+          updated_at?: string
+          user_id?: string | null
+          work_experience?: Json
+        }
+        Update: {
+          cover_letter?: string | null
+          created_at?: string
+          education?: Json
+          id?: string
+          languages?: Json
+          payment_status?: string
+          personal_details?: Json
+          settings?: Json
+          skills?: Json
+          updated_at?: string
+          user_id?: string | null
+          work_experience?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
