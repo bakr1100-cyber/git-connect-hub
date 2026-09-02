@@ -17,6 +17,7 @@ import { FileText, ArrowLeft, ArrowRight, Check, Cloud, CloudOff, Loader2, Globe
 import { useI18n } from "@/lib/i18n";
 import { SUPPORTED_LOCALES, localeFlags, localeNames, type Locale } from "@/lib/i18n/locales";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { DocumentLanguageSwitcher } from "./DocumentLanguageSwitcher";
 import { motion } from "motion/react";
 import { useResumeAutoSave } from "@/hooks/useResumeAutoSave";
 import { toast } from "sonner";
