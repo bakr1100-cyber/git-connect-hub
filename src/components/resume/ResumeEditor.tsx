@@ -71,6 +71,9 @@ export function ResumeEditor() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (isAuthenticated) {
+      void import("@/lib/email-triggers").then((m) => m.maybeSendUnfinishedReminder());
+    }
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
