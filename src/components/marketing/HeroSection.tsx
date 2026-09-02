@@ -244,7 +244,18 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
               </span>
             </div>
           </div>
+          {/* Bewerbungsfoto im Lebenslauf */}
+          <img
+            src={applicant.photo}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            width={1024}
+            height={1024}
+            className="h-16 w-[3.3rem] shrink-0 rounded-md border border-black/10 bg-white object-cover object-top shadow-sm sm:h-20 sm:w-16"
+          />
         </div>
+
 
         <div className={["mt-2 h-[3px] w-full rounded", applicant.rule].join(" ")} />
 
