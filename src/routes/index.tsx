@@ -279,23 +279,23 @@ function LandingPage() {
 
 
       {/* Company logo bar */}
-      <section className="border-b border-border bg-background px-4 py-10">
+      <section className="border-b border-border bg-background px-4 py-12">
         <div className="mx-auto max-w-6xl">
           <p className="text-center text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
             {trustedBy[locale] ?? trustedBy["de"]}
           </p>
-          <Stagger className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+          <Stagger className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
             {companies.map((c) => (
               <StaggerItem key={c.name}>
-                <span className="flex items-center gap-2 text-lg font-semibold tracking-tight text-navy/50 transition-colors hover:text-navy">
+                <span className="group flex items-center gap-3 text-xl font-semibold tracking-tight text-navy/60 transition-colors hover:text-navy">
                   {LOGO_TOKEN && (
                     <img
-                      src={`https://img.logo.dev/${c.domain}?token=${LOGO_TOKEN}&size=64&format=png&greyscale=true`}
+                      src={`https://img.logo.dev/${c.domain}?token=${LOGO_TOKEN}&size=128&format=png`}
                       alt={`${c.name} Logo`}
                       loading="lazy"
-                      width={28}
-                      height={28}
-                      className="h-7 w-7 rounded object-contain opacity-70"
+                      width={48}
+                      height={48}
+                      className="h-12 w-12 rounded object-contain transition-transform duration-300 group-hover:scale-110"
                     />
                   )}
                   {c.name}
@@ -371,7 +371,7 @@ function LandingPage() {
       </section>
 
       {/* How it works */}
-      <section className="bg-secondary/50 px-4 py-20 md:py-24">
+      <section id="so-gehts" className="bg-secondary/50 px-4 py-20 md:py-24">
         <div className="mx-auto max-w-5xl">
           <p className="text-center text-xs font-bold uppercase tracking-[0.18em] text-brand-dark">{t("how.title")}</p>
           <h2 className="mt-3 text-center text-3xl font-bold tracking-tight text-navy">
@@ -489,10 +489,7 @@ function LandingPage() {
                 <CardContent className="flex flex-1 flex-col pt-6">
                   <h3 className="text-lg font-semibold text-navy">{tier.name}</h3>
                   <div className="mt-2 text-3xl font-bold text-navy">{tier.price}</div>
-                  <div className="mt-1 inline-flex rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold text-navy/70">
-                    {tier.access}
-                  </div>
-                  <p className="mt-2 text-sm text-muted-foreground">{tier.desc}</p>
+                  <p className="mt-3 text-sm text-muted-foreground">{tier.desc}</p>
                   <ul className="mt-6 flex-1 space-y-2 text-sm">
                     {tier.features.map((f) => (
                       <li key={f} className="flex items-start gap-2">
