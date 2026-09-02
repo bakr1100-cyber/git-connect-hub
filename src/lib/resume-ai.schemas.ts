@@ -56,6 +56,7 @@ export const ExperienceSuggestionsInput = z.object({
   position: z.string().trim().min(2).max(120),
   company: z.string().trim().max(160).optional(),
   language: z.enum(SUPPORTED_LOCALES),
+  uiLanguage: z.enum(SUPPORTED_LOCALES).optional(),
 });
 
 export const ComposeExperienceInput = z.object({
