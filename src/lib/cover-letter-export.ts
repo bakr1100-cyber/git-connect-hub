@@ -67,7 +67,10 @@ body { width: 210mm; min-height: 297mm; padding: 20mm; font-family: Georgia, 'Ti
  * (oklch colors) never reach the PDF renderer.
  */
 export async function downloadCoverLetterPdf(doc: CoverLetterDocument) {
-  const html2pdf = (await import("html2pdf.js")).default;
+  const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+    import("html2canvas-pro"),
+    import("jspdf"),
+  ]);
   const frame = document.createElement("iframe");
   frame.setAttribute("aria-hidden", "true");
   frame.style.cssText = "position:fixed;left:-10000px;top:0;width:794px;height:1123px;border:0;";
@@ -78,21 +81,33 @@ export async function downloadCoverLetterPdf(doc: CoverLetterDocument) {
     frameDoc.open();
     frameDoc.write(letterHtml(doc));
     frameDoc.close();
-    await new Promise((resolve) => setTimeout(resolve, 150));
-    await html2pdf()
-      .set({
-        margin: 0,
-        filename: `${fileBase(doc)}.pdf`,
-        image: { type: "jpeg" as const, quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: "#ffffff" },
-        jsPDF: { unit: "mm" as const, format: "a4" as const, orientation: "portrait" as const },
-      })
-      .from(frameDoc.body)
-      .save();
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const canvas = await html2canvas(frameDoc.body, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: "#ffffff",
+      windowWidth: frameDoc.body.scrollWidth,
+      windowHeight: frameDoc.body.scrollHeight,
+    });
+    const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imageHeight = (canvas.height * pageWidth) / canvas.width;
+    pdf.addImage(
+      canvas.toDataURL("image/jpeg", 0.98),
+      "JPEG",
+      0,
+      0,
+      pageWidth,
+      Math.min(imageHeight, pageHeight)
+    );
+    pdf.save(`${fileBase(doc)}.pdf`);
   } finally {
     frame.remove();
   }
 }
+
 
 function triggerDownload(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
