@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           calls: number
           cost_units: number
+          last_call_at: string | null
           updated_at: string
           usage_date: string
           user_id: string
@@ -25,6 +26,7 @@ export type Database = {
         Insert: {
           calls?: number
           cost_units?: number
+          last_call_at?: string | null
           updated_at?: string
           usage_date?: string
           user_id: string
@@ -32,6 +34,7 @@ export type Database = {
         Update: {
           calls?: number
           cost_units?: number
+          last_call_at?: string | null
           updated_at?: string
           usage_date?: string
           user_id?: string
