@@ -348,8 +348,9 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
         loading={active ? "eager" : "lazy"}
         width={1024}
         height={1408}
-        className="absolute bottom-[6%] -left-[6%] z-10 aspect-square h-auto w-[40%] rounded-2xl object-cover object-top shadow-2xl ring-1 ring-white/20 sm:-left-[8%] sm:w-[38%]"
+        className="pointer-events-none absolute -left-[6%] top-[4%] z-10 h-[118%] w-auto max-w-none object-contain object-top drop-shadow-2xl sm:-left-[10%] sm:h-[124%]"
       />
+
 
       {/* UI badge layer */}
       <div className="absolute right-[3%] top-[5%] z-20 rounded-full border border-emerald-400/40 bg-slate-800/90 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-200 shadow-xl backdrop-blur-md sm:text-[11px]">
