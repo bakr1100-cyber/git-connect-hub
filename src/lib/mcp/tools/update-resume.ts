@@ -16,6 +16,7 @@ export default defineTool({
     cover_letter: z.string().optional(),
     settings: z.record(z.string(), z.unknown()).optional(),
   },
+  outputSchema: { resume: z.unknown() },
   annotations: { readOnlyHint: false, destructiveHint: true, openWorldHint: false },
   handler: async ({ id, ...patch }, ctx) => {
     if (!ctx.isAuthenticated()) return { content: [{ type: "text", text: "Not authenticated" }], isError: true };

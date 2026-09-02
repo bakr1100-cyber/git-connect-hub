@@ -7,6 +7,7 @@ export default defineTool({
   title: "Get resume",
   description: "Fetch one full resume (personal details, education, work experience, skills, languages, cover letter) by id.",
   inputSchema: { id: z.string().uuid().describe("Resume id.") },
+  outputSchema: { resume: z.unknown() },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ id }, ctx) => {
     if (!ctx.isAuthenticated()) return { content: [{ type: "text", text: "Not authenticated" }], isError: true };

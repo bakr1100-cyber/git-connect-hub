@@ -15,6 +15,7 @@ export default defineTool({
     cover_letter: z.string().optional().describe("Cover letter text."),
     settings: z.record(z.string(), z.unknown()).optional().describe('Settings, e.g. { "language": "de", "template": "modern" }.'),
   },
+  outputSchema: { resume: z.unknown() },
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   handler: async (input, ctx) => {
     if (!ctx.isAuthenticated()) return { content: [{ type: "text", text: "Not authenticated" }], isError: true };

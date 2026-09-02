@@ -7,6 +7,7 @@ export default defineTool({
   title: "List resumes",
   description: "List the signed-in user's resumes with id, target job title, template and timestamps.",
   inputSchema: { limit: z.number().int().min(1).max(50).default(20).describe("Maximum number of resumes to return.") },
+  outputSchema: { resumes: z.array(z.unknown()) },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ limit }, ctx) => {
     if (!ctx.isAuthenticated()) return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
