@@ -310,6 +310,12 @@ export function ResumeEditor() {
               )}
             </span>
             <LanguageSwitcher />
+            <DocumentLanguageSwitcher
+              value={data.settings.language as Locale}
+              onChange={(next) =>
+                updateData((prev) => ({ ...prev, settings: { ...prev.settings, language: next } }))
+              }
+            />
             {!authLoading && isAuthenticated ? (
               <span className="inline-flex shrink-0 rounded-lg border border-brand/35 bg-brand/10 px-3 py-2 text-sm font-semibold text-brand">
                 {t("auth.signedIn")}
