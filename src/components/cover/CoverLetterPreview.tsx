@@ -31,6 +31,10 @@ export function formatLetterDate(doc: CoverLetterDocument) {
   })}`;
 }
 
+export function subjectLine(doc: CoverLetterDocument) {
+  return `${subjectPrefix[doc.language]} ${doc.position || "—"}`;
+}
+
 export function CoverLetterPreview({ doc, className }: { doc: CoverLetterDocument; className?: string }) {
   const rtl = isRtl(doc.language);
 
@@ -67,7 +71,7 @@ export function CoverLetterPreview({ doc, className }: { doc: CoverLetterDocumen
       <p className="mt-10 text-[9.5pt]" style={{ color: "#6b6b6b" }}>{formatLetterDate(doc)}</p>
 
       <p className="mt-8 font-semibold" style={{ color: "#111111" }}>
-        {subjectPrefix[doc.language]} {doc.position || "—"}
+        {subjectLine(doc)}
       </p>
 
       <div className="mt-6 whitespace-pre-line">{doc.body}</div>

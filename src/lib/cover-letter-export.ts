@@ -1,4 +1,8 @@
-import { formatLetterDate, type CoverLetterDocument } from "@/components/cover/CoverLetterPreview";
+import {
+  formatLetterDate,
+  subjectLine,
+  type CoverLetterDocument,
+} from "@/components/cover/CoverLetterPreview";
 import { isRtl } from "@/lib/i18n/locales";
 
 const escape = (value: string) =>
@@ -28,7 +32,7 @@ body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-hei
 <p class="meta">${escape([doc.applicant.location, doc.applicant.email, doc.applicant.phone].filter(Boolean).join(" · "))}</p>
 <p class="block">${escape([doc.company, doc.recipient, doc.companyAddress].filter(Boolean).join("\n"))}</p>
 <p class="block">${escape(formatLetterDate(doc))}</p>
-<p class="subject">${escape(doc.position)}</p>
+<p class="subject">${escape(subjectLine(doc))}</p>
 <p class="block">${escape(doc.body)}</p>
 </body></html>`;
 
@@ -36,20 +40,58 @@ body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-hei
   triggerDownload(blob, `${fileBase(doc)}.doc`);
 }
 
+function letterHtml(doc: CoverLetterDocument) {
+  const dir = isRtl(doc.language) ? "rtl" : "ltr";
+  return `<!DOCTYPE html><html dir="${dir}"><head><meta charset="utf-8" /><style>
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #ffffff; }
+body { width: 210mm; min-height: 297mm; padding: 20mm; font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.6; color: #2b2b2b; direction: ${dir}; }
+.name { font-size: 15pt; font-weight: bold; color: #111111; margin: 0; }
+.meta { font-size: 9.5pt; color: #6b6b6b; margin: 4px 0 0; padding-bottom: 14px; border-bottom: 1px solid #d4d4d4; }
+.block { margin-top: 32px; white-space: pre-line; color: #3d3d3d; font-size: 10.5pt; }
+.date { margin-top: 32px; font-size: 9.5pt; color: #6b6b6b; }
+.subject { margin-top: 28px; font-weight: bold; color: #111111; }
+.body { margin-top: 20px; white-space: pre-line; }
+</style></head><body>
+<p class="name">${escape(doc.applicant.fullName)}</p>
+<p class="meta">${escape([doc.applicant.location, doc.applicant.email, doc.applicant.phone].filter(Boolean).join(" \u00b7 "))}</p>
+<div class="block">${escape([doc.company, doc.recipient, doc.companyAddress].filter(Boolean).join("\n"))}</div>
+<p class="date">${escape(formatLetterDate(doc))}</p>
+<p class="subject">${escape(subjectLine(doc))}</p>
+<div class="body">${escape(doc.body)}</div>
+</body></html>`;
+}
+
+/**
+ * Renders the letter inside an isolated iframe so the app's CSS variables
+ * (oklch colors) never reach the PDF renderer.
+ */
 export async function downloadCoverLetterPdf(doc: CoverLetterDocument) {
   const html2pdf = (await import("html2pdf.js")).default;
-  const element = document.getElementById("cover-letter-preview-container");
-  if (!element) throw new Error("preview missing");
-  await html2pdf()
-    .set({
-      margin: 0,
-      filename: `${fileBase(doc)}.pdf`,
-      image: { type: "jpeg" as const, quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: "#ffffff" },
-      jsPDF: { unit: "mm" as const, format: "a4" as const, orientation: "portrait" as const },
-    })
-    .from(element)
-    .save();
+  const frame = document.createElement("iframe");
+  frame.setAttribute("aria-hidden", "true");
+  frame.style.cssText = "position:fixed;left:-10000px;top:0;width:794px;height:1123px;border:0;";
+  document.body.appendChild(frame);
+  try {
+    const frameDoc = frame.contentDocument;
+    if (!frameDoc) throw new Error("preview missing");
+    frameDoc.open();
+    frameDoc.write(letterHtml(doc));
+    frameDoc.close();
+    await new Promise((resolve) => setTimeout(resolve, 150));
+    await html2pdf()
+      .set({
+        margin: 0,
+        filename: `${fileBase(doc)}.pdf`,
+        image: { type: "jpeg" as const, quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: "#ffffff" },
+        jsPDF: { unit: "mm" as const, format: "a4" as const, orientation: "portrait" as const },
+      })
+      .from(frameDoc.body)
+      .save();
+  } finally {
+    frame.remove();
+  }
 }
 
 function triggerDownload(blob: Blob, filename: string) {
