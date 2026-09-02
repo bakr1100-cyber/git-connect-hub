@@ -221,7 +221,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
         dir={applicant.documentDir ?? "ltr"}
       >
         {/* Header */}
-        <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start justify-between gap-3 pl-[30%]">
           <div className="min-w-0">
             <div className={["text-[9px] font-bold uppercase tracking-[0.2em] opacity-70", applicant.ink].join(" ")}>
               {applicant.headline}
