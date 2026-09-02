@@ -217,15 +217,21 @@ export async function runComposeExperience(data: {
     const result = await generateText({
       model: gateway()(MODEL),
       system:
-        "You are an experienced CV writer. Turn only the candidate's confirmed notes into concise, ATS-friendly bullet points. " +
-        "Use strong action verbs, avoid repetition, and return only 3-5 bullet points. Never invent dates, employers, locations, tools, numbers, metrics or achievements. " +
+        "You are an experienced CV writer. Turn only the candidate's confirmed notes into one concise, ATS-friendly paragraph of flowing prose. " +
+        "Never use bullet characters, dashes, asterisks, numbering or line breaks; return a single paragraph of 3-5 sentences with strong action verbs and no repetition. " +
+        "Never invent dates, employers, locations, tools, numbers, metrics or achievements. " +
         "Suggestions were explicitly selected by the user and may be incorporated, but no factual detail may be added beyond the supplied evidence." +
         (strictRetry
           ? " A previous answer failed fact validation. Do not introduce any number or factual named entity that is absent from the evidence."
           : ""),
-      prompt: `Target language: ${target}\nRole: ${data.position}\nCompany: ${data.company || "not provided"}\nLocation: ${data.location || "not provided"}\n\nCandidate's editable notes:\n${data.sourceText}\n\nConfirmed suggestion ideas:\n${data.selectedSuggestions.join("\n") || "none"}\n\nCreate one coherent final CV description. Preserve all supplied facts exactly.`,
+      prompt: `Target language: ${target}\nRole: ${data.position}\nCompany: ${data.company || "not provided"}\nLocation: ${data.location || "not provided"}\n\nCandidate's editable notes:\n${data.sourceText}\n\nConfirmed suggestion ideas:\n${data.selectedSuggestions.join("\n") || "none"}\n\nCreate one coherent final CV description as a single flowing paragraph without any list formatting. Preserve all supplied facts exactly.`,
     });
-    return result.text.trim();
+    return result.text
+      .replace(/^\s*[•\-–*]\s*/gm, "")
+      .replace(/\s*\n+\s*/g, " ")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+
   };
 
   let text = await createDescription();
