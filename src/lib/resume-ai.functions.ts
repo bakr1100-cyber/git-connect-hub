@@ -8,6 +8,8 @@ import {
   TranslateInput,
   ExperienceSuggestionsInput,
   ComposeExperienceInput,
+  CoverSuggestionsInput,
+  ComposeCoverLetterInput,
 } from "./resume-ai.schemas";
 
 export const optimizeText = createServerFn({ method: "POST" })
@@ -79,4 +81,22 @@ export const getAiUsage = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { readAiUsage } = await import("./resume-ai.server");
     return readAiUsage(context.supabase, context.userId);
+  });
+
+export const suggestCoverPoints = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) => CoverSuggestionsInput.parse(input))
+  .handler(async ({ data, context }) => {
+    const { guardAi, runCoverSuggestions } = await import("./resume-ai.server");
+    const quota = await guardAi(context.supabase, "optimize");
+    return { ...(await runCoverSuggestions(data)), quota };
+  });
+
+export const composeCoverLetter = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) => ComposeCoverLetterInput.parse(input))
+  .handler(async ({ data, context }) => {
+    const { guardAi, runComposeCoverLetter } = await import("./resume-ai.server");
+    const quota = await guardAi(context.supabase, "coverLetter");
+    return { ...(await runComposeCoverLetter(data)), quota };
   });

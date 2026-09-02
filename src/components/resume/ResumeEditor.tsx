@@ -321,6 +321,9 @@ export function ResumeEditor() {
                 updateData((prev) => ({ ...prev, settings: { ...prev.settings, language: next } }))
               }
             />
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/anschreiben">Anschreiben</Link>
+            </Button>
             {!authLoading && isAuthenticated ? (
               <span className="inline-flex shrink-0 rounded-lg border border-brand/35 bg-brand/10 px-3 py-2 text-sm font-semibold text-brand">
                 {t("auth.signedIn")}

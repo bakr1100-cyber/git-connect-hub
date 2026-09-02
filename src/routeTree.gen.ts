@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnschreibenRouteImport } from './routes/anschreiben'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as EditorRouteImport } from './routes/editor'
 import { Route as McpRouteImport } from './routes/mcp'
@@ -22,6 +23,11 @@ import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/l
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnschreibenRoute = AnschreibenRouteImport.update({
+  id: '/anschreiben',
+  path: '/anschreiben',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -69,6 +75,7 @@ const LovableEmailTransactionalPreviewRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/anschreiben': typeof AnschreibenRoute
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRoute
   '/mcp': typeof McpRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/anschreiben': typeof AnschreibenRoute
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRoute
   '/mcp': typeof McpRoute
@@ -92,6 +100,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/anschreiben': typeof AnschreibenRoute
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRoute
   '/mcp': typeof McpRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/anschreiben'
     | '/auth'
     | '/editor'
     | '/mcp'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/anschreiben'
     | '/auth'
     | '/editor'
     | '/mcp'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/anschreiben'
     | '/auth'
     | '/editor'
     | '/mcp'
@@ -139,6 +151,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnschreibenRoute: typeof AnschreibenRoute
   AuthRoute: typeof AuthRoute
   EditorRoute: typeof EditorRoute
   McpRoute: typeof McpRoute
@@ -156,6 +169,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anschreiben': {
+      id: '/anschreiben'
+      path: '/anschreiben'
+      fullPath: '/anschreiben'
+      preLoaderRoute: typeof AnschreibenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -219,6 +239,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnschreibenRoute: AnschreibenRoute,
   AuthRoute: AuthRoute,
   EditorRoute: EditorRoute,
   McpRoute: McpRoute,

@@ -234,6 +234,112 @@ export async function runComposeExperience(data: {
   return { text };
 }
 
+// --- cover letter generator ---------------------------------------------------
+
+export async function runCoverSuggestions(data: {
+  position: string;
+  company?: string | undefined;
+  jobDescription?: string | undefined;
+  language: Locale;
+  uiLanguage?: Locale | undefined;
+}) {
+  const target = languageName(data.language);
+  const uiLocale = data.uiLanguage ?? data.language;
+  const bilingual = uiLocale !== data.language;
+  const uiTarget = languageName(uiLocale);
+  const result = await generateText({
+    model: gateway()(MODEL),
+    system:
+      "You are an application coach preparing arguments for a cover letter. " +
+      'Return valid JSON only in the shape {"suggestions":[{"text":"...","translation":"..."}]}. Return exactly 6 suggestions. ' +
+      "Each suggestion must be ONE short flowing sentence of at most 16 words, written in first person. " +
+      "Never use bullet characters, dashes, numbering, line breaks or lists inside a suggestion. " +
+      "Do not invent employers, dates or metrics; phrase ideas so the user can confirm and adapt them.",
+    prompt: `Position: ${data.position}\nCompany: ${data.company || "not provided"}\nJob advert:\n${
+      data.jobDescription || "not provided"
+    }\n\nGenerate six distinct, compact arguments why the candidate fits this job.\n"text" must be written in ${target}.\n${
+      bilingual
+        ? `"translation" must be the faithful translation of "text" into ${uiTarget}.`
+        : `"translation" must be an empty string.`
+    }`,
+  });
+  const raw = result.text
+    .trim()
+    .replace(/^```(?:json)?/i, "")
+    .replace(/```$/, "")
+    .trim();
+  const clean = (value: string) =>
+    value
+      .replace(/^\s*[•\-–*\d.]+\s*/, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  try {
+    const parsed = JSON.parse(raw) as { suggestions?: unknown };
+    if (!Array.isArray(parsed.suggestions)) throw new Error("invalid suggestions");
+    const suggestions = parsed.suggestions
+      .map((item) => {
+        if (typeof item === "string") return { text: clean(item), translation: "" };
+        if (item && typeof item === "object") {
+          const record = item as { text?: unknown; translation?: unknown };
+          return {
+            text: typeof record.text === "string" ? clean(record.text) : "",
+            translation:
+              bilingual && typeof record.translation === "string" ? clean(record.translation) : "",
+          };
+        }
+        return { text: "", translation: "" };
+      })
+      .filter((item) => item.text.length > 0)
+      .slice(0, 6);
+    if (!suggestions.length) throw new Error("invalid suggestions");
+    return { suggestions };
+  } catch {
+    throw new Error("Cover suggestions failed");
+  }
+}
+
+export async function runComposeCoverLetter(data: {
+  position: string;
+  company: string;
+  recipient?: string | undefined;
+  companyAddress?: string | undefined;
+  jobDescription?: string | undefined;
+  selectedPoints: string[];
+  ownNotes?: string | undefined;
+  tone: "professional" | "warm" | "confident";
+  applicant: {
+    fullName: string;
+    email: string;
+    phone: string;
+    location: string;
+  };
+  background?: string | undefined;
+  language: Locale;
+}) {
+  const target = languageName(data.language);
+  const result = await generateText({
+    model: gateway()(MODEL),
+    system:
+      "You are an experienced application coach who writes tailored cover letters. " +
+      "Write flowing prose in short paragraphs, never bullet points or lists. " +
+      "Keep it to one page (roughly 250-320 words). " +
+      "Never invent employers, dates, certificates, numbers or achievements that are not supplied. " +
+      "Return only the letter body: salutation, paragraphs and closing formula with the applicant name. " +
+      "Do not repeat the sender or recipient address block, and do not add a date line.",
+    prompt: `Target language: ${target}\nTone: ${data.tone}\nPosition: ${data.position}\nCompany: ${data.company}\nContact person: ${
+      data.recipient || "unknown, use a neutral salutation"
+    }\n\nApplicant: ${data.applicant.fullName || "not provided"} (${data.applicant.location || "-"})\n\nBackground from the CV:\n${
+      data.background || "not provided"
+    }\n\nJob advert:\n${data.jobDescription || "not provided"}\n\nArguments confirmed by the applicant:\n${
+      data.selectedPoints.join("\n") || "none"
+    }\n\nAdditional notes from the applicant:\n${
+      data.ownNotes || "none"
+    }\n\nWrite the cover letter now, tailored precisely to this job.`,
+  });
+  return { text: result.text.trim() };
+}
+
+
 // --- quota / abuse protection -------------------------------------------------
 
 export async function guardAi(supabase: Parameters<typeof consumeAiQuota>[0], action: AiAction) {

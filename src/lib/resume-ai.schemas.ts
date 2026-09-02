@@ -69,3 +69,30 @@ export const ComposeExperienceInput = z.object({
 });
 
 export type CoverLetterPayload = z.infer<typeof CoverLetterInput>;
+
+export const CoverSuggestionsInput = z.object({
+  position: z.string().trim().min(2).max(160),
+  company: z.string().trim().max(160).optional(),
+  jobDescription: z.string().trim().max(6_000).optional(),
+  language: z.enum(SUPPORTED_LOCALES),
+  uiLanguage: z.enum(SUPPORTED_LOCALES).optional(),
+});
+
+export const ComposeCoverLetterInput = z.object({
+  position: z.string().trim().min(2).max(160),
+  company: z.string().trim().min(1).max(160),
+  recipient: z.string().trim().max(160).optional(),
+  companyAddress: z.string().trim().max(400).optional(),
+  jobDescription: z.string().trim().max(6_000).optional(),
+  selectedPoints: z.array(z.string().trim().min(1).max(400)).max(10).default([]),
+  ownNotes: z.string().trim().max(2_000).optional(),
+  tone: z.enum(["professional", "warm", "confident"]).default("professional"),
+  applicant: z.object({
+    fullName: z.string().max(160).default(""),
+    email: z.string().max(160).default(""),
+    phone: z.string().max(80).default(""),
+    location: z.string().max(160).default(""),
+  }),
+  background: z.string().trim().max(6_000).optional(),
+  language: z.enum(SUPPORTED_LOCALES),
+});
