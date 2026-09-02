@@ -157,6 +157,12 @@ export function ResumeEditor() {
           </Link>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
+            <DocumentLanguageSwitcher
+              value={data.settings.language as Locale}
+              onChange={(next) =>
+                updateData((prev) => ({ ...prev, settings: { ...prev.settings, language: next } }))
+              }
+            />
             <Button variant="outline" size="sm" onClick={() => setMode("wizard")}>
               <ArrowLeft className="mr-1.5 h-4 w-4" />
               {t("ws.backToEditor")}
