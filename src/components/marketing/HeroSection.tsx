@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, HeartPulse, Play, Sparkles, Star, Users } from "lucide-react";
-import applicant1 from "@/assets/applicant-lukas-bust.png";
-import applicant2 from "@/assets/applicant-elena-bust.png";
-import applicant3 from "@/assets/applicant-amara-bust.png";
-import applicant4 from "@/assets/applicant-youssef-bust.png";
+import applicant1 from "@/assets/applicant-lukas-cutout.png";
+import applicant2 from "@/assets/applicant-elena-cutout.png";
+import applicant3 from "@/assets/applicant-amara-cutout.png";
+import applicant4 from "@/assets/applicant-youssef-cutout.png";
 
 type ExperienceItem = { role: string; company: string; period: string; bullets: string[] };
 type EducationItem = { degree: string; school: string; period: string };
@@ -348,8 +348,9 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
         loading={active ? "eager" : "lazy"}
         width={1024}
         height={1408}
-        className="absolute bottom-[6%] -left-[6%] z-10 aspect-square h-auto w-[40%] rounded-2xl object-cover object-top shadow-2xl ring-1 ring-white/20 sm:-left-[8%] sm:w-[38%]"
+        className="pointer-events-none absolute -left-[24%] top-[2%] z-10 h-[150%] w-auto max-w-none object-contain object-top drop-shadow-2xl sm:-left-[26%] sm:h-[155%]"
       />
+
 
       {/* UI badge layer */}
       <div className="absolute right-[3%] top-[5%] z-20 rounded-full border border-emerald-400/40 bg-slate-800/90 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-200 shadow-xl backdrop-blur-md sm:text-[11px]">
@@ -470,7 +471,7 @@ export function HeroSection() {
           onMouseLeave={() => setPaused(false)}
         >
           <div
-            className="relative mx-auto aspect-[3/4] w-full max-w-[460px]"
+            className="relative mx-auto aspect-[4/4] w-full max-w-[460px] overflow-hidden"
             style={{ transformStyle: "preserve-3d" }}
           >
             {APPLICANTS.map((applicant, i) => (
