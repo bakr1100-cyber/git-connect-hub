@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, HeartPulse, Play, Sparkles, Star, Users } from "lucide-react";
-import applicant1 from "@/assets/applicant-lukas-cutout.png";
-import applicant2 from "@/assets/applicant-elena-cutout.png";
-import applicant3 from "@/assets/applicant-amara-cutout.png";
-import applicant4 from "@/assets/applicant-youssef-cutout.png";
+import applicant1 from "@/assets/applicant-lukas-bust.png";
+import applicant2 from "@/assets/applicant-elena-bust.png";
+import applicant3 from "@/assets/applicant-amara-bust.png";
+import applicant4 from "@/assets/applicant-youssef-bust.png";
 
 type ExperienceItem = { role: string; company: string; period: string; bullets: string[] };
 type EducationItem = { degree: string; school: string; period: string };
@@ -244,7 +244,18 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
               </span>
             </div>
           </div>
+          {/* Bewerbungsfoto im Lebenslauf */}
+          <img
+            src={applicant.photo}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            width={1024}
+            height={1024}
+            className="h-16 w-[3.3rem] shrink-0 rounded-md border border-black/10 bg-white object-cover object-top shadow-sm sm:h-20 sm:w-16"
+          />
         </div>
+
 
         <div className={["mt-2 h-[3px] w-full rounded", applicant.rule].join(" ")} />
 
@@ -337,7 +348,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
         loading={active ? "eager" : "lazy"}
         width={1024}
         height={1408}
-        className="absolute bottom-0 -left-[8%] z-10 h-[64%] w-[62%] object-cover object-top drop-shadow-2xl [clip-path:inset(0_0_0_0_round_1rem)] sm:-left-[10%] sm:h-[68%]"
+        className="absolute bottom-[6%] -left-[6%] z-10 aspect-square h-auto w-[40%] rounded-2xl object-cover object-top shadow-2xl ring-1 ring-white/20 sm:-left-[8%] sm:w-[38%]"
       />
 
       {/* UI badge layer */}
