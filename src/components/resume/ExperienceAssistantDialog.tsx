@@ -216,8 +216,16 @@ interface Props {
   onSave: (experience: WorkExperience) => void;
 }
 
+interface Suggestion {
+  text: string;
+  translation: string;
+}
+
 function suggestionLine(text: string) {
-  return `• ${text.replace(/^[•\-–]\s*/, "").trim()}`;
+  return text
+    .replace(/^[•\-–*]\s*/, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 export function ExperienceAssistantDialog({
@@ -233,7 +241,7 @@ export function ExperienceAssistantDialog({
   const BackIcon = dir === "rtl" ? ArrowRight : ArrowLeft;
   const [stage, setStage] = useState<"overview" | "description">("overview");
   const [draft, setDraft] = useState<WorkExperience>(EMPTY_EXPERIENCE);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [finalizing, setFinalizing] = useState(false);
@@ -283,7 +291,7 @@ export function ExperienceAssistantDialog({
       }
       setAuthRequired(false);
       const result = await suggest({
-        data: { position: draft.position, company: draft.company, language },
+        data: { position: draft.position, company: draft.company, language, uiLanguage: uiLocale },
       });
       setSuggestions(result.suggestions);
     } catch {
@@ -291,7 +299,7 @@ export function ExperienceAssistantDialog({
     } finally {
       setLoadingSuggestions(false);
     }
-  }, [copy.suggestionsFailed, draft.company, draft.position, language, suggest]);
+  }, [copy.suggestionsFailed, draft.company, draft.position, language, suggest, uiLocale]);
 
   const continueToDescription = () => {
     if (draft.position.trim().length < 2) {
@@ -486,7 +494,7 @@ export function ExperienceAssistantDialog({
                   </Button>
                 )}
               </div>
-              <div className="space-y-2 p-3">
+              <div className="ai-suggestion-scroll relative max-h-[320px] space-y-2 overflow-y-auto p-3">
                 {loadingSuggestions && (
                   <div className="flex items-center gap-2 rounded-lg bg-background px-3 py-4 text-sm text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin text-brand" /> {copy.loading}
@@ -521,14 +529,14 @@ export function ExperienceAssistantDialog({
                 {!loadingSuggestions &&
                   !authRequired &&
                   suggestions.map((suggestion) => {
-                    const active = selected.includes(suggestion);
+                    const active = selected.includes(suggestion.text);
                     return (
                       <button
-                        key={suggestion}
+                        key={suggestion.text}
                         type="button"
-                        onClick={() => toggleSuggestion(suggestion)}
+                        onClick={() => toggleSuggestion(suggestion.text)}
                         className={cn(
-                          "flex w-full items-start gap-3 rounded-lg border px-3 py-3 text-sm transition",
+                          "flex w-full items-start gap-3 rounded-lg border px-3 py-2.5 text-sm transition",
                           dir === "rtl" ? "text-right" : "text-left",
                           active
                             ? "border-brand bg-brand/10"
@@ -544,7 +552,16 @@ export function ExperienceAssistantDialog({
                             <Plus className="h-3.5 w-3.5" />
                           )}
                         </span>
-                        <span>{suggestion}</span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block leading-snug text-foreground">
+                            {suggestion.text}
+                          </span>
+                          {suggestion.translation && (
+                            <span className="mt-1 block border-s-2 border-brand/25 ps-2 text-xs leading-snug text-muted-foreground">
+                              {suggestion.translation}
+                            </span>
+                          )}
+                        </span>
                       </button>
                     );
                   })}
