@@ -9,6 +9,11 @@ export const de = {
   "nav.createResume": "Lebenslauf erstellen",
   "nav.home": "Startseite",
   "nav.language": "Sprache",
+  "docLang.label": "Sprache des Dokuments",
+  "docLang.short": "Lebenslauf",
+  "docLang.changed": "Dokumentsprache auf {language} umgestellt",
+  "docLang.changedHint": "Die Bedienoberfläche bleibt unverändert.",
+  "docLang.hint": "Diese Sprache gilt nur für deinen Lebenslauf und dein Anschreiben – die Bedienoberfläche änderst du oben separat.",
 
   // Hero
   "hero.badge": "#1 für ATS-geprüfte Lebensläufe · 2026",

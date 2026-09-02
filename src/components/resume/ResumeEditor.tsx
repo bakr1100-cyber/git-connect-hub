@@ -17,6 +17,7 @@ import { FileText, ArrowLeft, ArrowRight, Check, Cloud, CloudOff, Loader2, Globe
 import { useI18n } from "@/lib/i18n";
 import { SUPPORTED_LOCALES, localeFlags, localeNames, type Locale } from "@/lib/i18n/locales";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { DocumentLanguageSwitcher } from "./DocumentLanguageSwitcher";
 import { motion } from "motion/react";
 import { useResumeAutoSave } from "@/hooks/useResumeAutoSave";
 import { toast } from "sonner";
@@ -156,6 +157,12 @@ export function ResumeEditor() {
           </Link>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
+            <DocumentLanguageSwitcher
+              value={data.settings.language as Locale}
+              onChange={(next) =>
+                updateData((prev) => ({ ...prev, settings: { ...prev.settings, language: next } }))
+              }
+            />
             <Button variant="outline" size="sm" onClick={() => setMode("wizard")}>
               <ArrowLeft className="mr-1.5 h-4 w-4" />
               {t("ws.backToEditor")}
@@ -303,6 +310,12 @@ export function ResumeEditor() {
               )}
             </span>
             <LanguageSwitcher />
+            <DocumentLanguageSwitcher
+              value={data.settings.language as Locale}
+              onChange={(next) =>
+                updateData((prev) => ({ ...prev, settings: { ...prev.settings, language: next } }))
+              }
+            />
             {!authLoading && isAuthenticated ? (
               <span className="inline-flex shrink-0 rounded-lg border border-brand/35 bg-brand/10 px-3 py-2 text-sm font-semibold text-brand">
                 {t("auth.signedIn")}
