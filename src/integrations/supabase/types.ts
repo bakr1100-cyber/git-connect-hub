@@ -14,109 +14,13 @@ export type Database = {
   }
   public: {
     Tables: {
-      ai_usage: {
-        Row: {
-          calls: number
-          cost_units: number
-          last_call_at: string | null
-          updated_at: string
-          usage_date: string
-          user_id: string
-        }
-        Insert: {
-          calls?: number
-          cost_units?: number
-          last_call_at?: string | null
-          updated_at?: string
-          usage_date?: string
-          user_id: string
-        }
-        Update: {
-          calls?: number
-          cost_units?: number
-          last_call_at?: string | null
-          updated_at?: string
-          usage_date?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      resumes: {
-        Row: {
-          cover_letter: string | null
-          created_at: string
-          education: Json
-          id: string
-          languages: Json
-          payment_status: string
-          personal_details: Json
-          settings: Json
-          skills: Json
-          updated_at: string
-          user_id: string | null
-          work_experience: Json
-        }
-        Insert: {
-          cover_letter?: string | null
-          created_at?: string
-          education?: Json
-          id?: string
-          languages?: Json
-          payment_status?: string
-          personal_details?: Json
-          settings?: Json
-          skills?: Json
-          updated_at?: string
-          user_id?: string | null
-          work_experience?: Json
-        }
-        Update: {
-          cover_letter?: string | null
-          created_at?: string
-          education?: Json
-          id?: string
-          languages?: Json
-          payment_status?: string
-          personal_details?: Json
-          settings?: Json
-          skills?: Json
-          updated_at?: string
-          user_id?: string | null
-          work_experience?: Json
-        }
-        Relationships: []
-      }
-      user_entitlements: {
-        Row: {
-          tier: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          tier?: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          tier?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      ai_quota_for_tier: {
-        Args: { _tier: string }
-        Returns: {
-          max_calls: number
-          max_cost: number
-        }[]
-      }
-      consume_ai_quota: { Args: { _cost?: number }; Returns: Json }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
