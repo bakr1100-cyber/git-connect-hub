@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, HeartPulse, Play, Sparkles, Star, Users } from "lucide-react";
-import applicant1 from "@/assets/applicant-1.png";
-import applicant2 from "@/assets/applicant-2.png";
-import applicant3 from "@/assets/applicant-3.png";
-import applicant4 from "@/assets/applicant-4.png";
+import applicant1 from "@/assets/applicant-lukas-cutout.png";
+import applicant2 from "@/assets/applicant-elena-cutout.png";
+import applicant3 from "@/assets/applicant-amara-cutout.png";
+import applicant4 from "@/assets/applicant-youssef-cutout.png";
 
 type ExperienceItem = { role: string; company: string; period: string; bullets: string[] };
 type EducationItem = { degree: string; school: string; period: string };
@@ -31,6 +31,8 @@ type Applicant = {
   education: EducationItem[];
   skills: string[];
   labels: { profile: string; experience: string; education: string; skills: string };
+  localeTag: string;
+  documentDir?: "ltr" | "rtl";
 };
 
 const DE_LABELS = {
@@ -39,6 +41,10 @@ const DE_LABELS = {
   education: "Ausbildung",
   skills: "Kenntnisse",
 };
+
+const PL_LABELS = { profile: "Profil zawodowy", experience: "Doświadczenie", education: "Wykształcenie", skills: "Umiejętności" };
+const EN_LABELS = { profile: "Profile", experience: "Work experience", education: "Education", skills: "Skills" };
+const AR_LABELS = { profile: "الملف الشخصي", experience: "الخبرة المهنية", education: "التعليم", skills: "المهارات" };
 
 const APPLICANTS: Applicant[] = [
   {
@@ -76,6 +82,7 @@ const APPLICANTS: Applicant[] = [
     ],
     skills: ["Linux", "Kubernetes", "Bash", "Zabbix", "Deutsch C1", "Englisch B2"],
     labels: DE_LABELS,
+    localeTag: "DEUTSCH",
   },
   {
     id: "a2",
@@ -86,8 +93,8 @@ const APPLICANTS: Applicant[] = [
     ink: "text-rose-900",
     rule: "bg-rose-400",
     bar: "bg-rose-900/12",
-    headline: "Lebenslauf",
-    target: "Projektmanagerin (m/w/d)",
+    headline: "Życiorys",
+    target: "Kierowniczka projektu",
     badgePrimary: "92 / 100 MATCH",
     badgeSecondary: "Projektmanagement",
     contact: "Kraków, PL · elena.nowak@mail.com · +48 512 884 190",
@@ -111,22 +118,23 @@ const APPLICANTS: Applicant[] = [
       { degree: "M.A. Management", school: "Uniwersytet Jagielloński", period: "2012 – 2017" },
     ],
     skills: ["Scrum", "PMP", "Jira", "Stakeholder-Mgmt", "Deutsch B2", "Englisch C1"],
-    labels: DE_LABELS,
+    labels: PL_LABELS,
+    localeTag: "POLSKI",
   },
   {
     id: "a3",
-    name: "Lena Hoffmann",
+    name: "Amara Okafor",
     role: "Marketing Manager",
     photo: applicant3,
     paper: "bg-white",
     ink: "text-blue-900",
     rule: "bg-blue-700",
     bar: "bg-blue-900/12",
-    headline: "Lebenslauf",
-    target: "Marketing Manager (m/w/d)",
+    headline: "Curriculum Vitae",
+    target: "Marketing Manager",
     badgePrimary: "Perfektes Match",
     badgeSecondary: "Marketing Manager",
-    contact: "Hamburg, DE · lena.hoffmann@mail.com · +49 151 220 447",
+    contact: "London, UK · amara.okafor@mail.com · +44 7700 900 214",
     summary:
       "Marketing Managerin mit Fokus auf Performance-Kampagnen, Content-Strategie und Employer Branding.",
     experience: [
@@ -147,7 +155,8 @@ const APPLICANTS: Applicant[] = [
       { degree: "B.A. Kommunikation", school: "Universität Hamburg", period: "2015 – 2018" },
     ],
     skills: ["SEO/SEA", "HubSpot", "Analytics", "Copywriting", "Deutsch C2", "Englisch C1"],
-    labels: DE_LABELS,
+    labels: EN_LABELS,
+    localeTag: "ENGLISH",
   },
   {
     id: "a4",
@@ -158,8 +167,8 @@ const APPLICANTS: Applicant[] = [
     ink: "text-teal-900",
     rule: "bg-teal-600",
     bar: "bg-sky-900/12",
-    headline: "Lebenslauf",
-    target: "Ausbildung zum Pflegefachmann",
+    headline: "السيرة الذاتية",
+    target: "ممرض متخصص",
     targetIcon: true,
     badgePrimary: "Visum & Dokumente bereit",
     badgeSecondary: "Deutsch B2 zertifiziert",
@@ -184,7 +193,9 @@ const APPLICANTS: Applicant[] = [
       { degree: "Diplom Krankenpflege", school: "ISPITS Casablanca", period: "2016 – 2019" },
     ],
     skills: ["Grundpflege", "Monitoring", "Dokumentation", "Deutsch B2", "Französisch C1"],
-    labels: DE_LABELS,
+    labels: AR_LABELS,
+    localeTag: "العربية",
+    documentDir: "rtl",
   },
 ];
 
@@ -203,10 +214,11 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
       {/* Background layer: tilted 3D resume document, full sections */}
       <div
         className={[
-          "absolute inset-x-[2%] top-0 h-full overflow-hidden rounded-2xl border border-white/60 px-5 py-4 shadow-2xl",
+          "absolute bottom-[4%] right-[1%] top-[2%] w-[84%] overflow-hidden rounded-2xl border border-white/60 px-5 py-4 shadow-2xl",
           applicant.paper,
         ].join(" ")}
         style={{ transform: "perspective(1400px) rotateY(-11deg) rotateX(6deg)" }}
+        dir={applicant.documentDir ?? "ltr"}
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-3">
@@ -214,27 +226,24 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
             <div className={["text-[9px] font-bold uppercase tracking-[0.2em] opacity-70", applicant.ink].join(" ")}>
               {applicant.headline}
             </div>
-            <div className={["mt-0.5 text-lg font-bold tracking-tight sm:text-xl", applicant.ink].join(" ")}>
-              {applicant.name}
+            <div className={["mt-1 inline-flex rounded-full border border-current/15 px-2 py-0.5 text-[7px] font-bold", applicant.ink].join(" ")}>
+              {applicant.localeTag}
             </div>
-            <div className="mt-1.5 flex items-center gap-1.5">
-              {applicant.targetIcon && <HeartPulse className={["h-3 w-3 shrink-0", applicant.ink].join(" ")} />}
-              <span className={["text-[10px] font-semibold sm:text-[11px]", applicant.ink].join(" ")}>
-                {applicant.target}
-              </span>
-            </div>
-            <div className={["mt-1 truncate text-[8px] opacity-70 sm:text-[9px]", applicant.ink].join(" ")}>
-              {applicant.contact}
+            <div className="select-none blur-[3px]" aria-hidden="true">
+              <div className={["mt-0.5 text-lg font-bold tracking-tight sm:text-xl", applicant.ink].join(" ")}>
+                {applicant.name}
+              </div>
+              <div className="mt-1.5 flex items-center gap-1.5">
+                {applicant.targetIcon && <HeartPulse className={["h-3 w-3 shrink-0", applicant.ink].join(" ")} />}
+                <span className={["text-[10px] font-semibold sm:text-[11px]", applicant.ink].join(" ")}>
+                  {applicant.target}
+                </span>
+              </div>
+              <div className={["mt-1 truncate text-[8px] opacity-70 sm:text-[9px]", applicant.ink].join(" ")}>
+                {applicant.contact}
+              </div>
             </div>
           </div>
-          <img
-            src={applicant.photo}
-            alt={`${applicant.name} — ${applicant.role}`}
-            loading={active ? "eager" : "lazy"}
-            width={640}
-            height={800}
-            className="h-16 w-14 shrink-0 object-contain object-top sm:h-20 sm:w-16"
-          />
         </div>
 
         <div className={["mt-2 h-[3px] w-full rounded", applicant.rule].join(" ")} />
@@ -244,7 +253,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
           <div className={["text-[8px] font-bold uppercase tracking-[0.16em]", applicant.ink].join(" ")}>
             {labels.profile}
           </div>
-          <p className={["mt-1 text-[8.5px] leading-snug opacity-80 sm:text-[9.5px]", applicant.ink].join(" ")}>
+          <p aria-hidden="true" className={["mt-1 select-none text-[8.5px] leading-snug opacity-70 blur-[2.5px] sm:text-[9.5px]", applicant.ink].join(" ")}>
             {applicant.summary}
           </p>
         </div>
@@ -255,7 +264,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
             {labels.experience}
           </div>
           <div className={["mt-0.5 h-[2px] w-8 rounded", applicant.rule].join(" ")} />
-          <div className="mt-1.5 space-y-1.5">
+          <div aria-hidden="true" className="mt-1.5 select-none space-y-1.5 opacity-75 blur-[2.5px]">
             {applicant.experience.map((item) => (
               <div key={`${item.company}-${item.period}`}>
                 <div className="flex items-baseline justify-between gap-2">
@@ -287,6 +296,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
             {labels.education}
           </div>
           <div className={["mt-0.5 h-[2px] w-8 rounded", applicant.rule].join(" ")} />
+          <div aria-hidden="true" className="select-none opacity-75 blur-[2.5px]">
           {applicant.education.map((edu) => (
             <div key={edu.school} className="mt-1">
               <div className="flex items-baseline justify-between gap-2">
@@ -296,6 +306,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
               <div className={["text-[8.5px] italic opacity-75", applicant.ink].join(" ")}>{edu.school}</div>
             </div>
           ))}
+          </div>
         </div>
 
         {/* Skills */}
@@ -303,7 +314,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
           <div className={["text-[8px] font-bold uppercase tracking-[0.16em]", applicant.ink].join(" ")}>
             {labels.skills}
           </div>
-          <div className="mt-1.5 flex flex-wrap gap-1">
+          <div aria-hidden="true" className="mt-1.5 flex select-none flex-wrap gap-1 opacity-70 blur-[2px]">
             {applicant.skills.map((skill) => (
               <span
                 key={skill}
@@ -320,14 +331,23 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
         </div>
       </div>
 
+      <img
+        src={applicant.photo}
+        alt={`${applicant.name} — ${applicant.role}`}
+        loading={active ? "eager" : "lazy"}
+        width={1024}
+        height={1408}
+        className="absolute -bottom-[1%] -left-[8%] z-10 h-[82%] w-[63%] object-contain object-bottom drop-shadow-2xl sm:-left-[12%] sm:h-[86%]"
+      />
+
       {/* UI badge layer */}
-      <div className="absolute -left-2 -top-3 z-20 rounded-full border border-emerald-400/40 bg-emerald-500/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-200 shadow-xl backdrop-blur-md sm:text-[11px]">
+      <div className="absolute right-[3%] top-[5%] z-20 rounded-full border border-emerald-400/40 bg-slate-800/90 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-200 shadow-xl backdrop-blur-md sm:text-[11px]">
         <span className="mr-1.5 inline-flex align-middle">
           <CheckCircle2 className="h-3.5 w-3.5" />
         </span>
         {applicant.badgePrimary}
       </div>
-      <div className="absolute -bottom-3 left-[8%] z-20 rounded-xl border border-white/15 bg-slate-900/80 px-3.5 py-2 text-[11px] font-semibold text-slate-100 shadow-2xl backdrop-blur-md">
+      <div className="absolute bottom-[4%] right-0 z-20 rounded-xl border border-white/15 bg-slate-900/80 px-3.5 py-2 text-[11px] font-semibold text-slate-100 shadow-2xl backdrop-blur-md">
         {applicant.badgeSecondary}
       </div>
     </div>
