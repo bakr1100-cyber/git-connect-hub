@@ -33,7 +33,7 @@ type Applicant = {
   labels: { profile: string; experience: string; education: string; skills: string };
   localeTag: string;
   documentDir?: "ltr" | "rtl";
-  showName?: boolean;
+  showTarget?: boolean;
 };
 
 const DE_LABELS = {
@@ -195,7 +195,7 @@ const APPLICANTS: Applicant[] = [
     skills: ["Grundpflege", "Monitoring", "Dokumentation", "Deutsch B2", "Französisch C1"],
     labels: DE_LABELS,
     localeTag: "DEUTSCH",
-    showName: true,
+    showTarget: true,
   },
 ];
 
@@ -229,26 +229,19 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
             <div className={["mt-1 inline-flex rounded-full border border-current/15 px-2 py-0.5 text-[7px] font-bold", applicant.ink].join(" ")}>
               {applicant.localeTag}
             </div>
-            {applicant.showName && (
-              <div className={["mt-1 text-lg font-bold tracking-tight sm:text-xl", applicant.ink].join(" ")}>
-                {applicant.name}
-              </div>
-            )}
+            <div className={["mt-1 text-lg font-bold tracking-tight sm:text-xl", applicant.ink].join(" ")}>
+              {applicant.name}
+            </div>
             <div className="select-none blur-[3px]" aria-hidden="true">
-              {!applicant.showName && (
-                <div className={["mt-0.5 text-lg font-bold tracking-tight sm:text-xl", applicant.ink].join(" ")}>
-                  {applicant.name}
-                </div>
-              )}
-              <div className="mt-1.5 flex items-center gap-1.5">
-                {applicant.targetIcon && <HeartPulse className={["h-3 w-3 shrink-0", applicant.ink].join(" ")} />}
-                <span className={["text-[10px] font-semibold sm:text-[11px]", applicant.ink].join(" ")}>
-                  {applicant.target}
-                </span>
-              </div>
               <div className={["mt-1 truncate text-[8px] opacity-70 sm:text-[9px]", applicant.ink].join(" ")}>
                 {applicant.contact}
               </div>
+            </div>
+            <div className={["mt-1.5 flex items-center gap-1.5", applicant.showTarget ? "" : "select-none blur-[3px]"].join(" ")} aria-hidden={!applicant.showTarget}>
+              {applicant.targetIcon && <HeartPulse className={["h-3 w-3 shrink-0", applicant.ink].join(" ")} />}
+              <span className={["text-[10px] font-semibold sm:text-[11px]", applicant.ink].join(" ")}>
+                {applicant.target}
+              </span>
             </div>
           </div>
         </div>
@@ -344,7 +337,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
         loading={active ? "eager" : "lazy"}
         width={1024}
         height={1408}
-        className="absolute bottom-0 -left-[10%] z-10 h-[76%] w-[66%] object-cover object-top drop-shadow-2xl [clip-path:inset(0_0_0_0_round_1.25rem)] sm:-left-[12%] sm:h-[80%]"
+        className="absolute bottom-0 -left-[8%] z-10 h-[64%] w-[62%] object-cover object-top drop-shadow-2xl [clip-path:inset(0_0_0_0_round_1rem)] sm:-left-[10%] sm:h-[68%]"
       />
 
       {/* UI badge layer */}
