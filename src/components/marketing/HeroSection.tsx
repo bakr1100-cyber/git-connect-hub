@@ -45,7 +45,6 @@ const DE_LABELS = {
 
 const PL_LABELS = { profile: "Profil zawodowy", experience: "Doświadczenie", education: "Wykształcenie", skills: "Umiejętności" };
 const EN_LABELS = { profile: "Profile", experience: "Work experience", education: "Education", skills: "Skills" };
-const AR_LABELS = { profile: "الملف الشخصي", experience: "الخبرة المهنية", education: "التعليم", skills: "المهارات" };
 
 const APPLICANTS: Applicant[] = [
   {
