@@ -6,6 +6,10 @@ import applicant1 from "@/assets/applicant-lukas-cutout.png";
 import applicant2 from "@/assets/applicant-elena-cutout.png";
 import applicant3 from "@/assets/applicant-amara-cutout.png";
 import applicant4 from "@/assets/applicant-youssef-cutout.png";
+import docPhoto1 from "@/assets/applicant-lukas-bust.png";
+import docPhoto2 from "@/assets/applicant-elena-bust.png";
+import docPhoto3 from "@/assets/applicant-amara-bust.png";
+import docPhoto4 from "@/assets/applicant-youssef-bust.png";
 
 type ExperienceItem = { role: string; company: string; period: string; bullets: string[] };
 type EducationItem = { degree: string; school: string; period: string };
@@ -15,6 +19,8 @@ type Applicant = {
   name: string;
   role: string;
   photo: string;
+  /** Passport-style headshot used inside the resume document. */
+  docPhoto: string;
   /** Card background + accent classes for the floating resume mockup. */
   paper: string;
   ink: string;
@@ -52,6 +58,7 @@ const APPLICANTS: Applicant[] = [
     name: "Lukas Berger",
     role: "Fachkraft IT",
     photo: applicant1,
+    docPhoto: docPhoto1,
     paper: "bg-white",
     ink: "text-emerald-900",
     rule: "bg-emerald-800",
@@ -89,6 +96,7 @@ const APPLICANTS: Applicant[] = [
     name: "Elena Nowak",
     role: "Projektmanagement",
     photo: applicant2,
+    docPhoto: docPhoto2,
     paper: "bg-[#fdf3ef]",
     ink: "text-rose-900",
     rule: "bg-rose-400",
@@ -126,6 +134,7 @@ const APPLICANTS: Applicant[] = [
     name: "Amara Okafor",
     role: "Marketing Manager",
     photo: applicant3,
+    docPhoto: docPhoto3,
     paper: "bg-white",
     ink: "text-blue-900",
     rule: "bg-blue-700",
@@ -163,6 +172,7 @@ const APPLICANTS: Applicant[] = [
     name: "Youssef El Amrani",
     role: "Pflegefachmann",
     photo: applicant4,
+    docPhoto: docPhoto4,
     paper: "bg-[#f0f9f6]",
     ink: "text-teal-900",
     rule: "bg-teal-600",
@@ -246,7 +256,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
           </div>
           {/* Bewerbungsfoto im Lebenslauf */}
           <img
-            src={applicant.photo}
+            src={applicant.docPhoto}
             alt=""
             aria-hidden="true"
             loading="lazy"
