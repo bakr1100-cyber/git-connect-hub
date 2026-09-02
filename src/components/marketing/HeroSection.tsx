@@ -348,7 +348,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
         loading={active ? "eager" : "lazy"}
         width={1024}
         height={1408}
-        className="pointer-events-none absolute -left-[10%] top-[2%] z-10 h-[150%] w-auto max-w-none object-contain object-top drop-shadow-2xl sm:-left-[14%] sm:h-[155%]"
+        className="pointer-events-none absolute -left-[24%] top-[2%] z-10 h-[150%] w-auto max-w-none object-contain object-top drop-shadow-2xl sm:-left-[26%] sm:h-[155%]"
       />
 
 
