@@ -1,0 +1,6 @@
+{
+  "personalDetails": { "fullName": "Noura Testali", "location": "Casablanca, Morocco", "email": "noura.testali@example.invalid" },
+  "workExperience": [{ "position": "Marketing Analyst", "company": "Atlas Pixel SARL", "location": "Casablanca", "startDate": "2008-01", "endDate": "2012-12", "rawText": "عملت من 2008 إلى 2012 في شركة Atlas Pixel في الدار البيضاء وحللت حملات التسويق." }],
+  "education": [{ "degree": "B.A. Business Informatics", "institution": "Université Atlas", "startDate": "2004-09", "endDate": "2007-07" }],
+  "expectedFacts": ["2008", "2012", "Atlas Pixel"]
+}

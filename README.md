@@ -1,12 +1,12 @@
-# Git Connect Hub
+#Onlve bewerbung plTTFORM 
 
-connect to github
+i am student and i want to have a student discount
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/a9d43980-affc-42df-a131-b172b1755c08).
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/82cae2c9-d69b-4222-b1dc-0a18307662ba).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.

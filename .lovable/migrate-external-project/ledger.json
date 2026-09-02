@@ -1,0 +1,62 @@
+{
+  "source": "https://github.com/bakr1100-cyber/student-saver-club",
+  "importedAt": "2026-09-02T14:47:00Z",
+  "capabilities": [
+    {
+      "capability": "project-codebase",
+      "source": "GitHub repository bakr1100-cyber/student-saver-club",
+      "outcome": "completed",
+      "status": "verified",
+      "next_action": "Build passes; code copied into /dev-server."
+    },
+    {
+      "capability": "database-schema",
+      "source": "supabase/migrations/",
+      "outcome": "completed",
+      "status": "verified",
+      "next_action": "All 6 migrations applied to Lovable Cloud; Supabase types regenerated."
+    },
+    {
+      "capability": "authentication",
+      "source": "src/hooks/useAuth.tsx, src/integrations/supabase/*, src/routes/auth*",
+      "outcome": "completed",
+      "status": "verified",
+      "next_action": "Lovable Cloud auth enabled; sign-in routes present."
+    },
+    {
+      "capability": "ai-features",
+      "source": "src/lib/resume-ai.*, src/lib/ai-gateway.server.ts",
+      "outcome": "completed",
+      "status": "pending-runtime-secret",
+      "next_action": "Code builds and quota function is in place; LOVABLE_API_KEY must be present for live AI calls."
+    },
+    {
+      "capability": "payments",
+      "source": "src/lib/entitlements.ts, payment_status column",
+      "outcome": "deferred",
+      "status": "not-implemented",
+      "next_action": "payment_status column exists but no payment provider is wired up. Add Stripe/Paddle integration if paid tiers are required."
+    },
+    {
+      "capability": "storage",
+      "source": "project files",
+      "outcome": "not-used",
+      "status": "n/a",
+      "next_action": "No storage buckets required by this app."
+    },
+    {
+      "capability": "secrets",
+      "source": ".env (excluded from migration)",
+      "outcome": "partial",
+      "status": "pending-user-action",
+      "next_action": "Lovable Cloud auto-generated VITE_SUPABASE_* values. LOVABLE_API_KEY is required for AI gateway calls; add it in Lovable Secrets if not already present."
+    },
+    {
+      "capability": "security-linter",
+      "source": "Supabase security linter",
+      "outcome": "accepted-warning",
+      "status": "accepted",
+      "next_action": "consume_ai_quota is intentionally a SECURITY DEFINER function callable by authenticated users to atomically consume their own AI quota. This matches the original app design."
+    }
+  ]
+}
