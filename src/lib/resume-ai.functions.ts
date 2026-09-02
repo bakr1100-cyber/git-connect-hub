@@ -12,7 +12,7 @@ import {
 
 export const optimizeText = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => OptimizeInput.parse(input))
+  .validator((input: unknown) => OptimizeInput.parse(input))
   .handler(async ({ data, context }) => {
     const { guardAi } = await import("./resume-ai.server");
     const quota = await guardAi(context.supabase, "optimize");
@@ -22,7 +22,7 @@ export const optimizeText = createServerFn({ method: "POST" })
 
 export const translateText = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => TranslateInput.parse(input))
+  .validator((input: unknown) => TranslateInput.parse(input))
   .handler(async ({ data, context }) => {
     const { guardAi, runTranslate } = await import("./resume-ai.server");
     const quota = await guardAi(context.supabase, "translate");
@@ -31,7 +31,7 @@ export const translateText = createServerFn({ method: "POST" })
 
 export const generateCoverLetter = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => CoverLetterInput.parse(input))
+  .validator((input: unknown) => CoverLetterInput.parse(input))
   .handler(async ({ data, context }) => {
     const { guardAi, runCoverLetter } = await import("./resume-ai.server");
     const quota = await guardAi(context.supabase, "coverLetter");
@@ -40,7 +40,7 @@ export const generateCoverLetter = createServerFn({ method: "POST" })
 
 export const transcribeAudio = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => TranscribeInput.parse(input))
+  .validator((input: unknown) => TranscribeInput.parse(input))
   .handler(async ({ data, context }) => {
     const { guardAi, runTranscribe } = await import("./resume-ai.server");
     const quota = await guardAi(context.supabase, "transcribe");
@@ -49,7 +49,7 @@ export const transcribeAudio = createServerFn({ method: "POST" })
 
 export const parseResumeText = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => ParseResumeInput.parse(input))
+  .validator((input: unknown) => ParseResumeInput.parse(input))
   .handler(async ({ data, context }) => {
     const { guardAi, runParseResume } = await import("./resume-ai.server");
     const quota = await guardAi(context.supabase, "parseResume");
@@ -58,7 +58,7 @@ export const parseResumeText = createServerFn({ method: "POST" })
 
 export const suggestExperience = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => ExperienceSuggestionsInput.parse(input))
+  .validator((input: unknown) => ExperienceSuggestionsInput.parse(input))
   .handler(async ({ data, context }) => {
     const { guardAi, runExperienceSuggestions } = await import("./resume-ai.server");
     const quota = await guardAi(context.supabase, "optimize");
@@ -67,7 +67,7 @@ export const suggestExperience = createServerFn({ method: "POST" })
 
 export const composeExperienceDescription = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => ComposeExperienceInput.parse(input))
+  .validator((input: unknown) => ComposeExperienceInput.parse(input))
   .handler(async ({ data, context }) => {
     const { guardAi, runComposeExperience } = await import("./resume-ai.server");
     const quota = await guardAi(context.supabase, "optimize");
