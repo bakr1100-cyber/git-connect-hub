@@ -23,12 +23,12 @@ export const de = {
   "hero.trust3": "100% sicher",
 
   // Stats
-  "stats.1.value": "5,6 Mio",
-  "stats.1.label": "erfolgreich unterstützte Bewerber",
-  "stats.2.value": "97%",
-  "stats.2.label": "Übereinstimmung mit Recruiter-Kriterien",
-  "stats.3.value": "2,4x",
-  "stats.3.label": "mehr Profilaufrufe",
+  "stats.1.value": "7",
+  "stats.1.label": "Sprachen für Lebenslauf und Oberfläche",
+  "stats.2.value": "4",
+  "stats.2.label": "ATS-optimierte Vorlagen",
+  "stats.3.value": "< 10 Min.",
+  "stats.3.label": "vom Entwurf zum fertigen PDF",
 
   // Features
   "features.title": "Alles, was du für deine Bewerbung brauchst",
@@ -46,7 +46,7 @@ export const de = {
   "features.pdf.desc":
     "Lade deinen Lebenslauf und dein Anschreiben als hochwertige PDF herunter — optimiert für Mobile und Desktop.",
   "features.noSub.title": "Kein Abo",
-  "features.noSub.desc": "Einmalzahlung ab 9,99 €. Keine versteckten Kosten, keine automatische Verlängerung.",
+  "features.noSub.desc": "Einmalzahlung ab 9,99 €. Keine automatische Verlängerung, keine versteckten Kosten.",
   "features.voice.title": "Spracheingabe",
   "features.voice.desc": "Sprich deine Erfahrungen einfach ein — die KI wandelt deine Sprachnotizen in Text um.",
 
@@ -61,7 +61,9 @@ export const de = {
 
   // Pricing
   "pricing.title": "Transparente Preise",
-  "pricing.subtitle": "Einmal zahlen, für immer nutzen. Kein Abo, keine versteckten Kosten.",
+  "pricing.subtitle": "Einmalzahlung, kein Abo. Standard: 5 Tage Zugriff. Premium und Premium Plus: 30 Tage Zugriff.",
+  "pricing.access.5": "5 Tage Zugriff",
+  "pricing.access.30": "30 Tage Zugriff",
   "pricing.bestseller": "Bestseller",
   "pricing.choose": "wählen",
   "pricing.standard.name": "Standard",

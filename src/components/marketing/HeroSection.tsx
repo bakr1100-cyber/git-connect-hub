@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
 import { CheckCircle2, HeartPulse, Play, Sparkles, Star, Users } from "lucide-react";
 import applicant1 from "@/assets/applicant-lukas-cutout.png";
 import applicant2 from "@/assets/applicant-elena-cutout.png";
@@ -377,6 +378,7 @@ function ResumeMockup({ applicant, active }: { applicant: Applicant; active: boo
 }
 
 export function HeroSection() {
+  const { t } = useI18n();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -430,7 +432,7 @@ export function HeroSection() {
             >
               <Link to="/editor">
                 <span className="absolute inset-0 -z-10 animate-pulse bg-white/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                Start Free Trial
+                {t("hero.ctaPrimary")}
               </Link>
             </Button>
             <Button
@@ -439,8 +441,8 @@ export function HeroSection() {
               variant="outline"
               className="border-white/20 bg-white/5 font-semibold text-white transition-colors hover:bg-white/10 hover:text-white"
             >
-              <a href="#funktionen">
-                <Play className="mr-2 h-4 w-4" /> Watch Demo
+              <a href="#so-gehts">
+                <Play className="mr-2 h-4 w-4" /> {t("how.title")}
               </a>
             </Button>
           </div>

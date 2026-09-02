@@ -22,7 +22,7 @@ import { useI18n } from "@/lib/i18n";
 import { SUPPORTED_LOCALES, localeFlags, localeNames, type Locale } from "@/lib/i18n/locales";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { motion } from "motion/react";
-import { Reveal, Stagger, StaggerItem, HoverLift, AnimatedCounter } from "@/components/motion/Reveal";
+import { Reveal, Stagger, StaggerItem, HoverLift } from "@/components/motion/Reveal";
 import { HeroSection } from "@/components/marketing/HeroSection";
 
 
@@ -141,7 +141,16 @@ function TemplateThumb({ accent, sidebar }: { accent: string; sidebar?: boolean 
   );
 }
 
-const companies = ["Siemens", "SAP", "Allianz", "Bosch", "Deutsche Bahn", "Lufthansa"];
+const companies = [
+  { name: "Atos", domain: "atos.net" },
+  { name: "KPMG", domain: "kpmg.com" },
+  { name: "TRUMPF", domain: "trumpf.com" },
+  { name: "GEA", domain: "gea.com" },
+  { name: "Brainlab", domain: "brainlab.com" },
+  { name: "Fielmann", domain: "fielmann.com" },
+];
+
+const LOGO_TOKEN = import.meta.env["VITE_LOVABLE_CONNECTOR_LOGO_DEV_API_KEY"] as string | undefined;
 
 const trustedBy: Record<string, string> = {
   de: "Nutzer wurden eingestellt bei",
@@ -188,12 +197,14 @@ function LandingPage() {
     {
       name: t("pricing.standard.name"),
       price: "9,99 €",
+      access: t("pricing.access.5"),
       desc: t("pricing.standard.desc"),
       features: [t("pricing.standard.f1"), t("pricing.standard.f2"), t("pricing.standard.f3"), t("pricing.standard.f4")],
     },
     {
       name: t("pricing.premium.name"),
       price: "15,00 €",
+      access: t("pricing.access.30"),
       desc: t("pricing.premium.desc"),
       features: [t("pricing.premium.f1"), t("pricing.premium.f2"), t("pricing.premium.f3"), t("pricing.premium.f4")],
       popular: true,
@@ -201,6 +212,7 @@ function LandingPage() {
     {
       name: t("pricing.plus.name"),
       price: "60,00 €",
+      access: t("pricing.access.30"),
       desc: t("pricing.plus.desc"),
       features: [t("pricing.plus.f1"), t("pricing.plus.f2"), t("pricing.plus.f3"), t("pricing.plus.f4")],
     },
@@ -274,9 +286,19 @@ function LandingPage() {
           </p>
           <Stagger className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
             {companies.map((c) => (
-              <StaggerItem key={c}>
-                <span className="text-lg font-semibold tracking-tight text-navy/50 transition-colors hover:text-navy">
-                  {c}
+              <StaggerItem key={c.name}>
+                <span className="flex items-center gap-2 text-lg font-semibold tracking-tight text-navy/50 transition-colors hover:text-navy">
+                  {LOGO_TOKEN && (
+                    <img
+                      src={`https://img.logo.dev/${c.domain}?token=${LOGO_TOKEN}&size=64&format=png&greyscale=true`}
+                      alt={`${c.name} Logo`}
+                      loading="lazy"
+                      width={28}
+                      height={28}
+                      className="h-7 w-7 rounded object-contain opacity-70"
+                    />
+                  )}
+                  {c.name}
                 </span>
               </StaggerItem>
             ))}
@@ -287,15 +309,7 @@ function LandingPage() {
       {/* Counter + stats */}
       <section className="border-y border-border bg-brand-dark px-4 py-12 text-primary-foreground">
         <div className="mx-auto max-w-5xl">
-          <Reveal className="text-center">
-            <div className="font-mono text-3xl font-bold tracking-widest md:text-4xl">
-              <AnimatedCounter value={81838990} locale={locale} />
-            </div>
-            <div className="mt-1 text-xs uppercase tracking-[0.18em] text-primary-foreground/70">
-              {t("hero.counterLabel")}
-            </div>
-          </Reveal>
-          <Stagger className="mt-10 grid gap-8 md:grid-cols-3">
+          <Stagger className="grid gap-8 md:grid-cols-3">
             {stats.map((stat) => (
               <StaggerItem key={stat.label} className="text-center">
                 <div className="text-2xl font-bold text-cta">{stat.value}</div>
@@ -314,7 +328,7 @@ function LandingPage() {
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-dark">{t("templates.eyebrow")}</p>
             <h2 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-navy">{t("templates.title")}</h2>
             <p className="mt-4 max-w-2xl text-muted-foreground">{t("templates.subtitle")}</p>
-            <p className="mt-3 text-sm font-semibold text-primary">32 {t("templates.count")}</p>
+            <p className="mt-3 text-sm font-semibold text-primary">4 {t("templates.count")}</p>
           </Reveal>
 
           <Stagger className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4" stagger={0.06}>
@@ -475,6 +489,9 @@ function LandingPage() {
                 <CardContent className="flex flex-1 flex-col pt-6">
                   <h3 className="text-lg font-semibold text-navy">{tier.name}</h3>
                   <div className="mt-2 text-3xl font-bold text-navy">{tier.price}</div>
+                  <div className="mt-1 inline-flex rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold text-navy/70">
+                    {tier.access}
+                  </div>
                   <p className="mt-2 text-sm text-muted-foreground">{tier.desc}</p>
                   <ul className="mt-6 flex-1 space-y-2 text-sm">
                     {tier.features.map((f) => (
