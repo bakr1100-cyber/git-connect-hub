@@ -26,47 +26,64 @@ export function ModernTemplate({ data }: TemplateProps) {
   return (
     <div className="font-sans text-[11pt] leading-relaxed text-slate-800">
       {/* Header with accent */}
-      <div className="-mx-[20mm] -mt-[20mm] mb-6 bg-[var(--resume-accent)] p-[20mm] text-white">
-        <div className="flex items-start gap-6">
+      <div
+        className="relative -mx-[20mm] -mt-[20mm] mb-7 overflow-hidden px-[20mm] py-[14mm] text-white"
+        style={{
+          background:
+            "linear-gradient(135deg, var(--resume-accent) 0%, color-mix(in oklab, var(--resume-accent) 82%, black) 100%)",
+        }}
+      >
+        <div
+          className="pointer-events-none absolute -end-16 -top-24 h-56 w-56 rounded-full opacity-20"
+          style={{ background: "radial-gradient(circle, #ffffff 0%, transparent 70%)" }}
+        />
+        <div className="relative flex items-center gap-7">
           {personalDetails.photo && (
             <img
               src={personalDetails.photo}
               alt=""
-              className="h-28 w-28 rounded-full border-4 border-white/20 object-cover"
+              className="h-[30mm] w-[30mm] shrink-0 rounded-full object-cover shadow-lg ring-4 ring-white/25"
             />
           )}
-          <div className="flex-1">
-            <h1 className="text-[26pt] font-bold tracking-tight">{personalDetails.fullName || tr("resume.yourName")}</h1>
-            {settings.targetPosition && <p className="mt-1 text-[13pt] text-slate-300">{settings.targetPosition}</p>}
-            <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-[10pt] text-slate-300">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-[27pt] font-semibold leading-[1.05] tracking-tight">
+              {personalDetails.fullName || tr("resume.yourName")}
+            </h1>
+            {settings.targetPosition && (
+              <p className="mt-1.5 text-[11.5pt] font-medium uppercase tracking-[0.18em] text-white/70">
+                {settings.targetPosition}
+              </p>
+            )}
+            <div className="mt-4 h-px w-16 bg-white/35" />
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[9.5pt] text-white/85">
               {personalDetails.email && (
-                <span className="flex items-center gap-1">
-                  <Mail className="h-3.5 w-3.5" /> {personalDetails.email}
+                <span className="flex items-center gap-1.5">
+                  <Mail className="h-3.5 w-3.5 opacity-70" /> {personalDetails.email}
                 </span>
               )}
               {personalDetails.phone && (
-                <span className="flex items-center gap-1">
-                  <Phone className="h-3.5 w-3.5" /> {personalDetails.phone}
+                <span className="flex items-center gap-1.5">
+                  <Phone className="h-3.5 w-3.5 opacity-70" /> {personalDetails.phone}
                 </span>
               )}
               {personalDetails.location && (
-                <span className="flex items-center gap-1">
-                  <MapPin className="h-3.5 w-3.5" /> {personalDetails.location}
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5 opacity-70" /> {personalDetails.location}
                 </span>
               )}
               {personalDetails.dateOfBirth && (
-                <span className="flex items-center gap-1">
-                  <Calendar className="h-3.5 w-3.5" /> {formatDate(personalDetails.dateOfBirth)}
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5 opacity-70" /> {formatDate(personalDetails.dateOfBirth)}
                 </span>
               )}
               {personalDetails.website && (
-                <span className="flex items-center gap-1">
-                  <Globe className="h-3.5 w-3.5" /> {personalDetails.website}
+                <span className="flex items-center gap-1.5">
+                  <Globe className="h-3.5 w-3.5 opacity-70" /> {personalDetails.website}
                 </span>
               )}
               {personalDetails.linkedin && (
-                <span className="flex items-center gap-1">
-                  <Linkedin className="h-3.5 w-3.5" /> {personalDetails.linkedin}
+                <span className="flex items-center gap-1.5">
+                  <Linkedin className="h-3.5 w-3.5 opacity-70" /> {personalDetails.linkedin}
                 </span>
               )}
             </div>
@@ -74,11 +91,12 @@ export function ModernTemplate({ data }: TemplateProps) {
         </div>
       </div>
 
+
       {/* Summary */}
       {personalDetails.summary && (
         <section className="mb-6">
-          <h2 className="mb-2 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-            <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+          <h2 className="mb-2 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
             {tr("resume.profile")}
           </h2>
           <p className="whitespace-pre-wrap text-[10.5pt] text-slate-700">{personalDetails.summary}</p>
@@ -88,8 +106,8 @@ export function ModernTemplate({ data }: TemplateProps) {
       {/* Work Experience */}
       {workExperience.length > 0 && (
         <section className="mb-6">
-          <h2 className="mb-3 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-            <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+          <h2 className="mb-3 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
             {tr("resume.experience")}
           </h2>
           <div className="space-y-4">
@@ -117,8 +135,8 @@ export function ModernTemplate({ data }: TemplateProps) {
       {/* Education */}
       {education.length > 0 && (
         <section className="mb-6">
-          <h2 className="mb-3 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-            <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+          <h2 className="mb-3 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
             {tr("resume.education")}
           </h2>
           <div className="space-y-4">
@@ -147,8 +165,8 @@ export function ModernTemplate({ data }: TemplateProps) {
       <div className="grid gap-6 sm:grid-cols-2">
         {skills.length > 0 && (
           <section>
-            <h2 className="mb-2 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-              <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+            <h2 className="mb-2 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
               {tr("resume.skills")}
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -162,8 +180,8 @@ export function ModernTemplate({ data }: TemplateProps) {
         )}
         {languages.length > 0 && (
           <section>
-            <h2 className="mb-2 flex items-center gap-2 text-[12pt] font-bold text-slate-900">
-              <span className="h-2 w-2 rounded-full bg-[var(--resume-accent)]" />
+            <h2 className="mb-2 flex items-center gap-2.5 text-[11pt] font-semibold uppercase tracking-[0.14em] text-slate-900">
+            <span className="h-[3px] w-6 rounded-full bg-[var(--resume-accent)]" />
               {tr("resume.languages")}
             </h2>
             <div className="space-y-1">
