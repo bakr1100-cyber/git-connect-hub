@@ -22,7 +22,7 @@ import { useI18n } from "@/lib/i18n";
 import { SUPPORTED_LOCALES, localeFlags, localeNames, type Locale } from "@/lib/i18n/locales";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { motion } from "motion/react";
-import { Reveal, Stagger, StaggerItem, HoverLift, AnimatedCounter } from "@/components/motion/Reveal";
+import { Reveal, Stagger, StaggerItem, HoverLift } from "@/components/motion/Reveal";
 import { HeroSection } from "@/components/marketing/HeroSection";
 
 
