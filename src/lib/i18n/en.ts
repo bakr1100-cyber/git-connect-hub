@@ -212,6 +212,7 @@ export const en = {
   "template.tokyo": "Tokyo",
   "template.azur": "Azur",
   "template.esmeralda": "Esmeralda",
+  "template.marina": "Marina",
   "resume.profile": "Profile",
   "resume.experience": "Experience",
   "resume.education": "Education",
@@ -237,6 +238,7 @@ export const en = {
   "template.europeanDesc": "Classic European format",
   "template.tokyoDesc": "Elegant serif look with watercolour accents",
   "template.azurDesc": "Fresh look with a coloured header",
+  "template.marinaDesc": "Dark sidebar with timeline and skill bars",
   "template.esmeraldaDesc": "Creamy layout with emerald accents and footer bar",
 
   // Reference redesign: navigation, hero bullets, templates, toolkit, score, import

@@ -8,6 +8,7 @@ import { EuropeanTemplate } from "./templates/EuropeanTemplate";
 import { TokyoTemplate } from "./templates/TokyoTemplate";
 import { AzurTemplate } from "./templates/AzurTemplate";
 import { EsmeraldaTemplate } from "./templates/EsmeraldaTemplate";
+import { MarinaTemplate } from "./templates/MarinaTemplate";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
 import { isRtl } from "@/lib/i18n/locales";
@@ -40,7 +41,9 @@ export function ResumePreview({ data, hideCaption = false }: ResumePreviewProps)
             ? AzurTemplate
             : data.settings.template === "esmeralda"
               ? EsmeraldaTemplate
-              : ModernTemplate;
+              : data.settings.template === "marina"
+                ? MarinaTemplate
+                : ModernTemplate;
 
   useEffect(() => {
     const frame = frameRef.current;
