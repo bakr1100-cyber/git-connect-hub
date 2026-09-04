@@ -201,12 +201,60 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
   const [experienceDialogOpen, setExperienceDialogOpen] = useState(false);
   const [editingExperience, setEditingExperience] = useState<WorkExperience | null>(null);
 
+  const [translatingId, setTranslatingId] = useState<string | null>(null);
+  const runTranslateText = useServerFn(translateText);
+
   useEffect(() => {
     if (activeStep !== "experience" || typeof window === "undefined") return;
     if (!sessionStorage.getItem(EXPERIENCE_PENDING_KEY)) return;
     setEditingExperience(null);
     setExperienceDialogOpen(true);
   }, [activeStep]);
+
+  // Each phase always shows one ready-to-fill entry instead of an empty state.
+  useEffect(() => {
+    if (activeStep !== "education" || data.education.length > 0) return;
+    onChange((prev) =>
+      prev.education.length > 0
+        ? prev
+        : {
+            ...prev,
+            education: [
+              {
+                id: crypto.randomUUID(),
+                degree: "",
+                institution: "",
+                location: "",
+                startDate: "",
+                endDate: "",
+                description: "",
+              },
+            ],
+          }
+    );
+  }, [activeStep, data.education.length, onChange]);
+
+  const translateEducationEntry = async (item: Education) => {
+    const target = data.settings.language as Locale;
+    setTranslatingId(item.id);
+    try {
+      if (!(await hasAiSession())) throw new Error("AI_AUTH_REQUIRED");
+      const fields: (keyof Education)[] = ["degree", "institution", "location", "description"];
+      for (const field of fields) {
+        const value = (item[field] as string | undefined)?.trim();
+        if (!value) continue;
+        const result = await runTranslateText({ data: { text: value, targetLanguage: target } });
+        trackAiAction("translate");
+        updateEducation(item.id, field, result.text.trim());
+      }
+      toast.success(t("form.translateEntry"));
+    } catch (error) {
+      toast.error(t(aiErrorKey(error, "ai.failed")));
+    } finally {
+      setTranslatingId(null);
+    }
+  };
+
 
   const handleGenerateCoverLetter = async () => {
     if (!premium) {
