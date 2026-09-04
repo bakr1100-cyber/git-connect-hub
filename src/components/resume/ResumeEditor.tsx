@@ -25,9 +25,8 @@ import { useResumeAutoSave } from "@/hooks/useResumeAutoSave";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { rememberAuthReturnPath, WIZARD_STEP_KEY } from "@/lib/auth-return";
-import { getRouteApi } from "@tanstack/react-router";
+import type { TemplateId } from "@/lib/resume-types";
 
-const editorRoute = getRouteApi("/editor");
 
 const STORAGE_KEY = "resume-draft-v1";
 const LANGUAGE_INTRO_KEY = "resume-language-intro-v3";
