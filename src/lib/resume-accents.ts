@@ -33,6 +33,7 @@ export function resolveAccentId(template?: string, accent?: string): string {
   if (template === "tokyo" && (!accent || accent === "slate")) return "coral";
   if (template === "esmeralda" && (!accent || accent === "slate")) return "emerald";
   if (template === "marina" && (!accent || accent === "slate")) return "petrol";
+  if (template === "milano" && (!accent || accent === "slate")) return "navy";
   if (template === "azur" && (!accent || accent === "slate")) return "navy";
   return accent ?? defaultAccentId;
 }
