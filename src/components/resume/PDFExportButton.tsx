@@ -64,7 +64,9 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
       let heightLeft = imageHeight;
       pdf.addImage(dataUrl, "JPEG", 0, position, pageWidth, imageHeight);
       heightLeft -= pageHeight;
-      while (heightLeft > 0) {
+      // Ignore a few millimetres of trailing overflow so a barely-taller
+      // preview does not produce an empty second page.
+      while (heightLeft > 5) {
         position -= pageHeight;
         pdf.addPage();
         pdf.addImage(dataUrl, "JPEG", 0, position, pageWidth, imageHeight);
