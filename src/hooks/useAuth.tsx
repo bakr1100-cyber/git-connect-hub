@@ -34,9 +34,24 @@ export function useAuth() {
 }
 
 export async function signInWithGoogle(redirectPath = "/editor") {
-  const redirectTo = `${window.location.origin}${redirectPath}`;
-  return supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo } });
+  try {
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem("auth-redirect-path", redirectPath);
+    }
+    const { lovable } = await import("@/integrations/lovable/index");
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+    });
+    if (result.error) return { error: result.error as { message: string } };
+    if (!result.redirected && typeof window !== "undefined") {
+      window.location.href = redirectPath;
+    }
+    return { error: null };
+  } catch (error) {
+    return { error: { message: error instanceof Error ? error.message : "Google sign-in failed" } };
+  }
 }
+
 
 export async function signUpWithEmail(email: string, password: string, redirectPath = "/editor") {
   return supabase.auth.signUp({
