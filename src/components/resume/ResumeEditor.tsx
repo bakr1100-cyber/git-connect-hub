@@ -170,7 +170,11 @@ export function ResumeEditor() {
   const goTo = useCallback((index: number) => {
     setStepIndex(Math.max(0, Math.min(wizardSteps.length - 1, index)));
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  }, [wizardSteps.length]);
+
+  useEffect(() => {
+    setStepIndex((prev) => Math.min(prev, wizardSteps.length - 1));
+  }, [wizardSteps.length]);
 
   const confirmInterfaceLanguage = useCallback(() => {
     setLocale(selectedInterfaceLanguage);
