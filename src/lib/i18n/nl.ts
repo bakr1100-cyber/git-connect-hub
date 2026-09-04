@@ -198,6 +198,8 @@ export const nl = {
   "resume.contact": "Contact",
   "template.milano": "Milano",
   "template.milanoDesc": "Pastelpapier met blauw accent en info-kolom rechts",
+  "template.verona": "Verona",
+  "template.veronaDesc": "Saliekleurig papier met naambalk op foto en skill-balken",
   "resume.profile": "Profiel",
   "resume.experience": "Werkervaring",
   "resume.education": "Opleiding",

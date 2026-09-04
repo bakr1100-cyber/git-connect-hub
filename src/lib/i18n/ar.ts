@@ -198,6 +198,8 @@ export const ar = {
   "resume.contact": "جهات الاتصال",
   "template.milano": "ميلانو",
   "template.milanoDesc": "ورق باستيل بلمسة زرقاء وعمود معلومات جانبي",
+  "template.verona": "فيرونا",
+  "template.veronaDesc": "ورق بلون المريمية مع شريط الاسم وأشرطة المهارات",
   "resume.profile": "الملف الشخصي",
   "resume.experience": "الخبرة المهنية",
   "resume.education": "التعليم",

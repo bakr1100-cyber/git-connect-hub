@@ -284,6 +284,8 @@ export const de = {
   "resume.contact": "Kontakt",
   "template.milano": "Milano",
   "template.milanoDesc": "Pastellpapier mit Blau-Akzent und rechter Infospalte",
+  "template.verona": "Verona",
+  "template.veronaDesc": "Salbeigrünes Papier mit Foto-Namensband und Skill-Balken",
 
   // Resume document sections (rendered inside the CV)
   "resume.profile": "Profil",

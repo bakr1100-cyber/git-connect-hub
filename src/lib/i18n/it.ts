@@ -198,6 +198,8 @@ export const it = {
   "resume.contact": "Contatti",
   "template.milano": "Milano",
   "template.milanoDesc": "Carta pastello con accento blu e colonna info a destra",
+  "template.verona": "Verona",
+  "template.veronaDesc": "Carta salvia con fascia nome sulla foto e barre competenze",
   "resume.profile": "Profilo",
   "resume.experience": "Esperienza lavorativa",
   "resume.education": "Istruzione",
