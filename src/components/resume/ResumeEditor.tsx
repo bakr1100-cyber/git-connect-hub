@@ -587,6 +587,32 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
               <ResumeScoreCard data={data} />
             </div>
 
+            {/* Prominent hand-off to the final step: say what unlocks there. */}
+            {stepIndex === totalSteps - 2 && (
+              <div className="px-4 pb-4 lg:px-6">
+                <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-brand/25 bg-brand/5 p-5 sm:flex-row sm:items-center">
+                  <div>
+                    <p className="text-base font-bold text-foreground">{t("wizard.nextStepTitle")}</p>
+                    <p className="mt-1 max-w-xl text-sm text-muted-foreground">
+                      {t("wizard.nextStepHint")
+                        .replace("{n}", String(totalSteps))
+                        .replace("{label}", t(stepLabelKeys[wizardSteps[totalSteps - 1]!.id]))}
+                    </p>
+                  </div>
+                  <Button
+                    size="lg"
+                    className="shrink-0 bg-cta font-bold text-cta-foreground shadow-md shadow-cta/20 hover:bg-cta/90"
+                    onClick={() => goTo(stepIndex + 1)}
+                  >
+                    {t("wizard.nextStepCta")
+                      .replace("{n}", String(totalSteps))
+                      .replace("{label}", t(stepLabelKeys[wizardSteps[totalSteps - 1]!.id]))}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+
             {/* Step navigation */}
             <div className="sticky bottom-0 z-30 flex items-center justify-between gap-3 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md lg:px-6">
               <Button variant="outline" onClick={() => goTo(stepIndex - 1)} disabled={stepIndex === 0}>
