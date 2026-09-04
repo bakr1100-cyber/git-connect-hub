@@ -118,6 +118,11 @@ export const de = {
   "editor.livePreview": "Live-Vorschau",
   "editor.download": "PDF herunterladen",
   "editor.downloadWord": "Word herunterladen",
+  "editor.sendEmail": "Als E-Mail senden",
+  "editor.emailSubject": "Bewerbung {name}",
+  "editor.emailBody": "Guten Tag,\n\nanbei sende ich Ihnen meinen Lebenslauf als PDF.\n\nMit freundlichen Grüßen\n{name}",
+  "editor.emailToastTitle": "PDF erstellt",
+  "editor.emailToastDesc": "Bitte hängen Sie die heruntergeladene PDF-Datei an die E-Mail an.",
 
   // Editor tabs
   "tab.design": "Design",
