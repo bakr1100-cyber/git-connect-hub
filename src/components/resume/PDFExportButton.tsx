@@ -104,12 +104,17 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
       pdf.addImage(dataUrl, "JPEG", 0, 0, pageWidth, pageHeight);
       pdf.save(`${data.personalDetails.fullName || "Lebenslauf"}.pdf`);
     } finally {
+      exportRunningRef.current = false;
       setIsExporting(false);
     }
   };
 
   const handleClick = () => {
+    if (exportRunningRef.current) return;
     if (!isAuthenticated) {
+      // Remember the intent + current step so login can resume right here.
+      rememberPendingAction("pdf");
+      rememberAuthReturnPath();
       setShowAuth(true);
       return;
     }
