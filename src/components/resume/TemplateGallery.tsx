@@ -175,14 +175,23 @@ export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
           <h2 className="text-base font-bold text-foreground">{t("gallery.title")}</h2>
           <p className="text-xs text-muted-foreground">{t("gallery.subtitle")}</p>
         </div>
-        <div className="hidden gap-1 sm:flex">
-          <Button variant="outline" size="icon" aria-label={t("gallery.prev")} onClick={() => scrollBy(-1)}>
-            <ChevronLeft className="h-4 w-4" />
+        <div className="flex items-center gap-1">
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/templates">
+              <Upload className="mr-1.5 h-3.5 w-3.5" />
+              {templateCopy(locale).title}
+            </Link>
           </Button>
-          <Button variant="outline" size="icon" aria-label={t("gallery.next")} onClick={() => scrollBy(1)}>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+          <div className="hidden gap-1 sm:flex">
+            <Button variant="outline" size="icon" aria-label={t("gallery.prev")} onClick={() => scrollBy(-1)}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" aria-label={t("gallery.next")} onClick={() => scrollBy(1)}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
+
       </div>
 
       <div
