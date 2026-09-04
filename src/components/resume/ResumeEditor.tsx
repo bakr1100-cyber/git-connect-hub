@@ -301,22 +301,22 @@ export function ResumeEditor() {
       )}
 
       {/* Wizard Header */}
-      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
-          <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-50 overflow-hidden border-b border-border bg-background/95 backdrop-blur-md">
+        <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:gap-4">
+          <div className="flex min-w-0 items-center gap-4">
             <Link to="/" className="flex items-center gap-2 text-base font-bold tracking-tight text-foreground">
               <FileText className="h-5 w-5 text-brand" />
               <span className="hidden sm:inline">{t("brand.name")}</span>
             </Link>
             <div className="hidden h-8 w-px bg-border sm:block" />
-            <div className="leading-tight">
+            <div className="min-w-0 leading-tight">
               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                 {t("wizard.step")} {stepIndex + 1} {t("wizard.of")} {totalSteps}
               </p>
-              <p className="text-sm font-semibold text-foreground">{t(stepLabelKeys[currentStep.id])}</p>
+              <p className="truncate text-sm font-semibold text-foreground">{t(stepLabelKeys[currentStep.id])}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex max-w-[68vw] items-center gap-2 overflow-x-auto overscroll-contain sm:max-w-none">
             <span className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
               {saveState === "saving" ? (
                 <>
