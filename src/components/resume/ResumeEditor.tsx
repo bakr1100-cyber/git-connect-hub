@@ -3,6 +3,7 @@ import { ResumeForm } from "./ResumeForm";
 import { ResumePreview } from "./ResumePreview";
 import { PDFExportButton } from "./PDFExportButton";
 import { WordExportButton } from "./WordExportButton";
+import { EmailResumeButton } from "./EmailResumeButton";
 
 import { ResumeScoreCard } from "./ResumeScoreCard";
 import { ResumeImportDialog } from "./ResumeImportDialog";
