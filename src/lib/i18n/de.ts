@@ -271,6 +271,13 @@ export const de = {
   "photo.retry": "Neu erzeugen",
   "photo.applied": "Foto übernommen",
   "photo.failed": "Foto konnte nicht bearbeitet werden. Bitte erneut versuchen.",
+  "photo.crop.title": "Bild zuschneiden",
+  "photo.crop.desc": "Ziehe das Foto und stelle die Größe ein.",
+  "photo.crop.zoom": "Größe",
+  "photo.crop.reset": "Zurücksetzen",
+  "photo.crop.ratioPortrait": "Bewerbungsfoto (35 × 45)",
+  "photo.crop.ratioSquare": "Quadratisch",
+  "photo.crop.hint": "Foto ziehen zum Verschieben, Regler für die Größe.",
   "premium.photoTitle": "KI-Fotobearbeitung ist im Standard-Paket enthalten",
   "premium.desc":
     "Im Standard-Paket für einmalig 9,99 € sind der Editor, alle Vorlagen, die KI-Textoptimierung, die KI-Übersetzung und der PDF-Download enthalten. Anschreiben und Spracheingabe gehören zu Premium (15,00 € einmalig).",
