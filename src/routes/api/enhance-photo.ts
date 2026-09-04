@@ -87,17 +87,25 @@ export const Route = createFileRoute("/api/enhance-photo")({
         }
 
 
-        const payload = (await upstream.json()) as {
+        type ImagePayload = {
           data?: Array<{ b64_json?: string; url?: string }>;
           choices?: Array<{ message?: { images?: Array<{ image_url?: { url?: string } }> } }>;
         };
-        const first = payload.data?.[0];
-        const result = first?.b64_json
-          ? `data:image/png;base64,${first.b64_json}`
-          : (first?.url ?? payload.choices?.[0]?.message?.images?.[0]?.image_url?.url);
+        const pick = (payload: ImagePayload) => {
+          const first = payload.data?.[0];
+          return first?.b64_json
+            ? `data:image/png;base64,${first.b64_json}`
+            : (first?.url ?? payload.choices?.[0]?.message?.images?.[0]?.image_url?.url);
+        };
 
+        let result = pick((await upstream.json()) as ImagePayload);
+        if (!result) {
+          const retry = await callModel(FALLBACK_MODEL);
+          if (retry.ok) result = pick((await retry.json()) as ImagePayload);
+        }
 
         if (!result) return new Response("No image returned", { status: 502 });
+
 
         // The PDF export rasterises the preview in the browser; a remote image URL
         // would be blocked by CORS and vanish from the PDF. Always inline the photo.
