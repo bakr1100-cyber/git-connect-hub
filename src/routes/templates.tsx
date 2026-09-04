@@ -1,3 +1,4 @@
+import { PageTopBar } from "@/components/layout/PageTopBar";
 import { createFileRoute } from "@tanstack/react-router";
 import { MyTemplates } from "@/components/templates/MyTemplates";
 
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/templates")({
 function TemplatesPage() {
   return (
     <div className="min-h-screen bg-background">
+      <PageTopBar />
       <MyTemplates />
     </div>
   );

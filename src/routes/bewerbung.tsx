@@ -1,3 +1,4 @@
+import { PageTopBar } from "@/components/layout/PageTopBar";
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
@@ -96,6 +97,7 @@ function PackagePage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageTopBar />
       <section className="border-b bg-muted/30">
         <div className="mx-auto max-w-5xl px-4 py-12 text-center">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("flow.title")}</h1>

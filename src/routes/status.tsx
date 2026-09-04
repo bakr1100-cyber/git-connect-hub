@@ -39,7 +39,9 @@ const steps = [
 
 function StatusPage() {
   return (
-    <div className="min-h-screen bg-muted/40 px-4 py-10">
+    <div className="min-h-screen bg-muted/40">
+      <PageTopBar />
+      <div className="px-4 py-10">
       <div className="mx-auto max-w-2xl space-y-6">
         <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Zurück zur Startseite
