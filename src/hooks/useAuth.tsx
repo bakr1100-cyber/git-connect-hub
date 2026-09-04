@@ -14,7 +14,17 @@ export function useAuth() {
       setLoading(false);
       if (event === "SIGNED_IN" && nextSession?.user) {
         void import("@/lib/email-triggers").then((m) => m.maybeSendWelcomeEmail(nextSession.user));
+        if (typeof window !== "undefined") {
+          const target = window.sessionStorage.getItem("auth-redirect-path");
+          if (target) {
+            window.sessionStorage.removeItem("auth-redirect-path");
+            if (window.location.pathname !== target.split("?")[0]) {
+              window.location.href = target;
+            }
+          }
+        }
       }
+
     });
 
     void supabase.auth.getSession().then(({ data }) => {
