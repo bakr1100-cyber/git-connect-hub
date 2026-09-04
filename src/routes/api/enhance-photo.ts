@@ -53,11 +53,13 @@ export const Route = createFileRoute("/api/enhance-photo")({
 
         const payload = (await upstream.json()) as {
           data?: Array<{ b64_json?: string; url?: string }>;
+          choices?: Array<{ message?: { images?: Array<{ image_url?: { url?: string } }> } }>;
         };
         const first = payload.data?.[0];
         const result = first?.b64_json
           ? `data:image/png;base64,${first.b64_json}`
-          : first?.url;
+          : (first?.url ?? payload.choices?.[0]?.message?.images?.[0]?.image_url?.url);
+
 
         if (!result) return new Response("No image returned", { status: 502 });
 
