@@ -359,6 +359,7 @@ export const en = {
   "accent.navy": "Navy",
   "accent.burgundy": "Burgundy",
   "accent.forest": "Forest",
+  "accent.emerald": "Emerald",
   "accent.violet": "Violet",
   "autosave.saving": "Saving …",
   "autosave.saved": "Saved",

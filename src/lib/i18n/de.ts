@@ -416,6 +416,7 @@ export const de = {
   "accent.navy": "Marineblau",
   "accent.burgundy": "Bordeaux",
   "accent.forest": "Waldgrün",
+  "accent.emerald": "Smaragd",
   "accent.violet": "Violett",
   "autosave.saving": "Wird gespeichert …",
   "autosave.saved": "Gespeichert",

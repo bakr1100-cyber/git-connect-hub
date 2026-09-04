@@ -308,6 +308,7 @@ export const ar = {
   "accent.navy": "كحلي",
   "accent.burgundy": "عنابي",
   "accent.forest": "أخضر غابي",
+  "accent.emerald": "زمردي",
   "accent.violet": "بنفسجي",
   "autosave.saving": "جارٍ الحفظ …",
   "autosave.saved": "تم الحفظ",
