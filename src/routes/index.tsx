@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
-type TemplateCategory = "Minimalist" | "Modern" | "Creative";
+
 
 const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
@@ -96,26 +96,65 @@ function LanguageIntroGate({ onComplete }: { onComplete: () => void }) {
 
 const templateCards: Array<{
   id: string;
-  category: TemplateCategory;
+  nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.european";
   badge?: "recommended" | "new" | "european";
   accent: string;
   sidebar?: boolean;
+  header?: boolean;
 }> = [
-  { id: "t1", category: "Minimalist", badge: "recommended", accent: "bg-navy" },
-  { id: "t2", category: "Modern", accent: "bg-brand", sidebar: true },
-  { id: "t3", category: "Modern", badge: "new", accent: "bg-brand-dark", sidebar: true },
-  { id: "t4", category: "Creative", badge: "new", accent: "bg-trust", sidebar: true },
-  { id: "t5", category: "Minimalist", badge: "european", accent: "bg-sand" },
-  { id: "t6", category: "Modern", accent: "bg-navy", sidebar: true },
-  { id: "t7", category: "Creative", accent: "bg-brand", sidebar: true },
-  { id: "t8", category: "Minimalist", accent: "bg-brand-dark" },
+  { id: "modern", nameKey: "template.modern", badge: "recommended", accent: "bg-navy" },
+  { id: "minimalist", nameKey: "template.minimalist", accent: "bg-brand" },
+  { id: "tokyo", nameKey: "template.tokyo", accent: "bg-brand-dark", sidebar: true },
+  { id: "azur", nameKey: "template.azur", badge: "new", accent: "bg-trust", header: true },
+  { id: "european", nameKey: "template.european", badge: "european", accent: "bg-sand", sidebar: true },
 ];
 
-function TemplateThumb({ accent, sidebar }: { accent: string; sidebar?: boolean | undefined }) {
+function TemplateThumb({ accent, sidebar, header }: { accent: string; sidebar?: boolean | undefined; header?: boolean | undefined }) {
+  if (header) {
+    return (
+      <div className="aspect-[3/4] w-full overflow-hidden rounded-lg border border-border bg-background shadow-sm">
+        <div className={`relative flex h-1/4 items-center gap-2 px-3 ${accent} opacity-80`}>
+          <div className="h-8 w-8 shrink-0 rounded-full border-2 border-white bg-white/60" />
+          <div className="space-y-1">
+            <div className="h-1.5 w-16 rounded bg-white/90" />
+            <div className="h-1 w-10 rounded bg-white/60" />
+          </div>
+        </div>
+        <div className="flex h-3/4">
+          <div className="w-2/5 space-y-2 border-r border-border p-2.5">
+            <div className={`h-1.5 w-2/3 rounded ${accent} opacity-70`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-4/5 rounded bg-muted-foreground/20" />
+              <div className="h-1 w-11/12 rounded bg-muted-foreground/20" />
+            </div>
+            <div className={`h-1.5 w-1/2 rounded ${accent} opacity-70`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-3/5 rounded bg-muted-foreground/20" />
+            </div>
+          </div>
+          <div className="flex-1 space-y-2 p-2.5">
+            <div className={`h-1.5 w-1/2 rounded ${accent}`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-11/12 rounded bg-muted-foreground/20" />
+              <div className="h-1 w-4/5 rounded bg-muted-foreground/20" />
+            </div>
+            <div className={`h-1.5 w-2/5 rounded ${accent} opacity-70`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-10/12 rounded bg-muted-foreground/20" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="aspect-[3/4] w-full overflow-hidden rounded-lg border border-border bg-background shadow-sm">
       <div className="flex h-full">
-        {sidebar && <div className={`h-full w-1/3 ${accent}`} />}
+        {sidebar && <div className={`h-full w-1/3 ${accent} opacity-70`} />}
         <div className="flex-1 space-y-2 p-3">
           {!sidebar && <div className={`h-2 w-2/3 rounded ${accent}`} />}
           <div className="h-1.5 w-1/2 rounded bg-muted-foreground/30" />
@@ -335,7 +374,7 @@ function LandingPage() {
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-dark">{t("templates.eyebrow")}</p>
             <h2 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-navy">{t("templates.title")}</h2>
             <p className="mt-4 max-w-2xl text-muted-foreground">{t("templates.subtitle")}</p>
-            <p className="mt-3 text-sm font-semibold text-primary">4 {t("templates.count")}</p>
+            <p className="mt-3 text-sm font-semibold text-primary">5 {t("templates.count")}</p>
           </Reveal>
 
           <Stagger className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4" stagger={0.06}>
@@ -343,7 +382,7 @@ function LandingPage() {
               <StaggerItem key={tpl.id} className="group w-44 shrink-0 snap-start sm:w-52">
                 <div className="relative">
                   <div className="transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl">
-                    <TemplateThumb accent={tpl.accent} sidebar={tpl.sidebar} />
+                    <TemplateThumb accent={tpl.accent} sidebar={tpl.sidebar} header={tpl.header} />
                   </div>
                   {tpl.badge && (
                     <Badge
@@ -359,7 +398,7 @@ function LandingPage() {
                   )}
                 </div>
                 <div className="mt-3 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-navy">{tpl.category}</span>
+                  <span className="text-sm font-semibold text-navy">{t(tpl.nameKey)}</span>
                   <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">ATS</span>
                 </div>
                 <Button variant="outline" size="sm" className="mt-2 w-full" asChild>
