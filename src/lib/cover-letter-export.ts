@@ -109,6 +109,25 @@ export async function downloadCoverLetterPdf(doc: CoverLetterDocument) {
 }
 
 
+/**
+ * Erzeugt das PDF (Download, damit es angehängt werden kann) und öffnet
+ * anschließend das E-Mail-Programm mit Betreff und Anschreiben-Text.
+ */
+export async function emailCoverLetter(doc: CoverLetterDocument, to = "") {
+  await downloadCoverLetterPdf(doc);
+  const body = [
+    subjectLine(doc),
+    "",
+    doc.body,
+    "",
+    [doc.applicant.fullName, doc.applicant.email, doc.applicant.phone].filter(Boolean).join(" · "),
+  ].join("\n");
+  const href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(
+    subjectLine(doc)
+  )}&body=${encodeURIComponent(body)}`;
+  window.location.href = href;
+}
+
 function triggerDownload(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");

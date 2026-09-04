@@ -8,6 +8,7 @@ import {
   Download,
   FileText,
   Loader2,
+  Mail,
   Plus,
   RefreshCw,
   Sparkles,
@@ -29,7 +30,7 @@ import type { Locale } from "@/lib/i18n/locales";
 import { hasAiSession } from "@/lib/ai-auth";
 import { rememberAuthReturnPath } from "@/lib/auth-return";
 import { composeCoverLetter, suggestCoverPoints } from "@/lib/resume-ai.functions";
-import { downloadCoverLetterPdf, downloadCoverLetterWord } from "@/lib/cover-letter-export";
+import { downloadCoverLetterPdf, downloadCoverLetterWord, emailCoverLetter } from "@/lib/cover-letter-export";
 import { defaultResumeData, type ResumeData } from "@/lib/resume-types";
 import { cn } from "@/lib/utils";
 
@@ -217,6 +218,18 @@ export function CoverLetterGenerator() {
     setExporting(true);
     try {
       await downloadCoverLetterPdf(doc);
+    } catch {
+      toast.error(c.failed);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const sendMail = async () => {
+    setExporting(true);
+    try {
+      await emailCoverLetter(doc);
+      toast.success(c.mailPrepared);
     } catch {
       toast.error(c.failed);
     } finally {
@@ -499,6 +512,10 @@ export function CoverLetterGenerator() {
                   <Button variant="outline" onClick={() => downloadCoverLetterWord(doc)} disabled={!draft.body}>
                     <Download className="me-1.5 h-4 w-4" />
                     {c.downloadWord}
+                  </Button>
+                  <Button variant="outline" onClick={() => void sendMail()} disabled={exporting || !draft.body}>
+                    <Mail className="me-1.5 h-4 w-4" />
+                    {c.sendMail}
                   </Button>
                   <Button className="flex-1" onClick={() => void exportPdf()} disabled={exporting || !draft.body}>
                     {exporting ? (
