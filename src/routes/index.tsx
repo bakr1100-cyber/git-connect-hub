@@ -284,7 +284,6 @@ function LandingPage() {
           <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
             {[
               { href: "#vorlagen", label: t("templates.eyebrow") },
-              { href: "#preise", label: t("nav.pricing") },
               { href: "/bewerbung", label: t("pkg.nav") },
             ].map((item) => (
               <a
