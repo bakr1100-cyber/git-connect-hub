@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { PREMIUM_PRICE, STANDARD_PRICE, useEntitlements } from "@/lib/entitlements";
 
