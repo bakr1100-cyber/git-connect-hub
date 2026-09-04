@@ -21,7 +21,8 @@ const templates: { id: TemplateId; badge?: "recommended" | "new" }[] = [
   { id: "esmeralda" },
   { id: "marina" },
   { id: "milano" },
-  { id: "verona", badge: "new" },
+  { id: "verona" },
+  { id: "sofia", badge: "new" },
   { id: "european" },
 ];
 
@@ -138,6 +139,36 @@ function TemplateThumb({ template, accent }: { template: TemplateId; accent: str
               <div className="h-1 flex-1 rounded bg-slate-200" />
             </div>
           ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template === "sofia") {
+    return (
+      <div className="h-full w-full overflow-hidden p-2.5" style={{ backgroundColor: "#fdfbf8" }}>
+        <div className="flex items-center gap-2">
+          <div className="h-7 w-7 shrink-0 rounded-full bg-slate-300 ring-2" style={{ boxShadow: `0 0 0 2px ${soft}` }} />
+          <div className="min-w-0 flex-1 space-y-1">
+            <div className="h-2 w-4/5 rounded bg-slate-700" />
+            <div className="h-1 w-1/2 rounded" style={{ backgroundColor: color }} />
+            <div className="h-0.5 w-1/3" style={{ backgroundColor: color }} />
+          </div>
+        </div>
+        <div className="mt-2.5 flex gap-2">
+          <div className="flex-1 space-y-1">
+            <div className="h-1.5 w-1/3 rounded bg-slate-700" />
+            <div className="h-px w-full" style={{ backgroundColor: color }} />
+            {[...Array(7)].map((_, i) => (
+              <div key={i} className="h-1 rounded bg-slate-200" style={{ width: `${60 + ((i * 13) % 35)}%` }} />
+            ))}
+          </div>
+          <div className="w-[36%] space-y-1 p-1.5" style={{ backgroundColor: soft }}>
+            <div className="h-1.5 w-2/3 rounded bg-slate-700" />
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="h-1 rounded bg-slate-300/80" />
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -352,7 +383,7 @@ export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
                 isActive ? "border-brand shadow-sm" : "border-border"
               )}
             >
-              <span className="relative block h-[64px] w-full">
+              <span className="relative block aspect-[210/297] w-full">
                 <TemplateThumb template={id} accent={activeAccent} />
                 {isActive && (
                   <span className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded-full bg-brand text-primary-foreground">
@@ -401,7 +432,7 @@ export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
               <button
                 type="button"
                 onClick={() => selectTemplate(id)}
-                className="block h-[280px] w-full cursor-pointer"
+                className="block aspect-[210/297] w-full cursor-pointer"
                 aria-label={t(`template.${id}`)}
               >
                 <TemplateThumb template={id} accent={activeAccent} />
