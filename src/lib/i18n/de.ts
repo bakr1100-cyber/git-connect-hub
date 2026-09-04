@@ -257,6 +257,15 @@ export const de = {
   // Premium upsell
   "premium.coverTitle": "KI-Anschreiben ist Teil von Premium",
   "premium.voiceTitle": "Spracheingabe ist Teil von Premium",
+  "photo.enhance": "Foto mit KI bearbeiten",
+  "photo.needUpload": "Bitte lade zuerst ein Foto hoch.",
+  "photo.resultTitle": "Dein KI-Bewerbungsfoto",
+  "photo.resultDesc": "Sieht es gut aus? Mit OK wird es als Bewerbungsfoto übernommen.",
+  "photo.ok": "OK, übernehmen",
+  "photo.retry": "Neu erzeugen",
+  "photo.applied": "Foto übernommen",
+  "photo.failed": "Foto konnte nicht bearbeitet werden. Bitte erneut versuchen.",
+  "premium.photoTitle": "KI-Fotobearbeitung ist im Standard-Paket enthalten",
   "premium.desc":
     "Im Standard-Paket für einmalig 9,99 € sind der Editor, alle Vorlagen, die KI-Textoptimierung, die KI-Übersetzung und der PDF-Download enthalten. Anschreiben und Spracheingabe gehören zu Premium (15,00 € einmalig).",
   "premium.f1": "Alles aus dem Standard-Paket",
