@@ -53,6 +53,14 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
         useCORS: true,
         logging: false,
         backgroundColor: "#ffffff",
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+        onclone: (clonedDocument) => {
+          const clonedPage = clonedDocument.getElementById("resume-preview-container");
+          if (!clonedPage) return;
+          clonedPage.style.transform = "none";
+          clonedPage.style.boxShadow = "none";
+        },
       });
       const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
       const pageWidth = pdf.internal.pageSize.getWidth();
@@ -60,9 +68,9 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
       const imageHeight = (canvas.height * pageWidth) / canvas.width;
       const dataUrl = canvas.toDataURL("image/jpeg", 0.98);
 
-      // The preview always renders exactly one A4 sheet; clamp to a single
-      // page so minimal height overflow never yields a blank second page.
-      pdf.addImage(dataUrl, "JPEG", 0, 0, pageWidth, Math.min(imageHeight, pageHeight));
+      // The preview is an exact A4 canvas. Fit it to the page instead of
+      // cropping content when browser pixel rounding differs slightly.
+      pdf.addImage(dataUrl, "JPEG", 0, 0, pageWidth, pageHeight);
       pdf.save(`${data.personalDetails.fullName || "Lebenslauf"}.pdf`);
     } finally {
       setIsExporting(false);

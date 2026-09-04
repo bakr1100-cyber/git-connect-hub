@@ -189,3 +189,32 @@
 .ai-suggestion-scroll::-webkit-scrollbar-thumb:hover {
   background: color-mix(in oklab, var(--brand) 55%, transparent);
 }
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    background: white;
+  }
+
+  .resume-preview-frame {
+    width: 210mm !important;
+    height: 297mm !important;
+    overflow: visible !important;
+  }
+
+  .resume-preview-page {
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
