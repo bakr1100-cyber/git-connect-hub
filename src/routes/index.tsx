@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { TemplateId } from "@/lib/resume-types";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -95,7 +96,7 @@ function LanguageIntroGate({ onComplete }: { onComplete: () => void }) {
 }
 
 const templateCards: Array<{
-  id: string;
+  id: TemplateId;
   nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.european";
   badge?: "recommended" | "new" | "european";
   accent: string;
