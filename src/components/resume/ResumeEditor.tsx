@@ -61,7 +61,7 @@ const stepHeadlineKeys = {
   finish: "wizard.settings.headline",
 } as const;
 
-export function ResumeEditor({ template: templateFromSearch }: { template?: TemplateId } = {}) {
+export function ResumeEditor({ template: templateFromSearch }: { template?: TemplateId | undefined } = {}) {
 
   const { t, locale, setLocale, dir } = useI18n();
   const { isAuthenticated, loading: authLoading } = useAuth();
