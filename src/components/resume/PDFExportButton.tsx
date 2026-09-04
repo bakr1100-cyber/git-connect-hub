@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { PREMIUM_PRICE, STANDARD_PRICE, useEntitlements } from "@/lib/entitlements";
 
@@ -19,6 +19,11 @@ import { AuthPanel } from "@/components/auth/AuthPanel";
 import { AiCostSummary } from "./AiCostSummary";
 import { CheckoutDialog } from "@/components/pricing/CheckoutDialog";
 import type { Tier } from "@/lib/entitlements";
+import { rememberAuthReturnPath } from "@/lib/auth-return";
+import { clearPendingAction, readPendingAction, rememberPendingAction } from "@/lib/pending-action";
+
+/** Set once the very first PDF download started — used for the button label. */
+const PDF_STARTED_KEY = "resume-pdf-started-v1";
 
 
 interface PDFExportButtonProps {
@@ -34,18 +39,40 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
   const [showPaywall, setShowPaywall] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [showCost, setShowCost] = useState(false);
+  const [hasStartedBefore, setHasStartedBefore] = useState(false);
   const { standard: isUnlocked, unlock, purchase } = useEntitlements();
   const [checkoutTier, setCheckoutTier] = useState<Tier | null>(null);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading: authLoading } = useAuth();
+  // Ref guard: state updates lag behind rapid clicks, so this blocks spam.
+  const exportRunningRef = useRef(false);
   void unlock;
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setHasStartedBefore(localStorage.getItem(PDF_STARTED_KEY) === "1");
+  }, []);
 
+  const handleClickRef = useRef<() => void>(() => {});
+
+  // After login (redirect or OAuth) resume the PDF flow automatically.
+  useEffect(() => {
+    if (authLoading || !isAuthenticated) return;
+    if (readPendingAction() !== "pdf") return;
+    clearPendingAction();
+    handleClickRef.current();
+  }, [authLoading, isAuthenticated]);
 
   const exportPdf = async () => {
+    if (exportRunningRef.current) return;
     const element = document.getElementById("resume-preview-container");
     if (!element) return;
 
+    exportRunningRef.current = true;
     setIsExporting(true);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(PDF_STARTED_KEY, "1");
+      setHasStartedBefore(true);
+    }
     try {
       const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
         import("html2canvas-pro"),
@@ -77,12 +104,17 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
       pdf.addImage(dataUrl, "JPEG", 0, 0, pageWidth, pageHeight);
       pdf.save(`${data.personalDetails.fullName || "Lebenslauf"}.pdf`);
     } finally {
+      exportRunningRef.current = false;
       setIsExporting(false);
     }
   };
 
   const handleClick = () => {
+    if (exportRunningRef.current) return;
     if (!isAuthenticated) {
+      // Remember the intent + current step so login can resume right here.
+      rememberPendingAction("pdf");
+      rememberAuthReturnPath();
       setShowAuth(true);
       return;
     }
@@ -96,6 +128,7 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
     }
     setShowPaywall(true);
   };
+  handleClickRef.current = handleClick;
 
   return (
     <>
@@ -105,7 +138,9 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
         ) : (
           <Download className="mr-1.5 h-4 w-4" />
         )}
-        {label ?? t("editor.download")}
+        {isExporting
+          ? t("editor.downloading")
+          : label ?? (hasStartedBefore ? t("editor.downloadAgain") : t("editor.download"))}
       </Button>
 
       <Dialog open={showAuth} onOpenChange={setShowAuth}>
