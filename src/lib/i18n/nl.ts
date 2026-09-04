@@ -202,6 +202,8 @@ export const nl = {
   "template.veronaDesc": "Saliekleurig papier met naambalk op foto en skill-balken",
   "template.sofia": "Sofia",
   "template.sofiaDesc": "Warm papier, serif-naam en info-zijkolom",
+  "template.amber": "Amber",
+  "template.amberDesc": "Twee kolommen met amberaccent, skill-balken en bijpassende brief",
   "resume.profile": "Profiel",
   "resume.experience": "Werkervaring",
   "resume.education": "Opleiding",

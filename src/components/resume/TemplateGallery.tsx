@@ -22,7 +22,8 @@ const templates: { id: TemplateId; badge?: "recommended" | "new" }[] = [
   { id: "marina" },
   { id: "milano" },
   { id: "verona" },
-  { id: "sofia", badge: "new" },
+  { id: "sofia" },
+  { id: "amber", badge: "new" },
   { id: "european" },
 ];
 
@@ -138,6 +139,45 @@ function TemplateThumb({ template, accent }: { template: TemplateId; accent: str
               <div className="h-2 w-3 rounded-sm" style={{ backgroundColor: color }} />
               <div className="h-1 flex-1 rounded bg-slate-200" />
             </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template === "amber") {
+    return (
+      <div className="flex h-full w-full overflow-hidden bg-white p-2">
+        <div className="w-[38%] shrink-0 space-y-1.5 border-e border-slate-300 pe-1.5">
+          <div className="ms-auto h-1.5 w-2/3 rounded" style={{ backgroundColor: color }} />
+          <div className="h-px w-full bg-slate-700" />
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="ms-auto h-1 rounded bg-slate-200" style={{ width: `${60 + i * 10}%` }} />
+          ))}
+          <div className="h-8 w-full bg-slate-300" />
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="space-y-0.5">
+              <div className="ms-auto h-1 w-1/2 rounded bg-slate-200" />
+              <div className="h-1 w-full bg-slate-200">
+                <div className="h-full" style={{ width: `${85 - i * 12}%`, backgroundColor: color }} />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex-1 space-y-1.5 ps-2">
+          <div className="flex gap-1">
+            <div className="h-2.5 w-1/3 rounded bg-slate-800" />
+            <div className="h-2.5 w-1/3 rounded" style={{ backgroundColor: color }} />
+          </div>
+          <div className="h-1 w-1/2 rounded bg-slate-300" />
+          <div className="h-px w-full bg-slate-300" />
+          <div className="h-1.5 w-1/3 rounded" style={{ backgroundColor: color }} />
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-1 rounded bg-slate-200" style={{ width: `${65 + ((i * 11) % 30)}%` }} />
+          ))}
+          <div className="h-1.5 w-2/5 rounded" style={{ backgroundColor: color }} />
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-1 rounded bg-slate-200" style={{ width: `${60 + ((i * 13) % 35)}%` }} />
           ))}
         </div>
       </div>

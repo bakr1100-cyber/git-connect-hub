@@ -202,6 +202,8 @@ export const it = {
   "template.veronaDesc": "Carta salvia con fascia nome sulla foto e barre competenze",
   "template.sofia": "Sofia",
   "template.sofiaDesc": "Carta calda, nome serif e colonna informazioni",
+  "template.amber": "Amber",
+  "template.amberDesc": "Due colonne con accento ambra, barre competenze e lettera coordinata",
   "resume.profile": "Profilo",
   "resume.experience": "Esperienza lavorativa",
   "resume.education": "Istruzione",

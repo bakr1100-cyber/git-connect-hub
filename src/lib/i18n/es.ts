@@ -202,6 +202,8 @@ export const es = {
   "template.veronaDesc": "Papel salvia con banda de nombre y barras de habilidades",
   "template.sofia": "Sofia",
   "template.sofiaDesc": "Papel cálido, nombre en serif y columna de datos",
+  "template.amber": "Amber",
+  "template.amberDesc": "Dos columnas con acento ámbar, barras de habilidades y carta a juego",
   "resume.profile": "Perfil",
   "resume.experience": "Experiencia laboral",
   "resume.education": "Educación",

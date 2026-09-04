@@ -97,7 +97,7 @@ function LanguageIntroGate({ onComplete }: { onComplete: () => void }) {
 
 const templateCards: Array<{
   id: TemplateId;
-  nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.esmeralda" | "template.marina" | "template.milano" | "template.verona" | "template.sofia" | "template.european";
+  nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.esmeralda" | "template.marina" | "template.milano" | "template.verona" | "template.sofia" | "template.amber" | "template.european";
   badge?: "recommended" | "new" | "european";
   accent: string;
   sidebar?: boolean;
@@ -111,7 +111,8 @@ const templateCards: Array<{
   { id: "marina", nameKey: "template.marina", accent: "bg-navy", sidebar: true },
   { id: "milano", nameKey: "template.milano", accent: "bg-navy", header: true },
   { id: "verona", nameKey: "template.verona", accent: "bg-sand", sidebar: true },
-  { id: "sofia", nameKey: "template.sofia", badge: "new", accent: "bg-brand-dark", header: true },
+  { id: "sofia", nameKey: "template.sofia", accent: "bg-brand-dark", header: true },
+  { id: "amber", nameKey: "template.amber", badge: "new", accent: "bg-cta", sidebar: true },
   { id: "european", nameKey: "template.european", badge: "european", accent: "bg-sand", sidebar: true },
 ];
 

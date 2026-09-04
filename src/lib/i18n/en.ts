@@ -220,6 +220,8 @@ export const en = {
   "template.veronaDesc": "Sage paper with photo name band and skill bars",
   "template.sofia": "Sofia",
   "template.sofiaDesc": "Warm paper, serif name and info side column",
+  "template.amber": "Amber",
+  "template.amberDesc": "Two columns with amber accent, skill bars and matching cover letter",
   "resume.profile": "Profile",
   "resume.experience": "Experience",
   "resume.education": "Education",

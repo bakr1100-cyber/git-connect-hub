@@ -288,6 +288,8 @@ export const de = {
   "template.veronaDesc": "Salbeigrünes Papier mit Foto-Namensband und Skill-Balken",
   "template.sofia": "Sofia",
   "template.sofiaDesc": "Warmes Papier, Serifen-Name und Info-Seitenspalte",
+  "template.amber": "Amber",
+  "template.amberDesc": "Zweispaltig mit Orange-Akzent, Skill-Balken und passendem Anschreiben",
 
   // Resume document sections (rendered inside the CV)
   "resume.profile": "Profil",
