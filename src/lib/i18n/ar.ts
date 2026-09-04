@@ -188,6 +188,7 @@ export const ar = {
   "template.european": "أوروبي",
   "template.tokyo": "Tokyo",
   "template.azur": "أزور",
+  "template.esmeralda": "إسميرالدا",
   "resume.profile": "الملف الشخصي",
   "resume.experience": "الخبرة المهنية",
   "resume.education": "التعليم",
@@ -213,6 +214,7 @@ export const ar = {
   "template.europeanDesc": "التنسيق الأوروبي الكلاسيكي",
   "template.tokyoDesc": "تصميم أنيق بخطوط سيريف ولمسات مائية",
   "template.azurDesc": "مظهر منعش مع ترويسة ملونة",
+  "template.esmeraldaDesc": "تصميم كريمي بلمسات زمردية",
 
   // Reference redesign: navigation, hero bullets, templates, toolkit, score, import
   "nav.contact": "اتصل بنا",

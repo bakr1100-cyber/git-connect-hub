@@ -7,6 +7,7 @@ import { ModernTemplate } from "./templates/ModernTemplate";
 import { EuropeanTemplate } from "./templates/EuropeanTemplate";
 import { TokyoTemplate } from "./templates/TokyoTemplate";
 import { AzurTemplate } from "./templates/AzurTemplate";
+import { EsmeraldaTemplate } from "./templates/EsmeraldaTemplate";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
 import { isRtl } from "@/lib/i18n/locales";
@@ -34,7 +35,9 @@ export function ResumePreview({ data, hideCaption = false }: ResumePreviewProps)
           ? TokyoTemplate
           : data.settings.template === "azur"
             ? AzurTemplate
-            : ModernTemplate;
+            : data.settings.template === "esmeralda"
+              ? EsmeraldaTemplate
+              : ModernTemplate;
 
   return (
     <div className="mx-auto max-w-[210mm]">

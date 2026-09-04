@@ -17,7 +17,8 @@ const templates: { id: TemplateId; badge?: "recommended" | "new" }[] = [
   { id: "modern", badge: "recommended" },
   { id: "minimalist" },
   { id: "tokyo" },
-  { id: "azur", badge: "new" },
+  { id: "azur" },
+  { id: "esmeralda", badge: "new" },
   { id: "european" },
 ];
 
@@ -62,6 +63,49 @@ function TemplateThumb({ template, accent }: { template: TemplateId; accent: str
             </div>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (template === "esmeralda") {
+    return (
+      <div className="relative h-full w-full overflow-hidden bg-[#fbf7ef]">
+        <div className="p-3 pl-5">
+          <div className="flex gap-2">
+            <div className="h-10 w-8 shrink-0 bg-slate-300" />
+            <div className="flex-1 space-y-1">
+              <div className="h-2.5 w-4/5 rounded" style={{ backgroundColor: color }} />
+              <div className="h-1 w-1/2 rounded bg-slate-300" />
+              <div className="h-1 w-full rounded bg-slate-200" />
+              <div className="h-1 w-11/12 rounded bg-slate-200" />
+            </div>
+          </div>
+          <div className="mt-3 border-t pt-2" style={{ borderColor: soft }}>
+            <div className="h-1.5 w-1/3 rounded" style={{ backgroundColor: color }} />
+            <div className="mt-2 flex gap-2">
+              {[0, 1].map((c) => (
+                <div key={c} className="flex-1 space-y-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="h-1 rounded bg-slate-200" style={{ width: `${60 + ((i * 13) % 35)}%` }} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-3 border-t pt-2" style={{ borderColor: soft }}>
+            <div className="flex gap-2">
+              {[0, 1].map((c) => (
+                <div key={c} className="flex-1 space-y-1">
+                  <div className="h-1.5 w-1/2 rounded" style={{ backgroundColor: color }} />
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="h-1 rounded bg-slate-200" />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="absolute inset-x-0 bottom-0 h-6" style={{ backgroundColor: color }} />
       </div>
     );
   }
