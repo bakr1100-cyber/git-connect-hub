@@ -28,6 +28,8 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
   const [showUpsell, setShowUpsell] = useState(false);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [cropped, setCropped] = useState<string | null>(null);
+
 
   const run = async (source: string) => {
     setBusy(true);
