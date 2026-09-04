@@ -1,5 +1,6 @@
 import type { ResumeData } from "@/lib/resume-types";
-import { translate, type TranslationKey } from "@/lib/i18n";
+import type { TranslationKey } from "@/lib/i18n";
+import { templateTranslate } from "@/lib/i18n/templates";
 import { dateLocales } from "@/lib/i18n/locales";
 
 interface TemplateProps {
@@ -23,7 +24,7 @@ function levelToRatio(level: string | undefined, index: number): number {
 export function AmberTemplate({ data }: TemplateProps) {
   const { personalDetails, workExperience, education, skills, languages, settings } = data;
   const lang = settings.language;
-  const tr = (key: TranslationKey) => translate(lang, key);
+  const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
