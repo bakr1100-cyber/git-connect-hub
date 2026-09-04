@@ -286,6 +286,7 @@ function LandingPage() {
               { href: "#vorlagen", label: t("templates.eyebrow") },
               { href: "#funktionen", label: t("nav.features") },
               { href: "#preise", label: t("nav.pricing") },
+              { href: "/bewerbung", label: t("pkg.nav") },
               { href: "#bewertungen", label: t("nav.reviews") },
             ].map((item) => (
               <a
@@ -552,7 +553,7 @@ function LandingPage() {
                     ))}
                   </ul>
                   <Button className="mt-6 w-full" variant={tier.popular ? "default" : "outline"} asChild>
-                    <Link to="/editor">{`${tier.name} ${t("pricing.choose")}`}</Link>
+                    <Link to="/bewerbung">{`${tier.name} ${t("pricing.choose")}`}</Link>
                   </Button>
                 </CardContent>
               </Card>
