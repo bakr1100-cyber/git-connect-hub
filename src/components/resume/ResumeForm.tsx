@@ -477,10 +477,11 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
                       id="photo-upload"
                       ref={fileInputRef}
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg,image/png,image/webp"
                       onChange={handlePhotoUpload}
                       className="mt-1"
                     />
+                    <p className="text-xs text-muted-foreground">{t("photo.upload.hint")}</p>
                     <PhotoEnhancer
                       photo={data.personalDetails.photo}
                       onApply={(dataUrl) => updatePersonal("photo", dataUrl)}
