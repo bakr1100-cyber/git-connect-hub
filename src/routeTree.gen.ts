@@ -14,6 +14,7 @@ import { Route as AnschreibenRouteImport } from './routes/anschreiben'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as EditorRouteImport } from './routes/editor'
 import { Route as McpRouteImport } from './routes/mcp'
+import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as ShareRouteImport } from './routes/share'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TemplatesRouteImport } from './routes/templates'
@@ -45,6 +46,11 @@ const EditorRoute = EditorRouteImport.update({
 const McpRoute = McpRouteImport.update({
   id: '/mcp',
   path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilRoute = ProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShareRoute = ShareRouteImport.update({
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRoute
   '/mcp': typeof McpRoute
+  '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/templates': typeof TemplatesRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRoute
   '/mcp': typeof McpRoute
+  '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/templates': typeof TemplatesRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRoute
   '/mcp': typeof McpRoute
+  '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/templates': typeof TemplatesRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/editor'
     | '/mcp'
+    | '/profil'
     | '/share'
     | '/sitemap.xml'
     | '/templates'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/editor'
     | '/mcp'
+    | '/profil'
     | '/share'
     | '/sitemap.xml'
     | '/templates'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/editor'
     | '/mcp'
+    | '/profil'
     | '/share'
     | '/sitemap.xml'
     | '/templates'
@@ -179,6 +191,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   EditorRoute: typeof EditorRoute
   McpRoute: typeof McpRoute
+  ProfilRoute: typeof ProfilRoute
   ShareRoute: typeof ShareRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TemplatesRoute: typeof TemplatesRoute
@@ -223,6 +236,13 @@ declare module '@tanstack/react-router' {
       path: '/mcp'
       fullPath: '/mcp'
       preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profil': {
+      id: '/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/share': {
@@ -283,6 +303,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   EditorRoute: EditorRoute,
   McpRoute: McpRoute,
+  ProfilRoute: ProfilRoute,
   ShareRoute: ShareRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TemplatesRoute: TemplatesRoute,
