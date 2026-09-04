@@ -88,14 +88,14 @@ export function applyProfileToResume(profile: ApplicantProfile, prev: ResumeData
       email: profile.email || prev.personalDetails.email,
       phone: profile.phone || prev.personalDetails.phone,
       location: [location, profile.country].filter(Boolean).join(", ") || prev.personalDetails.location,
-      linkedin: profile.linkedin || prev.personalDetails.linkedin,
-      website: profile.website || prev.personalDetails.website,
-      summary: profile.summary || prev.personalDetails.summary,
-      photo: profile.photo_url ?? prev.personalDetails.photo,
+      linkedin: profile.linkedin || prev.personalDetails.linkedin || "",
+      website: profile.website || prev.personalDetails.website || "",
+      summary: profile.summary || prev.personalDetails.summary || "",
+      photo: profile.photo_url ?? prev.personalDetails.photo ?? "",
     },
     settings: {
       ...prev.settings,
-      targetPosition: profile.target_position || prev.settings.targetPosition,
+      targetPosition: profile.target_position || prev.settings.targetPosition || "",
     },
   };
 }
