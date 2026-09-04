@@ -316,12 +316,28 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const allowed = ["image/jpeg", "image/png", "image/webp"];
+    if (!allowed.includes(file.type)) {
+      toast.error(t("photo.upload.invalidType"));
+      e.target.value = "";
+      return;
+    }
+    const maxBytes = 8 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      toast.error(t("photo.upload.tooLarge"));
+      e.target.value = "";
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       updatePersonal("photo", reader.result as string);
     };
+    reader.onerror = () => {
+      toast.error(t("photo.upload.readFailed"));
+    };
     reader.readAsDataURL(file);
   };
+
 
   const openNewExperience = () => {
     setEditingExperience(null);
