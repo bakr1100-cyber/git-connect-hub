@@ -15,7 +15,7 @@ import { useI18n } from "@/lib/i18n";
 interface PremiumUpsellDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  feature: "cover-letter" | "voice";
+  feature: "cover-letter" | "voice" | "photo";
 }
 
 
@@ -27,7 +27,11 @@ export function PremiumUpsellDialog({ open, onOpenChange, feature }: PremiumUpse
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{feature === "voice" ? t("premium.voiceTitle") : t("premium.coverTitle")}</DialogTitle>
+          <DialogTitle>{feature === "voice"
+              ? t("premium.voiceTitle")
+              : feature === "photo"
+                ? t("premium.photoTitle")
+                : t("premium.coverTitle")}</DialogTitle>
           <DialogDescription>{t("premium.desc")}</DialogDescription>
         </DialogHeader>
 

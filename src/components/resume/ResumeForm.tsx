@@ -22,6 +22,7 @@ import { AIAssistButton } from "./AIAssistButton";
 import { EXPERIENCE_PENDING_KEY, ExperienceAssistantDialog } from "./ExperienceAssistantDialog";
 import { VoiceInputButton } from "./VoiceInputButton";
 import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
+import { PhotoEnhancer } from "./PhotoEnhancer";
 import { useEntitlements } from "@/lib/entitlements";
 
 import { useServerFn } from "@tanstack/react-start";
@@ -402,7 +403,7 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
                       <Upload className="h-6 w-6 text-muted-foreground" />
                     )}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 space-y-2">
                     <Label htmlFor="photo-upload">{t("form.photoLabel")}</Label>
                     <Input
                       id="photo-upload"
@@ -411,6 +412,10 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
                       accept="image/*"
                       onChange={handlePhotoUpload}
                       className="mt-1"
+                    />
+                    <PhotoEnhancer
+                      photo={data.personalDetails.photo}
+                      onApply={(dataUrl) => updatePersonal("photo", dataUrl)}
                     />
                   </div>
                 </div>
