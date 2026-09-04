@@ -30,6 +30,7 @@ const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
 /** The five wizard steps; the final step combines fine-tuning and the cover letter. */
 const wizardSteps: { id: WizardStepId; forms: string[] }[] = [
+  { id: "design", forms: [] },
   { id: "personal", forms: ["personal"] },
   { id: "education", forms: ["education"] },
   { id: "experience", forms: ["experience"] },
@@ -38,6 +39,7 @@ const wizardSteps: { id: WizardStepId; forms: string[] }[] = [
 ];
 
 const stepLabelKeys = {
+  design: "tab.design",
   personal: "tab.personal",
   experience: "tab.experience",
   education: "tab.education",
@@ -46,6 +48,7 @@ const stepLabelKeys = {
 } as const;
 
 const stepHeadlineKeys = {
+  design: "wizard.design.headline",
   personal: "wizard.personal.headline",
   experience: "wizard.experience.headline",
   education: "wizard.education.headline",
@@ -489,7 +492,7 @@ export function ResumeEditor() {
               <StepExamples step={currentStep.id} />
             </div>
 
-            {currentStep.id === "finish" && (
+            {currentStep.id === "design" && (
               <div className="px-4 pt-6 lg:px-6">
                 <TemplateGallery data={data} onChange={updateData} />
               </div>
