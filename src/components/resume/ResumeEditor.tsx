@@ -31,10 +31,11 @@ const editorRoute = getRouteApi("/editor");
 
 const STORAGE_KEY = "resume-draft-v1";
 const LANGUAGE_INTRO_KEY = "resume-language-intro-v3";
+const TEMPLATE_CHOSEN_KEY = "resume-template-chosen-v1";
 const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
 /** The five wizard steps; the final step combines fine-tuning and the cover letter. */
-const wizardSteps: { id: WizardStepId; forms: string[] }[] = [
+const allWizardSteps: { id: WizardStepId; forms: string[] }[] = [
   { id: "design", forms: [] },
   { id: "personal", forms: ["personal"] },
   { id: "education", forms: ["education"] },
@@ -72,7 +73,14 @@ export function ResumeEditor() {
   const [selectedLanguage, setSelectedLanguage] = useState<Locale>(locale);
   const [stepIndex, setStepIndex] = useState(0);
   const [mode, setMode] = useState<"wizard" | "workspace">("wizard");
+  // When the template was already picked on the landing page the design step is skipped;
+  // colour and "another template?" move to the final step instead.
+  const [templatePreselected, setTemplatePreselected] = useState(Boolean(templateFromSearch));
 
+  const wizardSteps = useMemo(
+    () => (templatePreselected ? allWizardSteps.filter((step) => step.id !== "design") : allWizardSteps),
+    [templatePreselected]
+  );
   const totalSteps = wizardSteps.length;
   const currentStep = wizardSteps[Math.min(stepIndex, totalSteps - 1)]!;
   const progress = useMemo(() => ((stepIndex + 1) / totalSteps) * 100, [stepIndex, totalSteps]);
@@ -92,7 +100,7 @@ export function ResumeEditor() {
         setData({ ...defaultResumeData, ...parsed });
       }
       const savedStep = Number(localStorage.getItem(WIZARD_STEP_KEY));
-      if (Number.isInteger(savedStep) && savedStep >= 0 && savedStep < wizardSteps.length) {
+      if (Number.isInteger(savedStep) && savedStep >= 0 && savedStep < allWizardSteps.length) {
         setStepIndex(savedStep);
       }
     } catch {
@@ -130,6 +138,16 @@ export function ResumeEditor() {
   }, []);
 
   // A template picked on the landing page pre-selects the design step.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (templateFromSearch) {
+      localStorage.setItem(TEMPLATE_CHOSEN_KEY, "1");
+      setTemplatePreselected(true);
+    } else if (localStorage.getItem(TEMPLATE_CHOSEN_KEY) === "1") {
+      setTemplatePreselected(true);
+    }
+  }, [templateFromSearch]);
+
   useEffect(() => {
     if (!isLoaded || !templateFromSearch) return;
     updateData((prev) =>
@@ -517,6 +535,12 @@ export function ResumeEditor() {
             {currentStep.id === "design" && (
               <div className="px-4 pt-6 lg:px-6">
                 <TemplateGallery data={data} onChange={updateData} />
+              </div>
+            )}
+
+            {currentStep.id === "finish" && templatePreselected && (
+              <div className="px-4 pt-6 lg:px-6">
+                <TemplateGallery data={data} onChange={updateData} variant="finish" />
               </div>
             )}
 
