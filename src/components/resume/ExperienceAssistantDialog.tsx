@@ -472,17 +472,6 @@ export function ExperienceAssistantDialog({
                 {[draft.startDate, draft.endDate, draft.location].filter(Boolean).join(" · ")}
               </p>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="experience-description">{copy.tasks}</Label>
-              <Textarea
-                id="experience-description"
-                value={draft.description}
-                onChange={(event) => update("description", event.target.value)}
-                rows={7}
-                placeholder={copy.tasksPlaceholder}
-              />
-            </div>
-
             <section className="overflow-hidden rounded-xl border border-brand/25 bg-brand/5">
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-brand/15 px-4 py-3">
                 <div className="flex items-center gap-2 font-semibold text-foreground">
@@ -567,6 +556,17 @@ export function ExperienceAssistantDialog({
                   })}
               </div>
             </section>
+
+            <div className="space-y-2">
+              <Label htmlFor="experience-description">{copy.tasks}</Label>
+              <Textarea
+                id="experience-description"
+                value={draft.description}
+                onChange={(event) => update("description", event.target.value)}
+                rows={7}
+                placeholder={copy.tasksPlaceholder}
+              />
+            </div>
 
             <Button
               type="button"
