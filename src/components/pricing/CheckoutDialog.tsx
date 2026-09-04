@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { PACKAGES, useEntitlements, type Tier } from "@/lib/entitlements";
 import { sendPurchaseReceipt } from "@/lib/email.functions";
+import { useAuth } from "@/hooks/useAuth";
 
 interface CheckoutDialogProps {
   tier: Tier | null;
@@ -29,6 +30,7 @@ type Phase = "idle" | "processing" | "confirming" | "active" | "failed";
 export function CheckoutDialog({ tier, onOpenChange, onPurchased }: CheckoutDialogProps) {
   const { t } = useI18n();
   const { startPurchase, confirmPurchase, failPurchase } = useEntitlements();
+  const { isAuthenticated } = useAuth();
   const [phase, setPhase] = useState<Phase>("idle");
   const [emailSent, setEmailSent] = useState(false);
 
@@ -53,8 +55,9 @@ export function CheckoutDialog({ tier, onOpenChange, onPurchased }: CheckoutDial
     try {
       await new Promise((resolve) => setTimeout(resolve, 600));
 
+      // Die Beleg-E-Mail braucht eine Anmeldung; ohne Login wird sie übersprungen.
       let sent = false;
-      try {
+      if (isAuthenticated) try {
         const result = (await sendPurchaseReceipt({
           data: {
             orderId: purchase.id,
