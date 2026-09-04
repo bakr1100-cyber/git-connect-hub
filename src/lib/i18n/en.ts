@@ -92,6 +92,7 @@ export const en = {
   "editor.previewOff": "Hide preview",
   "editor.livePreview": "Live Preview",
   "editor.download": "Download PDF",
+  "editor.downloadWord": "Download Word",
   "tab.design": "Design",
   "tab.personal": "Personal",
   "tab.experience": "Experience",

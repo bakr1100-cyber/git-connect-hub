@@ -92,6 +92,7 @@ export const ar = {
   "editor.previewOff": "إخفاء المعاينة",
   "editor.livePreview": "معاينة مباشرة",
   "editor.download": "تحميل PDF",
+  "editor.downloadWord": "تنزيل Word",
   "tab.design": "التصميم",
   "tab.personal": "المعلومات الشخصية",
   "tab.experience": "الخبرة المهنية",
