@@ -7,6 +7,7 @@ import { Check, FileText, Image as ImageIcon, Download } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { PACKAGES, useEntitlements, type Tier } from "@/lib/entitlements";
 import { CheckoutDialog } from "@/components/pricing/CheckoutDialog";
+import { PaymentStatusCard } from "@/components/pricing/PaymentStatusCard";
 
 export const Route = createFileRoute("/bewerbung")({
   head: () => ({
@@ -76,6 +77,10 @@ function PackagePage() {
             </Button>
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-4 pt-10">
+        <PaymentStatusCard />
       </section>
 
       <section className="mx-auto max-w-5xl px-4 py-12">

@@ -34,7 +34,7 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
   const [showPaywall, setShowPaywall] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [showCost, setShowCost] = useState(false);
-  const { standard: isUnlocked, unlock } = useEntitlements();
+  const { standard: isUnlocked, unlock, purchase } = useEntitlements();
   const [checkoutTier, setCheckoutTier] = useState<Tier | null>(null);
   const { isAuthenticated } = useAuth();
   void unlock;
@@ -84,6 +84,10 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
   const handleClick = () => {
     if (!isAuthenticated) {
       setShowAuth(true);
+      return;
+    }
+    if (purchase?.status === "pending") {
+      toast.info(t("pay.pendingHint"));
       return;
     }
     if (isUnlocked) {

@@ -26,7 +26,7 @@ interface PhotoEnhancerProps {
 
 export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
   const { t } = useI18n();
-  const { standard } = useEntitlements();
+  const { standard, purchase } = useEntitlements();
   const [showUpsell, setShowUpsell] = useState(false);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<string | null>(null);
@@ -82,6 +82,10 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
   const start = () => {
     if (!photo) {
       toast.info(t("photo.needUpload"));
+      return;
+    }
+    if (purchase?.status === "pending") {
+      toast.info(t("pay.pendingHint"));
       return;
     }
     if (!standard) {
