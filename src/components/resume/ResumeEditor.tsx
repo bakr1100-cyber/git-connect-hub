@@ -39,12 +39,14 @@ const LANGUAGE_INTRO_KEY = "resume-language-intro-v3";
 const TEMPLATE_CHOSEN_KEY = "resume-template-chosen-v1";
 const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
-/** The wizard stays intentionally short: design, basics, career and finish. */
+/** Five clear stages: design, basics, career, education, skills, finish. */
 const allWizardSteps: { id: WizardStepId; forms: string[] }[] = [
   { id: "design", forms: [] },
   { id: "personal", forms: ["personal"] },
-  { id: "experience", forms: ["education", "experience"] },
-  { id: "finish", forms: ["skills", "summary", "settings", "cover-letter"] },
+  { id: "experience", forms: ["experience"] },
+  { id: "education", forms: ["education"] },
+  { id: "skills", forms: ["skills", "summary"] },
+  { id: "finish", forms: ["settings", "cover-letter"] },
 ];
 
 const stepLabelKeys = {
