@@ -219,8 +219,9 @@ function PackagePage() {
                 <CardTitle>{t("flow.downloadTitle")}</CardTitle>
                 <CardDescription>{t("flow.downloadDesc")}</CardDescription>
               </CardHeader>
-              <CardContent className="max-w-sm">
+              <CardContent className="flex flex-wrap items-center gap-3">
                 <PDFExportButton data={draft} label={t("ws.download")} />
+                <PackageDownloadButton data={draft} />
               </CardContent>
             </Card>
           )}
