@@ -242,14 +242,14 @@ function LandingPage() {
   const tiers = [
     {
       name: t("pricing.standard.name"),
-      price: "9,99 €",
+      price: "9,90 €",
       access: t("pricing.access.5"),
       desc: t("pricing.standard.desc"),
       features: [t("pricing.standard.f1"), t("pricing.standard.f2"), t("pricing.standard.f3"), t("pricing.standard.f4")],
     },
     {
       name: t("pricing.premium.name"),
-      price: "15,00 €",
+      price: "19,90 €",
       access: t("pricing.access.30"),
       desc: t("pricing.premium.desc"),
       features: [t("pricing.premium.f1"), t("pricing.premium.f2"), t("pricing.premium.f3"), t("pricing.premium.f4")],
