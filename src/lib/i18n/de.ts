@@ -119,6 +119,7 @@ export const de = {
   "editor.download": "PDF herunterladen",
 
   // Editor tabs
+  "tab.design": "Design",
   "tab.personal": "Persönlich",
   "tab.experience": "Berufserfahrung",
   "tab.education": "Ausbildung",
@@ -350,6 +351,7 @@ export const de = {
   "wizard.personal.headline": "Erzähle uns ein bisschen mehr über dich",
   "wizard.experience.headline": "Super! Lass uns als nächstes deine Arbeitserfahrung ausfüllen",
   "wizard.education.headline": "Wo hast du gelernt und studiert?",
+  "wizard.design.headline": "Wähle das Layout, das zu dir passt",
   "wizard.skills.headline": "Welche Kompetenzen und Sprachen bringst du mit?",
   "wizard.coverLetter.headline": "Passendes Anschreiben erstellen",
   "wizard.settings.headline": "Lass uns an deinem Lebenslauf-Feinschliff arbeiten",
