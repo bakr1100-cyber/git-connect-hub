@@ -10,10 +10,12 @@ export interface TemplateEntry {
 
 import { template as welcome } from "./welcome";
 import { template as unfinishedDocument } from "./unfinished-document";
+import { template as purchaseReceipt } from "./purchase-receipt";
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   welcome,
   "unfinished-document": unfinishedDocument,
+  "purchase-receipt": purchaseReceipt,
 };
 
 export type TemplateName = keyof typeof TEMPLATES;
