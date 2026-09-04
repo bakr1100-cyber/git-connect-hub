@@ -18,6 +18,7 @@ import { Route as ShareRouteImport } from './routes/share'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as ApiEnhancePhotoRouteImport } from './routes/api/enhance-photo'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
@@ -67,6 +68,11 @@ const Char91DotwellKnownChar93OauthProtectedResourceRoute =
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiEnhancePhotoRoute = ApiEnhancePhotoRouteImport.update({
+  id: '/api/enhance-photo',
+  path: '/api/enhance-photo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/templates': typeof TemplatesRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/enhance-photo': typeof ApiEnhancePhotoRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/templates': typeof TemplatesRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/enhance-photo': typeof ApiEnhancePhotoRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/templates': typeof TemplatesRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/enhance-photo': typeof ApiEnhancePhotoRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/templates'
     | '/.well-known/oauth-protected-resource'
+    | '/api/enhance-photo'
     | '/.lovable/oauth/consent'
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/templates'
     | '/.well-known/oauth-protected-resource'
+    | '/api/enhance-photo'
     | '/.lovable/oauth/consent'
     | '/lovable/email/transactional/preview'
   id:
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/templates'
     | '/.well-known/oauth-protected-resource'
+    | '/api/enhance-photo'
     | '/.lovable/oauth/consent'
     | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TemplatesRoute: typeof TemplatesRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiEnhancePhotoRoute: typeof ApiEnhancePhotoRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
@@ -240,6 +253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/enhance-photo': {
+      id: '/api/enhance-photo'
+      path: '/api/enhance-photo'
+      fullPath: '/api/enhance-photo'
+      preLoaderRoute: typeof ApiEnhancePhotoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -268,6 +288,7 @@ const rootRouteChildren: RootRouteChildren = {
   TemplatesRoute: TemplatesRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiEnhancePhotoRoute: ApiEnhancePhotoRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
