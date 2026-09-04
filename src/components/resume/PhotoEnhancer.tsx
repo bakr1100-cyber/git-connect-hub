@@ -14,6 +14,8 @@ import { useI18n } from "@/lib/i18n";
 import { useEntitlements } from "@/lib/entitlements";
 import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
 import { PhotoCropper } from "./PhotoCropper";
+import { autoCorrect, sharpen } from "@/lib/photo-processing";
+
 
 
 interface PhotoEnhancerProps {
