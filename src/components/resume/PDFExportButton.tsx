@@ -128,6 +128,7 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
     }
     setShowPaywall(true);
   };
+  handleClickRef.current = handleClick;
 
   return (
     <>
@@ -137,7 +138,9 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
         ) : (
           <Download className="mr-1.5 h-4 w-4" />
         )}
-        {label ?? t("editor.download")}
+        {isExporting
+          ? t("editor.downloading")
+          : label ?? (hasStartedBefore ? t("editor.downloadAgain") : t("editor.download"))}
       </Button>
 
       <Dialog open={showAuth} onOpenChange={setShowAuth}>
