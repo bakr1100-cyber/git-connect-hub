@@ -27,12 +27,8 @@ export function EmailResumeButton({ data }: EmailResumeButtonProps) {
       triggerBlobDownload(blob, resumeFileName(data));
 
       const name = data.personalDetails.fullName || "";
-      const role = data.personalDetails.jobTitle || "";
-      const subject = t("editor.emailSubject")
-        .replace("{name}", name)
-        .replace("{role}", role)
-        .trim();
-      const body = t("editor.emailBody").replace("{name}", name).replace("{role}", role);
+      const subject = t("editor.emailSubject").replace("{name}", name).trim();
+      const body = t("editor.emailBody").replace("{name}", name);
 
       window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       toast.success(t("editor.emailToastTitle"), {
