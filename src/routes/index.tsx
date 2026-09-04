@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
-type TemplateCategory = "Minimalist" | "Modern" | "Creative";
+
 
 const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
@@ -109,11 +109,52 @@ const templateCards: Array<{
   { id: "european", nameKey: "template.european", badge: "european", accent: "bg-sand", sidebar: true },
 ];
 
-function TemplateThumb({ accent, sidebar }: { accent: string; sidebar?: boolean | undefined }) {
+function TemplateThumb({ accent, sidebar, header }: { accent: string; sidebar?: boolean | undefined; header?: boolean | undefined }) {
+  if (header) {
+    return (
+      <div className="aspect-[3/4] w-full overflow-hidden rounded-lg border border-border bg-background shadow-sm">
+        <div className={`relative flex h-1/4 items-center gap-2 px-3 ${accent} opacity-80`}>
+          <div className="h-8 w-8 shrink-0 rounded-full border-2 border-white bg-white/60" />
+          <div className="space-y-1">
+            <div className="h-1.5 w-16 rounded bg-white/90" />
+            <div className="h-1 w-10 rounded bg-white/60" />
+          </div>
+        </div>
+        <div className="flex h-3/4">
+          <div className="w-2/5 space-y-2 border-r border-border p-2.5">
+            <div className={`h-1.5 w-2/3 rounded ${accent} opacity-70`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-4/5 rounded bg-muted-foreground/20" />
+              <div className="h-1 w-11/12 rounded bg-muted-foreground/20" />
+            </div>
+            <div className={`h-1.5 w-1/2 rounded ${accent} opacity-70`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-3/5 rounded bg-muted-foreground/20" />
+            </div>
+          </div>
+          <div className="flex-1 space-y-2 p-2.5">
+            <div className={`h-1.5 w-1/2 rounded ${accent}`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-11/12 rounded bg-muted-foreground/20" />
+              <div className="h-1 w-4/5 rounded bg-muted-foreground/20" />
+            </div>
+            <div className={`h-1.5 w-2/5 rounded ${accent} opacity-70`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-10/12 rounded bg-muted-foreground/20" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="aspect-[3/4] w-full overflow-hidden rounded-lg border border-border bg-background shadow-sm">
       <div className="flex h-full">
-        {sidebar && <div className={`h-full w-1/3 ${accent}`} />}
+        {sidebar && <div className={`h-full w-1/3 ${accent} opacity-70`} />}
         <div className="flex-1 space-y-2 p-3">
           {!sidebar && <div className={`h-2 w-2/3 rounded ${accent}`} />}
           <div className="h-1.5 w-1/2 rounded bg-muted-foreground/30" />
