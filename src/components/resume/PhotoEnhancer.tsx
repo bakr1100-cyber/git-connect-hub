@@ -16,7 +16,7 @@ import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
 
 interface PhotoEnhancerProps {
   /** Current photo as data URL. */
-  photo?: string;
+  photo?: string | undefined;
   onApply: (dataUrl: string) => void;
 }
 
