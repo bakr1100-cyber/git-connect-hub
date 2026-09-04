@@ -23,6 +23,8 @@ import { EXPERIENCE_PENDING_KEY, ExperienceAssistantDialog } from "./ExperienceA
 import { VoiceInputButton } from "./VoiceInputButton";
 import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
 import { PhotoEnhancer } from "./PhotoEnhancer";
+import { ProfileSyncButtons } from "./ProfileSyncButtons";
+
 import { useEntitlements } from "@/lib/entitlements";
 
 import { useServerFn } from "@tanstack/react-start";
@@ -388,7 +390,9 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
                 <CardTitle>{t("form.personalTitle")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                <ProfileSyncButtons data={data} onChange={onChange} />
                 <div className="flex items-center gap-4">
+
                   <div
                     className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted"
                     onClick={() => fileInputRef.current?.click()}

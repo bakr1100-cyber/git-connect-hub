@@ -1,6 +1,7 @@
 import type { ResumeData } from "@/lib/resume-types";
 import { ExtraSectionsBlock } from "./ExtraSectionsBlock";
-import { translate, type TranslationKey } from "@/lib/i18n";
+import type { TranslationKey } from "@/lib/i18n";
+import { templateTranslate } from "@/lib/i18n/templates";
 import { dateLocales } from "@/lib/i18n/locales";
 import { Mail, Phone, MapPin, Globe, Linkedin, Calendar } from "lucide-react";
 
@@ -11,7 +12,7 @@ interface TemplateProps {
 export function TokyoTemplate({ data }: TemplateProps) {
   const { personalDetails, workExperience, education, skills, languages, settings } = data;
   const lang = settings.language;
-  const tr = (key: TranslationKey) => translate(lang, key);
+  const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
