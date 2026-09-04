@@ -49,10 +49,22 @@ export function MyTemplates() {
 
   const submit = async () => {
     if (!user) return;
-    if (!name.trim()) return toast.error(c.errName);
-    if (!file) return toast.error(c.errFile);
-    if (!ALLOWED_TEMPLATE_TYPES.includes(file.type)) return toast.error(c.errType);
-    if (file.size > MAX_TEMPLATE_BYTES) return toast.error(c.errSize);
+    if (!name.trim()) {
+      toast.error(c.errName);
+      return;
+    }
+    if (!file) {
+      toast.error(c.errFile);
+      return;
+    }
+    if (!ALLOWED_TEMPLATE_TYPES.includes(file.type)) {
+      toast.error(c.errType);
+      return;
+    }
+    if (file.size > MAX_TEMPLATE_BYTES) {
+      toast.error(c.errSize);
+      return;
+    }
 
     setBusy(true);
     try {
