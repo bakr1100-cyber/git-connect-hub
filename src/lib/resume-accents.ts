@@ -35,6 +35,7 @@ export function resolveAccentId(template?: string, accent?: string): string {
   if (template === "esmeralda" && (!accent || accent === "slate")) return "emerald";
   if (template === "marina" && (!accent || accent === "slate")) return "petrol";
   if (template === "milano" && (!accent || accent === "slate")) return "navy";
+  if (template === "sofia" && (!accent || accent === "slate")) return "burgundy";
   if (template === "verona" && (!accent || accent === "slate")) return "sage";
   if (template === "azur" && (!accent || accent === "slate")) return "navy";
   return accent ?? defaultAccentId;
