@@ -200,6 +200,8 @@ export const it = {
   "template.milanoDesc": "Carta pastello con accento blu e colonna info a destra",
   "template.verona": "Verona",
   "template.veronaDesc": "Carta salvia con fascia nome sulla foto e barre competenze",
+  "template.sofia": "Sofia",
+  "template.sofiaDesc": "Carta calda, nome serif e colonna informazioni",
   "resume.profile": "Profilo",
   "resume.experience": "Esperienza lavorativa",
   "resume.education": "Istruzione",

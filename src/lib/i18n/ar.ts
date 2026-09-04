@@ -200,6 +200,8 @@ export const ar = {
   "template.milanoDesc": "ورق باستيل بلمسة زرقاء وعمود معلومات جانبي",
   "template.verona": "فيرونا",
   "template.veronaDesc": "ورق بلون المريمية مع شريط الاسم وأشرطة المهارات",
+  "template.sofia": "صوفيا",
+  "template.sofiaDesc": "ورق دافئ واسم بخط مشرشف وعمود معلومات جانبي",
   "resume.profile": "الملف الشخصي",
   "resume.experience": "الخبرة المهنية",
   "resume.education": "التعليم",
