@@ -97,7 +97,7 @@ function LanguageIntroGate({ onComplete }: { onComplete: () => void }) {
 
 const templateCards: Array<{
   id: TemplateId;
-  nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.esmeralda" | "template.european";
+  nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.esmeralda" | "template.marina" | "template.european";
   badge?: "recommended" | "new" | "european";
   accent: string;
   sidebar?: boolean;
@@ -107,7 +107,8 @@ const templateCards: Array<{
   { id: "minimalist", nameKey: "template.minimalist", accent: "bg-brand" },
   { id: "tokyo", nameKey: "template.tokyo", accent: "bg-brand-dark", sidebar: true },
   { id: "azur", nameKey: "template.azur", accent: "bg-trust", header: true },
-  { id: "esmeralda", nameKey: "template.esmeralda", badge: "new", accent: "bg-brand", header: true },
+  { id: "esmeralda", nameKey: "template.esmeralda", accent: "bg-brand", header: true },
+  { id: "marina", nameKey: "template.marina", badge: "new", accent: "bg-navy", sidebar: true },
   { id: "european", nameKey: "template.european", badge: "european", accent: "bg-sand", sidebar: true },
 ];
 

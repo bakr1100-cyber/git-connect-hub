@@ -180,6 +180,7 @@ export const de = {
   "template.europeanDesc": "Klassisches europäisches Format",
   "template.tokyoDesc": "Elegante Serifen-Optik mit Aquarell-Akzenten",
   "template.azurDesc": "Frischer Look mit farbigem Kopfbereich",
+  "template.marinaDesc": "Dunkle Seitenleiste mit Zeitstrahl und Skill-Balken",
   "template.esmeraldaDesc": "Cremiges Layout mit Smaragd-Akzent und Fußleiste",
 
   // Form: settings
@@ -279,6 +280,7 @@ export const de = {
   "template.tokyo": "Tokyo",
   "template.azur": "Azur",
   "template.esmeralda": "Esmeralda",
+  "template.marina": "Marina",
 
   // Resume document sections (rendered inside the CV)
   "resume.profile": "Profil",
