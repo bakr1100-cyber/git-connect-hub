@@ -218,6 +218,8 @@ export const en = {
   "template.milanoDesc": "Pastel paper with blue accent and right info column",
   "template.verona": "Verona",
   "template.veronaDesc": "Sage paper with photo name band and skill bars",
+  "template.sofia": "Sofia",
+  "template.sofiaDesc": "Warm paper, serif name and info side column",
   "resume.profile": "Profile",
   "resume.experience": "Experience",
   "resume.education": "Education",

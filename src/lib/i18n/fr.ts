@@ -200,6 +200,8 @@ export const fr = {
   "template.milanoDesc": "Papier pastel avec accent bleu et colonne d'infos à droite",
   "template.verona": "Verona",
   "template.veronaDesc": "Papier sauge avec bandeau photo et barres de compétences",
+  "template.sofia": "Sofia",
+  "template.sofiaDesc": "Papier chaud, nom en serif et colonne d'infos",
   "resume.profile": "Profil",
   "resume.experience": "Expérience professionnelle",
   "resume.education": "Formation",

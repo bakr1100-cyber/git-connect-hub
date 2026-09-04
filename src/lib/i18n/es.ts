@@ -200,6 +200,8 @@ export const es = {
   "template.milanoDesc": "Papel pastel con acento azul y columna de datos a la derecha",
   "template.verona": "Verona",
   "template.veronaDesc": "Papel salvia con banda de nombre y barras de habilidades",
+  "template.sofia": "Sofia",
+  "template.sofiaDesc": "Papel cálido, nombre en serif y columna de datos",
   "resume.profile": "Perfil",
   "resume.experience": "Experiencia laboral",
   "resume.education": "Educación",
