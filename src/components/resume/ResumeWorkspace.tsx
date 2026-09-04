@@ -46,7 +46,7 @@ export function ResumeWorkspace({ data, onChange, onEditStep }: Props) {
       id: "education",
       icon: GraduationCap,
       label: t("tab.education"),
-      step: 2,
+      step: 3,
       value: pct([data.education.length > 0, data.education.some((e) => !!e.institution)]),
     },
     {
@@ -56,9 +56,9 @@ export function ResumeWorkspace({ data, onChange, onEditStep }: Props) {
       step: 2,
       value: pct([data.workExperience.length > 0, data.workExperience.some((e) => !!e.description)]),
     },
-    { id: "skills", icon: ListChecks, label: t("tab.skills"), step: 3, value: pct([data.skills.length > 0, data.skills.length >= 5]) },
-    { id: "languages", icon: Globe, label: t("form.languages"), step: 3, value: pct([data.languages.length > 0]) },
-    { id: "summary", icon: Target, label: t("form.summary"), step: 3, value: pct([!!p.summary, (p.summary || "").length > 120]) },
+    { id: "skills", icon: ListChecks, label: t("tab.skills"), step: 4, value: pct([data.skills.length > 0, data.skills.length >= 5]) },
+    { id: "languages", icon: Globe, label: t("form.languages"), step: 4, value: pct([data.languages.length > 0]) },
+    { id: "summary", icon: Target, label: t("form.summary"), step: 4, value: pct([!!p.summary, (p.summary || "").length > 120]) },
   ];
 
   return (
