@@ -185,6 +185,7 @@ export const ar = {
   "template.modern": "عصري",
   "template.european": "أوروبي",
   "template.tokyo": "Tokyo",
+  "template.azur": "أزور",
   "resume.profile": "الملف الشخصي",
   "resume.experience": "الخبرة المهنية",
   "resume.education": "التعليم",
@@ -209,6 +210,7 @@ export const ar = {
   "template.modernDesc": "عصري مع تركيز واضح",
   "template.europeanDesc": "التنسيق الأوروبي الكلاسيكي",
   "template.tokyoDesc": "تصميم أنيق بخطوط سيريف ولمسات مائية",
+  "template.azurDesc": "مظهر منعش مع ترويسة ملونة",
 
   // Reference redesign: navigation, hero bullets, templates, toolkit, score, import
   "nav.contact": "اتصل بنا",
