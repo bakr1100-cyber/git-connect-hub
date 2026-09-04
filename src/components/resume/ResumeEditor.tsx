@@ -219,6 +219,7 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
               <ArrowLeft className="mr-1.5 h-4 w-4" />
               {t("ws.backToEditor")}
             </Button>
+            <AuthButton />
           </div>
         </header>
         <ResumeWorkspace

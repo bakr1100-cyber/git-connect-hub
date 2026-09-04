@@ -105,6 +105,7 @@ function StatusPage() {
           </ul>
         </section>
       </div>
+      </div>
     </div>
   );
 }
