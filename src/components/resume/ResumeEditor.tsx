@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { ResumeForm } from "./ResumeForm";
 import { ResumePreview } from "./ResumePreview";
 import { PDFExportButton } from "./PDFExportButton";
-import { WordExportButton } from "./WordExportButton";
 import { EmailResumeButton } from "./EmailResumeButton";
 
 import { ResumeScoreCard } from "./ResumeScoreCard";
@@ -15,7 +14,14 @@ import { ResumeWorkspace } from "./ResumeWorkspace";
 import { defaultResumeData, type ResumeData } from "@/lib/resume-types";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
-import { FileText, ArrowLeft, ArrowRight, Check, Cloud, CloudOff, Loader2, Globe2 } from "lucide-react";
+import { FileText, ArrowLeft, ArrowRight, Check, Cloud, CloudOff, Loader2, Globe2, MoreHorizontal, LogOut } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useI18n } from "@/lib/i18n";
 import { SUPPORTED_LOCALES, localeFlags, localeNames, type Locale } from "@/lib/i18n/locales";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -64,7 +70,7 @@ const stepHeadlineKeys = {
 export function ResumeEditor({ template: templateFromSearch }: { template?: TemplateId | undefined } = {}) {
 
   const { t, locale, setLocale, dir } = useI18n();
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, loading: authLoading, signOut } = useAuth();
   const [data, setData] = useState<ResumeData>(defaultResumeData);
   const [isLoaded, setIsLoaded] = useState(false);
   const [languageIntroStage, setLanguageIntroStage] = useState<"interface" | "resume" | null>(null);
@@ -345,7 +351,7 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" aria-label={t("wizard.menu")}>
+                <Button variant="outline" size="sm" aria-label="Menü">
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -367,7 +373,7 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                 {!authLoading && isAuthenticated ? (
                   <DropdownMenuItem
                     onSelect={() => {
-                      void signOut().then(() => toast.success(t("auth.signedOutToast")));
+                      void signOut().then(() => toast.success(t("auth.signOut")));
                     }}
                   >
                     <LogOut className="mr-2 h-4 w-4" />
