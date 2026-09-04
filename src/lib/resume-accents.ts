@@ -16,6 +16,7 @@ export const accentPresets: AccentPreset[] = [
   { id: "forest", color: "#166534", soft: "#eff8f0", wash: "#a9d8b2" },
   { id: "violet", color: "#5b21b6", soft: "#f4f0fe", wash: "#c9b6f5" },
   { id: "emerald", color: "#2f9e7e", soft: "#e9f6f1", wash: "#a9dcc9" },
+  { id: "sage", color: "#8a9a7b", soft: "#e8e5d8", wash: "#c4cdb6" },
   { id: "coral", color: "#c2504a", soft: "#fbd9d1", wash: "#f3b3a4" },
 ];
 
@@ -34,6 +35,7 @@ export function resolveAccentId(template?: string, accent?: string): string {
   if (template === "esmeralda" && (!accent || accent === "slate")) return "emerald";
   if (template === "marina" && (!accent || accent === "slate")) return "petrol";
   if (template === "milano" && (!accent || accent === "slate")) return "navy";
+  if (template === "verona" && (!accent || accent === "slate")) return "sage";
   if (template === "azur" && (!accent || accent === "slate")) return "navy";
   return accent ?? defaultAccentId;
 }

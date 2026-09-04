@@ -198,6 +198,8 @@ export const fr = {
   "resume.contact": "Contact",
   "template.milano": "Milano",
   "template.milanoDesc": "Papier pastel avec accent bleu et colonne d'infos à droite",
+  "template.verona": "Verona",
+  "template.veronaDesc": "Papier sauge avec bandeau photo et barres de compétences",
   "resume.profile": "Profil",
   "resume.experience": "Expérience professionnelle",
   "resume.education": "Formation",

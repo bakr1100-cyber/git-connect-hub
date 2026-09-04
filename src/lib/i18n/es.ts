@@ -198,6 +198,8 @@ export const es = {
   "resume.contact": "Contacto",
   "template.milano": "Milano",
   "template.milanoDesc": "Papel pastel con acento azul y columna de datos a la derecha",
+  "template.verona": "Verona",
+  "template.veronaDesc": "Papel salvia con banda de nombre y barras de habilidades",
   "resume.profile": "Perfil",
   "resume.experience": "Experiencia laboral",
   "resume.education": "Educación",

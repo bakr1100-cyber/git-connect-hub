@@ -216,6 +216,8 @@ export const en = {
   "resume.contact": "Contact",
   "template.milano": "Milano",
   "template.milanoDesc": "Pastel paper with blue accent and right info column",
+  "template.verona": "Verona",
+  "template.veronaDesc": "Sage paper with photo name band and skill bars",
   "resume.profile": "Profile",
   "resume.experience": "Experience",
   "resume.education": "Education",

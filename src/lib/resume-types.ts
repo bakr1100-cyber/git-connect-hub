@@ -44,7 +44,7 @@ export interface Language {
   level: string;
 }
 
-export const templateIds = ["minimalist", "modern", "european", "tokyo", "azur", "esmeralda", "marina", "milano"] as const;
+export const templateIds = ["minimalist", "modern", "european", "tokyo", "azur", "esmeralda", "marina", "milano", "verona"] as const;
 export type TemplateId = (typeof templateIds)[number];
 
 export interface ResumeSettings {
