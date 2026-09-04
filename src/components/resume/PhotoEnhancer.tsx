@@ -34,21 +34,29 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
   const run = async (source: string) => {
     setBusy(true);
     try {
+      // Fix exposure locally first so very dark photos give the model usable input,
+      // and tell the server what is wrong with the original.
+      const { image: prepared, analysis } = await autoCorrect(source);
       const res = await fetch("/api/enhance-photo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: source }),
+        body: JSON.stringify({
+          image: prepared,
+          hints: { dark: analysis.dark, blurry: analysis.blurry },
+        }),
       });
       if (!res.ok) throw new Error(String(res.status));
       const data = (await res.json()) as { image?: string };
       if (!data.image) throw new Error("empty");
-      setResult(data.image);
+      // Final crispness pass — stronger when the original was soft.
+      setResult(await sharpen(data.image, analysis.blurry ? 0.75 : 0.45));
     } catch {
       toast.error(t("photo.failed"));
     } finally {
       setBusy(false);
     }
   };
+
 
   const start = () => {
     if (!photo) {
