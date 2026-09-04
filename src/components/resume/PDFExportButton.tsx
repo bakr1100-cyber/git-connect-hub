@@ -39,29 +39,38 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
 
 
   const exportPdf = async () => {
-    const html2pdf = (await import("html2pdf.js")).default;
     const element = document.getElementById("resume-preview-container");
     if (!element) return;
 
     setIsExporting(true);
     try {
-      const opt = {
-        margin: 0,
-        filename: `${data.personalDetails.fullName || "Lebenslauf"}.pdf`,
-        image: { type: "jpeg" as const, quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-          backgroundColor: "#ffffff",
-        },
-        jsPDF: {
-          unit: "mm" as const,
-          format: "a4" as const,
-          orientation: "portrait" as const,
-        },
-      };
-      await html2pdf().set(opt).from(element).save();
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import("html2canvas-pro"),
+        import("jspdf"),
+      ]);
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#ffffff",
+      });
+      const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imageHeight = (canvas.height * pageWidth) / canvas.width;
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.98);
+
+      let position = 0;
+      let heightLeft = imageHeight;
+      pdf.addImage(dataUrl, "JPEG", 0, position, pageWidth, imageHeight);
+      heightLeft -= pageHeight;
+      while (heightLeft > 0) {
+        position -= pageHeight;
+        pdf.addPage();
+        pdf.addImage(dataUrl, "JPEG", 0, position, pageWidth, imageHeight);
+        heightLeft -= pageHeight;
+      }
+      pdf.save(`${data.personalDetails.fullName || "Lebenslauf"}.pdf`);
     } finally {
       setIsExporting(false);
     }
