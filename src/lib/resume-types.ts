@@ -44,9 +44,12 @@ export interface Language {
   level: string;
 }
 
+export const templateIds = ["minimalist", "modern", "european", "tokyo", "azur"] as const;
+export type TemplateId = (typeof templateIds)[number];
+
 export interface ResumeSettings {
   language: Locale;
-  template: "minimalist" | "modern" | "european" | "tokyo" | "azur";
+  template: TemplateId;
   targetPosition?: string;
   /** Accent colour preset id, see src/lib/resume-accents.ts */
   accent?: string;

@@ -402,7 +402,7 @@ function LandingPage() {
                   <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">ATS</span>
                 </div>
                 <Button variant="outline" size="sm" className="mt-2 w-full" asChild>
-                  <Link to="/editor">{t("templates.use")}</Link>
+                  <Link to="/editor" search={{ template: tpl.id }}>{t("templates.use")}</Link>
                 </Button>
               </StaggerItem>
             ))}

@@ -23,6 +23,9 @@ import { useResumeAutoSave } from "@/hooks/useResumeAutoSave";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { rememberAuthReturnPath, WIZARD_STEP_KEY } from "@/lib/auth-return";
+import { getRouteApi } from "@tanstack/react-router";
+
+const editorRoute = getRouteApi("/editor");
 
 const STORAGE_KEY = "resume-draft-v1";
 const LANGUAGE_INTRO_KEY = "resume-language-intro-v3";
@@ -57,6 +60,7 @@ const stepHeadlineKeys = {
 } as const;
 
 export function ResumeEditor() {
+  const { template: templateFromSearch } = editorRoute.useSearch();
   const { t, locale, setLocale, dir } = useI18n();
   const { isAuthenticated, loading: authLoading } = useAuth();
   const [data, setData] = useState<ResumeData>(defaultResumeData);
