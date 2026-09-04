@@ -5,6 +5,7 @@ export const nl = {
   "nav.reviews": "Beoordelingen",
   "nav.signIn": "Inloggen",
   "auth.signedIn": "Aangemeld",
+  "auth.loginRequired": "Log in om deze functie te gebruiken.",
   "nav.createResume": "CV maken",
   "nav.home": "Home",
   "nav.language": "Taal",

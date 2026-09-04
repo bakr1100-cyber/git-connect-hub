@@ -422,6 +422,7 @@ export const en = {
   "auth.register": "Sign up",
   "auth.signIn": "Sign in",
   "auth.signOut": "Sign out",
+  "auth.loginRequired": "Please sign in to use this feature.",
   "auth.haveAccount": "Already have an account?",
   "auth.noAccount": "No account yet?",
   "auth.invalid": "Please enter a valid email and a password with at least 6 characters.",

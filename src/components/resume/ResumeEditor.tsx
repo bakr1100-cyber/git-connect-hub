@@ -39,14 +39,12 @@ const LANGUAGE_INTRO_KEY = "resume-language-intro-v3";
 const TEMPLATE_CHOSEN_KEY = "resume-template-chosen-v1";
 const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
-/** The five wizard steps; the final step combines fine-tuning and the cover letter. */
+/** The wizard stays intentionally short: design, basics, career and finish. */
 const allWizardSteps: { id: WizardStepId; forms: string[] }[] = [
   { id: "design", forms: [] },
   { id: "personal", forms: ["personal"] },
-  { id: "education", forms: ["education"] },
-  { id: "experience", forms: ["experience"] },
-  { id: "skills", forms: ["skills"] },
-  { id: "finish", forms: ["summary", "settings", "cover-letter"] },
+  { id: "experience", forms: ["education", "experience"] },
+  { id: "finish", forms: ["skills", "summary", "settings", "cover-letter"] },
 ];
 
 const stepLabelKeys = {
@@ -225,7 +223,9 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
           onChange={updateData}
           onEditStep={(index) => {
             setMode("wizard");
-            goTo(index);
+            // Workspace step numbers assume the design step; it is skipped when a
+            // template was preselected, so shift the target back by one.
+            goTo(index - (templatePreselected ? 1 : 0));
           }}
         />
       </div>
@@ -347,6 +347,24 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                 updateData((prev) => ({ ...prev, settings: { ...prev.settings, language: next } }))
               }
             />
+            <span
+              className="hidden items-center gap-1.5 whitespace-nowrap text-xs text-muted-foreground md:flex"
+              role="status"
+              aria-live="polite"
+            >
+              {saveState === "saving" ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : isAuthenticated && saveState === "saved" ? (
+                <Cloud className="h-3.5 w-3.5 text-trust" />
+              ) : (
+                <CloudOff className="h-3.5 w-3.5" />
+              )}
+              {saveState === "saving"
+                ? t("autosave.saving")
+                : isAuthenticated && saveState === "saved"
+                  ? t("autosave.saved")
+                  : t("autosave.local")}
+            </span>
             <PDFExportButton data={data} />
 
             <DropdownMenu>
@@ -359,13 +377,19 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                 <DropdownMenuItem asChild>
                   <Link to="/profil">Profil</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/anschreiben">Anschreiben</Link>
-                </DropdownMenuItem>
+                {/* The cover letter belongs to the final step; show it only there. */}
+                {isLastStep && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/anschreiben">Anschreiben</Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
-                <div className="px-1 py-1">
-                  <ResumeImportDialog data={data} onImport={(next) => setData(next)} />
-                </div>
+                {/* Importing a CV makes sense at the start, not midway through. */}
+                {stepIndex === 0 && (
+                  <div className="px-1 py-1">
+                    <ResumeImportDialog data={data} onImport={(next) => setData(next)} />
+                  </div>
+                )}
                 <div className="px-1 py-1">
                   <EmailResumeButton data={data} />
                 </div>

@@ -459,6 +459,7 @@ export const es = {
   "auth.register": "Registrarse",
   "auth.signIn": "Iniciar sesión",
   "auth.signOut": "Cerrar sesión",
+  "auth.loginRequired": "Inicia sesión para usar esta función.",
   "auth.haveAccount": "¿Ya tienes una cuenta?",
   "auth.noAccount": "¿Aún no tienes cuenta?",
   "auth.invalid": "Introduce un correo válido y una contraseña de al menos 6 caracteres.",

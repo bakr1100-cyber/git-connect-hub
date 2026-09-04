@@ -479,6 +479,7 @@ export const de = {
   "auth.register": "Registrieren",
   "auth.signIn": "Anmelden",
   "auth.signOut": "Abmelden",
+  "auth.loginRequired": "Bitte melde dich an, um diese Funktion zu nutzen.",
   "auth.haveAccount": "Hast du bereits ein Konto?",
   "auth.noAccount": "Noch kein Konto?",
   "auth.invalid": "Bitte gültige E-Mail und mindestens 6 Zeichen Passwort eingeben.",

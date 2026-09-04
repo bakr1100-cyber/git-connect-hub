@@ -459,6 +459,7 @@ export const ar = {
   "auth.register": "إنشاء حساب",
   "auth.signIn": "تسجيل الدخول",
   "auth.signOut": "تسجيل الخروج",
+  "auth.loginRequired": "يرجى تسجيل الدخول لاستخدام هذه الميزة.",
   "auth.haveAccount": "هل لديك حساب بالفعل؟",
   "auth.noAccount": "ليس لديك حساب بعد؟",
   "auth.invalid": "يرجى إدخال بريد إلكتروني صالح وكلمة مرور من 6 أحرف على الأقل.",

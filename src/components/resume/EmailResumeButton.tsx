@@ -3,6 +3,7 @@ import { Loader2, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/hooks/useAuth";
 import type { ResumeData } from "@/lib/resume-types";
 import {
   generateResumePdfBlob,
@@ -17,9 +18,15 @@ interface EmailResumeButtonProps {
 /** Creates the PDF, saves it locally and opens the mail client prefilled. */
 export function EmailResumeButton({ data }: EmailResumeButtonProps) {
   const { t } = useI18n();
+  const { isAuthenticated } = useAuth();
   const [isBusy, setIsBusy] = useState(false);
 
   const handleClick = async () => {
+    // Sending requires an account, same as the PDF download.
+    if (!isAuthenticated) {
+      toast.info(t("auth.loginRequired"));
+      return;
+    }
     setIsBusy(true);
     try {
       const blob = await generateResumePdfBlob();
