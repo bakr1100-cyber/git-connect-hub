@@ -11,6 +11,7 @@ import { CheckoutDialog } from "@/components/pricing/CheckoutDialog";
 import { PaymentStatusCard } from "@/components/pricing/PaymentStatusCard";
 import { ResumeEditor } from "@/components/resume/ResumeEditor";
 import { PDFExportButton } from "@/components/resume/PDFExportButton";
+import { PackageDownloadButton } from "@/components/pricing/PackageDownloadButton";
 import { defaultResumeData, type ResumeData } from "@/lib/resume-types";
 
 export const Route = createFileRoute("/bewerbung")({
