@@ -63,9 +63,25 @@ export const Route = createFileRoute("/api/enhance-photo")({
 
         if (!result) return new Response("No image returned", { status: 502 });
 
-        return new Response(JSON.stringify({ image: result }), {
+        // The PDF export rasterises the preview in the browser; a remote image URL
+        // would be blocked by CORS and vanish from the PDF. Always inline the photo.
+        let inlined = result;
+        if (!inlined.startsWith("data:")) {
+          const imageResponse = await fetch(inlined);
+          if (!imageResponse.ok) {
+            return new Response("Enhanced image could not be downloaded", { status: 502 });
+          }
+          const bytes = new Uint8Array(await imageResponse.arrayBuffer());
+          let binary = "";
+          for (const byte of bytes) binary += String.fromCharCode(byte);
+          const mime = imageResponse.headers.get("content-type") ?? "image/png";
+          inlined = `data:${mime};base64,${btoa(binary)}`;
+        }
+
+        return new Response(JSON.stringify({ image: inlined }), {
           headers: { "Content-Type": "application/json" },
         });
+
       },
     },
   },
