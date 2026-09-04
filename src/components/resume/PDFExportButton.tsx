@@ -19,6 +19,11 @@ import { AuthPanel } from "@/components/auth/AuthPanel";
 import { AiCostSummary } from "./AiCostSummary";
 import { CheckoutDialog } from "@/components/pricing/CheckoutDialog";
 import type { Tier } from "@/lib/entitlements";
+import { rememberAuthReturnPath } from "@/lib/auth-return";
+import { clearPendingAction, readPendingAction, rememberPendingAction } from "@/lib/pending-action";
+
+/** Set once the very first PDF download started — used for the button label. */
+const PDF_STARTED_KEY = "resume-pdf-started-v1";
 
 
 interface PDFExportButtonProps {
