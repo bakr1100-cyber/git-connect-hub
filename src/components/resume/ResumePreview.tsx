@@ -11,6 +11,7 @@ import { EsmeraldaTemplate } from "./templates/EsmeraldaTemplate";
 import { MarinaTemplate } from "./templates/MarinaTemplate";
 import { MilanoTemplate } from "./templates/MilanoTemplate";
 import { SofiaTemplate } from "./templates/SofiaTemplate";
+import { AmberTemplate } from "./templates/AmberTemplate";
 import { VeronaTemplate } from "./templates/VeronaTemplate";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
@@ -48,7 +49,9 @@ export function ResumePreview({ data, hideCaption = false }: ResumePreviewProps)
                 ? MarinaTemplate
                 : data.settings.template === "milano"
                   ? MilanoTemplate
-                  : data.settings.template === "sofia"
+                  : data.settings.template === "amber"
+                    ? AmberTemplate
+                    : data.settings.template === "sofia"
                     ? SofiaTemplate
                     : data.settings.template === "verona"
                     ? VeronaTemplate

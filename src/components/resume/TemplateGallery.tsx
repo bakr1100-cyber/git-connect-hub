@@ -22,7 +22,8 @@ const templates: { id: TemplateId; badge?: "recommended" | "new" }[] = [
   { id: "marina" },
   { id: "milano" },
   { id: "verona" },
-  { id: "sofia", badge: "new" },
+  { id: "sofia" },
+  { id: "amber", badge: "new" },
   { id: "european" },
 ];
 
@@ -138,6 +139,45 @@ function TemplateThumb({ template, accent }: { template: TemplateId; accent: str
               <div className="h-2 w-3 rounded-sm" style={{ backgroundColor: color }} />
               <div className="h-1 flex-1 rounded bg-slate-200" />
             </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template === "amber") {
+    return (
+      <div className="flex h-full w-full overflow-hidden bg-white p-2">
+        <div className="w-[38%] shrink-0 space-y-1.5 border-e border-slate-300 pe-1.5">
+          <div className="ms-auto h-1.5 w-2/3 rounded" style={{ backgroundColor: color }} />
+          <div className="h-px w-full bg-slate-700" />
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="ms-auto h-1 rounded bg-slate-200" style={{ width: `${60 + i * 10}%` }} />
+          ))}
+          <div className="h-8 w-full bg-slate-300" />
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="space-y-0.5">
+              <div className="ms-auto h-1 w-1/2 rounded bg-slate-200" />
+              <div className="h-1 w-full bg-slate-200">
+                <div className="h-full" style={{ width: `${85 - i * 12}%`, backgroundColor: color }} />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex-1 space-y-1.5 ps-2">
+          <div className="flex gap-1">
+            <div className="h-2.5 w-1/3 rounded bg-slate-800" />
+            <div className="h-2.5 w-1/3 rounded" style={{ backgroundColor: color }} />
+          </div>
+          <div className="h-1 w-1/2 rounded bg-slate-300" />
+          <div className="h-px w-full bg-slate-300" />
+          <div className="h-1.5 w-1/3 rounded" style={{ backgroundColor: color }} />
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-1 rounded bg-slate-200" style={{ width: `${65 + ((i * 11) % 30)}%` }} />
+          ))}
+          <div className="h-1.5 w-2/5 rounded" style={{ backgroundColor: color }} />
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-1 rounded bg-slate-200" style={{ width: `${60 + ((i * 13) % 35)}%` }} />
           ))}
         </div>
       </div>
@@ -367,37 +407,6 @@ export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
 
       </div>
 
-      {/* Quick pick: small preview tiles for every template */}
-      <div className="flex flex-wrap gap-2">
-        {templates.map(({ id }) => {
-          const isActive = id === activeTemplate;
-          return (
-            <button
-              key={id}
-              type="button"
-              onClick={() => selectTemplate(id)}
-              aria-pressed={isActive}
-              title={t(`template.${id}`)}
-              className={cn(
-                "group/quick flex w-[84px] shrink-0 flex-col overflow-hidden rounded-md border-2 bg-muted/40 transition-transform hover:-translate-y-0.5",
-                isActive ? "border-brand shadow-sm" : "border-border"
-              )}
-            >
-              <span className="relative block aspect-[210/297] w-full">
-                <TemplateThumb template={id} accent={activeAccent} />
-                {isActive && (
-                  <span className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded-full bg-brand text-primary-foreground">
-                    <Check className="h-2.5 w-2.5" />
-                  </span>
-                )}
-              </span>
-              <span className="truncate border-t border-border bg-card px-1.5 py-1 text-[10px] font-medium text-foreground">
-                {t(`template.${id}`)}
-              </span>
-            </button>
-          );
-        })}
-      </div>
 
       <div
         ref={scrollerRef}

@@ -74,6 +74,7 @@ export function CoverLetterGenerator() {
 
   const [draft, setDraft] = useState<CoverDraft>(() => emptyDraft(locale));
   const [loaded, setLoaded] = useState(false);
+  const [letterStyle, setLetterStyle] = useState<"classic" | "amber">("classic");
   const [step, setStep] = useState(0);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
@@ -111,6 +112,13 @@ export function CoverLetterGenerator() {
       // ignore
     }
     setDraft(next);
+    try {
+      const resumeRaw = localStorage.getItem(RESUME_KEY);
+      const template = resumeRaw ? (JSON.parse(resumeRaw) as ResumeData).settings?.template : undefined;
+      setLetterStyle(template === "amber" ? "amber" : "classic");
+    } catch {
+      // ignore
+    }
     setLoaded(true);
     void hasAiSession().then(setAuthed);
   }, [locale]);
@@ -205,6 +213,7 @@ export function CoverLetterGenerator() {
   };
 
   const doc: CoverLetterDocument = {
+    style: letterStyle,
     applicant: draft.applicant,
     company: draft.company,
     recipient: draft.recipient,

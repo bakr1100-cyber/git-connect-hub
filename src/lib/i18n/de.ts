@@ -288,6 +288,8 @@ export const de = {
   "template.veronaDesc": "Salbeigrünes Papier mit Foto-Namensband und Skill-Balken",
   "template.sofia": "Sofia",
   "template.sofiaDesc": "Warmes Papier, Serifen-Name und Info-Seitenspalte",
+  "template.amber": "Amber",
+  "template.amberDesc": "Zweispaltig mit Orange-Akzent, Skill-Balken und passendem Anschreiben",
 
   // Resume document sections (rendered inside the CV)
   "resume.profile": "Profil",
@@ -432,6 +434,9 @@ export const de = {
   "accent.forest": "Waldgrün",
   "accent.emerald": "Smaragd",
   "accent.violet": "Violett",
+  "accent.coral": "Koralle",
+  "accent.amber": "Bernstein",
+  "accent.sage": "Salbei",
   "autosave.saving": "Wird gespeichert …",
   "autosave.saved": "Gespeichert",
   "autosave.local": "Lokal gespeichert",
@@ -485,7 +490,6 @@ export const de = {
   "font.elegant": "Elegant",
   "font.classic": "Klassisch",
   "font.technical": "Technisch",
-  "accent.coral": "Koralle",
   "ats.resultsTitle": "Ergebnisse der ATS-Analyse",
   "ats.notAnalysed": "Noch nicht analysiert",
   "ats.hint": "Fülle mindestens 50 % deines Lebenslaufs aus, um deinen ATS-Score zu sehen.",
