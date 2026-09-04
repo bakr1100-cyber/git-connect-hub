@@ -8,6 +8,7 @@ import {
   Download,
   FileText,
   Loader2,
+  Mail,
   Plus,
   RefreshCw,
   Sparkles,
