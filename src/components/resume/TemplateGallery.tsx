@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Check, ChevronLeft, ChevronRight, Upload } from "lucide-react";
 import { Link } from "@tanstack/react-router";
@@ -30,6 +30,8 @@ const templates: { id: TemplateId; badge?: "recommended" | "new" }[] = [
 interface TemplateGalleryProps {
   data: ResumeData;
   onChange: (updater: (prev: ResumeData) => ResumeData) => void;
+  /** "finish" shows the colour picker first and hides the templates behind a question. */
+  variant?: "full" | "finish";
 }
 
 function TemplateThumb({ template, accent }: { template: TemplateId; accent: string }) {
@@ -362,9 +364,10 @@ function TemplateThumb({ template, accent }: { template: TemplateId; accent: str
   );
 }
 
-export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
+export function TemplateGallery({ data, onChange, variant = "full" }: TemplateGalleryProps) {
   const { t, locale } = useI18n();
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const [templatesOpen, setTemplatesOpen] = useState(variant === "full");
   const activeTemplate = data.settings.template;
   const activeAccent = data.settings.accent ?? "slate";
 
@@ -380,7 +383,42 @@ export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
 
   return (
     <section className="space-y-4 rounded-xl border border-border bg-card p-4">
-      <div className="flex items-end justify-between gap-3">
+      {variant === "finish" && (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-base font-bold text-foreground">{t("gallery.color")}</h2>
+            <p className="text-xs text-muted-foreground">{t("gallery.subtitle")}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {accentPresets.map((preset) => (
+              <button
+                key={preset.id}
+                type="button"
+                onClick={() => selectAccent(preset.id)}
+                aria-label={t(`accent.${preset.id}` as TranslationKey)}
+                title={t(`accent.${preset.id}` as TranslationKey)}
+                aria-pressed={preset.id === activeAccent}
+                className={cn(
+                  "h-7 w-7 rounded-full border-2 transition-transform hover:scale-110",
+                  preset.id === activeAccent ? "border-foreground" : "border-border"
+                )}
+                style={{ backgroundColor: preset.color }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {variant === "finish" && (
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
+          <p className="text-sm font-medium text-foreground">{t("wizard.changeTemplate")}</p>
+          <Button variant="outline" size="sm" onClick={() => setTemplatesOpen((open) => !open)}>
+            {templatesOpen ? t("wizard.hideTemplates") : t("wizard.showTemplates")}
+          </Button>
+        </div>
+      )}
+
+      <div className={cn("flex items-end justify-between gap-3", !templatesOpen && "hidden")}>
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brand">
             {t("templates.eyebrow")}
@@ -410,7 +448,10 @@ export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
 
       <div
         ref={scrollerRef}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:thin]"
+        className={cn(
+          "flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:thin]",
+          !templatesOpen && "hidden"
+        )}
       >
         {templates.map(({ id, badge }) => {
           const isActive = id === activeTemplate;
@@ -467,7 +508,7 @@ export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
         })}
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 border-t border-border pt-3">
+      <div className={cn("flex flex-wrap items-center gap-3 border-t border-border pt-3", variant === "finish" && "hidden")}>
         <p className="text-sm font-medium text-foreground">{t("gallery.color")}</p>
         <div className="flex items-center gap-2">
           {accentPresets.map((preset) => (
