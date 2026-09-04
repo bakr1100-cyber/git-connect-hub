@@ -573,9 +573,9 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
               </div>
             )}
 
-            {currentStep.id === "finish" && templatePreselected && (
+            {currentStep.id === "finish" && (
               <div className="px-4 pt-6 lg:px-6">
-                <TemplateGallery data={data} onChange={updateData} variant="finish" />
+                <TemplateGallery data={data} onChange={updateData} />
               </div>
             )}
 
