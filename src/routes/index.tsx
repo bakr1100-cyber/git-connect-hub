@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { TemplateId } from "@/lib/resume-types";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -95,7 +96,7 @@ function LanguageIntroGate({ onComplete }: { onComplete: () => void }) {
 }
 
 const templateCards: Array<{
-  id: string;
+  id: TemplateId;
   nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.european";
   badge?: "recommended" | "new" | "european";
   accent: string;
@@ -402,7 +403,7 @@ function LandingPage() {
                   <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">ATS</span>
                 </div>
                 <Button variant="outline" size="sm" className="mt-2 w-full" asChild>
-                  <Link to="/editor">{t("templates.use")}</Link>
+                  <Link to="/editor" search={{ template: tpl.id }}>{t("templates.use")}</Link>
                 </Button>
               </StaggerItem>
             ))}

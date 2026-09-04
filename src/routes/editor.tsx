@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
+import { templateIds } from "@/lib/resume-types";
 import { ResumeEditor } from "@/components/resume/ResumeEditor";
 
 export const Route = createFileRoute("/editor")({
+  validateSearch: z.object({ template: z.enum(templateIds).optional() }),
   head: () => ({
     meta: [
       { title: "Lebenslauf erstellen — myCVonline.com" },

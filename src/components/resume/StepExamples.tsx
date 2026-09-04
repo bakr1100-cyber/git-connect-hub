@@ -3,9 +3,9 @@ import { Lightbulb } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 
-export type WizardStepId = "personal" | "experience" | "education" | "skills" | "finish";
+export type WizardStepId = "design" | "personal" | "experience" | "education" | "skills" | "finish";
 
-const examples: Record<WizardStepId, TranslationKey[]> = {
+const examples: Partial<Record<WizardStepId, TranslationKey[]>> = {
   personal: ["example.personal.1", "example.personal.2", "example.personal.3"],
   experience: ["example.experience.1", "example.experience.2", "example.experience.3"],
   education: ["example.education.1", "example.education.2", "example.education.3"],
@@ -15,10 +15,12 @@ const examples: Record<WizardStepId, TranslationKey[]> = {
 
 export function StepExamples({ step }: { step: WizardStepId }) {
   const { t } = useI18n();
+  const items = examples[step];
+  if (!items) return null;
 
   return (
     <div className="grid gap-2 sm:grid-cols-3">
-      {examples[step].map((key, index) => (
+      {items.map((key, index) => (
         <motion.div
           key={key}
           initial={{ opacity: 0, y: 8 }}

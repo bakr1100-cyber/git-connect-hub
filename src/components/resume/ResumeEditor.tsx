@@ -23,6 +23,9 @@ import { useResumeAutoSave } from "@/hooks/useResumeAutoSave";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { rememberAuthReturnPath, WIZARD_STEP_KEY } from "@/lib/auth-return";
+import { getRouteApi } from "@tanstack/react-router";
+
+const editorRoute = getRouteApi("/editor");
 
 const STORAGE_KEY = "resume-draft-v1";
 const LANGUAGE_INTRO_KEY = "resume-language-intro-v3";
@@ -30,6 +33,7 @@ const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
 /** The five wizard steps; the final step combines fine-tuning and the cover letter. */
 const wizardSteps: { id: WizardStepId; forms: string[] }[] = [
+  { id: "design", forms: [] },
   { id: "personal", forms: ["personal"] },
   { id: "education", forms: ["education"] },
   { id: "experience", forms: ["experience"] },
@@ -38,6 +42,7 @@ const wizardSteps: { id: WizardStepId; forms: string[] }[] = [
 ];
 
 const stepLabelKeys = {
+  design: "tab.design",
   personal: "tab.personal",
   experience: "tab.experience",
   education: "tab.education",
@@ -46,6 +51,7 @@ const stepLabelKeys = {
 } as const;
 
 const stepHeadlineKeys = {
+  design: "wizard.design.headline",
   personal: "wizard.personal.headline",
   experience: "wizard.experience.headline",
   education: "wizard.education.headline",
@@ -54,6 +60,7 @@ const stepHeadlineKeys = {
 } as const;
 
 export function ResumeEditor() {
+  const { template: templateFromSearch } = editorRoute.useSearch();
   const { t, locale, setLocale, dir } = useI18n();
   const { isAuthenticated, loading: authLoading } = useAuth();
   const [data, setData] = useState<ResumeData>(defaultResumeData);
@@ -119,6 +126,16 @@ export function ResumeEditor() {
   const updateData = useCallback((updater: (prev: ResumeData) => ResumeData) => {
     setData((prev) => updater(prev));
   }, []);
+
+  // A template picked on the landing page pre-selects the design step.
+  useEffect(() => {
+    if (!isLoaded || !templateFromSearch) return;
+    updateData((prev) =>
+      prev.settings.template === templateFromSearch
+        ? prev
+        : { ...prev, settings: { ...prev.settings, template: templateFromSearch } }
+    );
+  }, [isLoaded, templateFromSearch, updateData]);
 
   const handleRestore = useCallback(
     (restored: ResumeData) => {
@@ -489,7 +506,7 @@ export function ResumeEditor() {
               <StepExamples step={currentStep.id} />
             </div>
 
-            {currentStep.id === "finish" && (
+            {currentStep.id === "design" && (
               <div className="px-4 pt-6 lg:px-6">
                 <TemplateGallery data={data} onChange={updateData} />
               </div>
