@@ -304,13 +304,6 @@ function LandingPage() {
               {t("nav.signIn")}
             </Link>
 
-            <Link
-              to="/anschreiben"
-              className="hidden text-sm text-primary-foreground/70 hover:text-primary-foreground sm:inline"
-            >
-              Anschreiben
-            </Link>
-
             <LanguageSwitcher className="text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-primary-foreground" />
             <Button
               size="sm"
