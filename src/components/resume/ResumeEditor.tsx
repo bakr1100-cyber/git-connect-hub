@@ -359,6 +359,7 @@ export function ResumeEditor() {
             <ResumeImportDialog data={data} onImport={(next) => setData(next)} />
             <PDFExportButton data={data} />
             <WordExportButton data={data} />
+            <EmailResumeButton data={data} />
 
           </div>
         </div>
