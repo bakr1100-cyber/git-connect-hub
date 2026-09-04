@@ -39,18 +39,40 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
   const [showPaywall, setShowPaywall] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [showCost, setShowCost] = useState(false);
+  const [hasStartedBefore, setHasStartedBefore] = useState(false);
   const { standard: isUnlocked, unlock, purchase } = useEntitlements();
   const [checkoutTier, setCheckoutTier] = useState<Tier | null>(null);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading: authLoading } = useAuth();
+  // Ref guard: state updates lag behind rapid clicks, so this blocks spam.
+  const exportRunningRef = useRef(false);
   void unlock;
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setHasStartedBefore(localStorage.getItem(PDF_STARTED_KEY) === "1");
+  }, []);
 
+  const handleClickRef = useRef<() => void>(() => {});
+
+  // After login (redirect or OAuth) resume the PDF flow automatically.
+  useEffect(() => {
+    if (authLoading || !isAuthenticated) return;
+    if (readPendingAction() !== "pdf") return;
+    clearPendingAction();
+    handleClickRef.current();
+  }, [authLoading, isAuthenticated]);
 
   const exportPdf = async () => {
+    if (exportRunningRef.current) return;
     const element = document.getElementById("resume-preview-container");
     if (!element) return;
 
+    exportRunningRef.current = true;
     setIsExporting(true);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(PDF_STARTED_KEY, "1");
+      setHasStartedBefore(true);
+    }
     try {
       const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
         import("html2canvas-pro"),
