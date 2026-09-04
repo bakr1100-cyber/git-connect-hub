@@ -96,7 +96,7 @@ function LanguageIntroGate({ onComplete }: { onComplete: () => void }) {
 
 const templateCards: Array<{
   id: string;
-  nameKey: string;
+  nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.european";
   badge?: "recommended" | "new" | "european";
   accent: string;
   sidebar?: boolean;
