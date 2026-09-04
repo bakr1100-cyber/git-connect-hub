@@ -188,6 +188,7 @@ export const es = {
   "template.european": "Europea",
   "template.tokyo": "Tokyo",
   "template.azur": "Azur",
+  "template.esmeralda": "Esmeralda",
   "resume.profile": "Perfil",
   "resume.experience": "Experiencia laboral",
   "resume.education": "Educación",
@@ -213,6 +214,7 @@ export const es = {
   "template.europeanDesc": "Formato europeo clásico",
   "template.tokyoDesc": "Estilo serif elegante con acuarela",
   "template.azurDesc": "Estilo fresco con cabecera de color",
+  "template.esmeraldaDesc": "Diseño crema con acentos esmeralda",
 
   // Reference redesign: navigation, hero bullets, templates, toolkit, score, import
   "nav.contact": "Contacto",
@@ -306,6 +308,7 @@ export const es = {
   "accent.navy": "Azul marino",
   "accent.burgundy": "Burdeos",
   "accent.forest": "Verde bosque",
+  "accent.emerald": "Esmeralda",
   "accent.violet": "Violeta",
   "autosave.saving": "Guardando …",
   "autosave.saved": "Guardado",

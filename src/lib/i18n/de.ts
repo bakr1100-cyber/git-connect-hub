@@ -175,6 +175,7 @@ export const de = {
   "template.europeanDesc": "Klassisches europäisches Format",
   "template.tokyoDesc": "Elegante Serifen-Optik mit Aquarell-Akzenten",
   "template.azurDesc": "Frischer Look mit farbigem Kopfbereich",
+  "template.esmeraldaDesc": "Cremiges Layout mit Smaragd-Akzent und Fußleiste",
 
   // Form: settings
   "form.outputLanguage": "Sprache des Lebenslaufs",
@@ -272,6 +273,7 @@ export const de = {
   "template.european": "Europäisch",
   "template.tokyo": "Tokyo",
   "template.azur": "Azur",
+  "template.esmeralda": "Esmeralda",
 
   // Resume document sections (rendered inside the CV)
   "resume.profile": "Profil",
@@ -414,6 +416,7 @@ export const de = {
   "accent.navy": "Marineblau",
   "accent.burgundy": "Bordeaux",
   "accent.forest": "Waldgrün",
+  "accent.emerald": "Smaragd",
   "accent.violet": "Violett",
   "autosave.saving": "Wird gespeichert …",
   "autosave.saved": "Gespeichert",

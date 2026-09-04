@@ -97,7 +97,7 @@ function LanguageIntroGate({ onComplete }: { onComplete: () => void }) {
 
 const templateCards: Array<{
   id: TemplateId;
-  nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.european";
+  nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.esmeralda" | "template.european";
   badge?: "recommended" | "new" | "european";
   accent: string;
   sidebar?: boolean;
@@ -106,7 +106,8 @@ const templateCards: Array<{
   { id: "modern", nameKey: "template.modern", badge: "recommended", accent: "bg-navy" },
   { id: "minimalist", nameKey: "template.minimalist", accent: "bg-brand" },
   { id: "tokyo", nameKey: "template.tokyo", accent: "bg-brand-dark", sidebar: true },
-  { id: "azur", nameKey: "template.azur", badge: "new", accent: "bg-trust", header: true },
+  { id: "azur", nameKey: "template.azur", accent: "bg-trust", header: true },
+  { id: "esmeralda", nameKey: "template.esmeralda", badge: "new", accent: "bg-brand", header: true },
   { id: "european", nameKey: "template.european", badge: "european", accent: "bg-sand", sidebar: true },
 ];
 
@@ -375,7 +376,7 @@ function LandingPage() {
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-dark">{t("templates.eyebrow")}</p>
             <h2 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-navy">{t("templates.title")}</h2>
             <p className="mt-4 max-w-2xl text-muted-foreground">{t("templates.subtitle")}</p>
-            <p className="mt-3 text-sm font-semibold text-primary">5 {t("templates.count")}</p>
+            <p className="mt-3 text-sm font-semibold text-primary">6 {t("templates.count")}</p>
           </Reveal>
 
           <Stagger className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4" stagger={0.06}>
