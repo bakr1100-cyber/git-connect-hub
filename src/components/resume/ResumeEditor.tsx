@@ -1,3 +1,4 @@
+import { AuthButton } from "@/components/auth/AuthButton";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { ResumeForm } from "./ResumeForm";
 import { ResumePreview } from "./ResumePreview";
@@ -218,6 +219,7 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
               <ArrowLeft className="mr-1.5 h-4 w-4" />
               {t("ws.backToEditor")}
             </Button>
+            <AuthButton />
           </div>
         </header>
         <ResumeWorkspace
@@ -367,6 +369,7 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                   ? t("autosave.saved")
                   : t("autosave.local")}
             </span>
+            <AuthButton />
             <PDFExportButton data={data} />
 
             <DropdownMenu>

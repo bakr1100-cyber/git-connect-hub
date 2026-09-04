@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AuthButton } from "@/components/auth/AuthButton";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ResumePreview } from "@/components/resume/ResumePreview";
 import { Button } from "@/components/ui/button";
@@ -73,6 +74,7 @@ function SharePage() {
             <Button asChild size="sm">
               <Link to="/editor">{t("share.createOwn")}</Link>
             </Button>
+            <AuthButton />
           </div>
         </div>
       </header>

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageTopBar } from "@/components/layout/PageTopBar";
 import { CheckCircle2, AlertTriangle, Globe, Rocket, ShieldCheck, ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/status")({
@@ -39,7 +40,9 @@ const steps = [
 
 function StatusPage() {
   return (
-    <div className="min-h-screen bg-muted/40 px-4 py-10">
+    <div className="min-h-screen bg-muted/40">
+      <PageTopBar />
+      <div className="px-4 py-10">
       <div className="mx-auto max-w-2xl space-y-6">
         <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Zurück zur Startseite
@@ -102,6 +105,7 @@ function StatusPage() {
             ))}
           </ul>
         </section>
+      </div>
       </div>
     </div>
   );

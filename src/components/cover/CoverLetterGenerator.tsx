@@ -1,3 +1,4 @@
+import { AuthButton } from "@/components/auth/AuthButton";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
@@ -276,6 +277,7 @@ export function CoverLetterGenerator() {
               )}
               PDF
             </Button>
+            <AuthButton />
           </div>
         </div>
       </header>

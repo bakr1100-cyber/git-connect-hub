@@ -1,3 +1,4 @@
+import { PageTopBar } from "@/components/layout/PageTopBar";
 import { createFileRoute } from "@tanstack/react-router";
 import { ApplicantProfileForm } from "@/components/profile/ApplicantProfileForm";
 
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/profil")({
 function ProfilePage() {
   return (
     <div className="min-h-screen bg-background">
+      <PageTopBar />
       <ApplicantProfileForm />
     </div>
   );
