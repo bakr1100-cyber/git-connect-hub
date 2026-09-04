@@ -374,7 +374,7 @@ function LandingPage() {
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-dark">{t("templates.eyebrow")}</p>
             <h2 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-navy">{t("templates.title")}</h2>
             <p className="mt-4 max-w-2xl text-muted-foreground">{t("templates.subtitle")}</p>
-            <p className="mt-3 text-sm font-semibold text-primary">4 {t("templates.count")}</p>
+            <p className="mt-3 text-sm font-semibold text-primary">5 {t("templates.count")}</p>
           </Reveal>
 
           <Stagger className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4" stagger={0.06}>
@@ -382,7 +382,7 @@ function LandingPage() {
               <StaggerItem key={tpl.id} className="group w-44 shrink-0 snap-start sm:w-52">
                 <div className="relative">
                   <div className="transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl">
-                    <TemplateThumb accent={tpl.accent} sidebar={tpl.sidebar} />
+                    <TemplateThumb accent={tpl.accent} sidebar={tpl.sidebar} header={tpl.header} />
                   </div>
                   {tpl.badge && (
                     <Badge
@@ -398,7 +398,7 @@ function LandingPage() {
                   )}
                 </div>
                 <div className="mt-3 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-navy">{tpl.category}</span>
+                  <span className="text-sm font-semibold text-navy">{t(tpl.nameKey)}</span>
                   <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">ATS</span>
                 </div>
                 <Button variant="outline" size="sm" className="mt-2 w-full" asChild>
