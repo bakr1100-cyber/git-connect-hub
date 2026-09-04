@@ -5,6 +5,7 @@ export const it = {
   "nav.reviews": "Recensioni",
   "nav.signIn": "Accedi",
   "auth.signedIn": "Accesso effettuato",
+  "auth.loginRequired": "Accedi per usare questa funzione.",
   "nav.createResume": "Crea curriculum",
   "nav.home": "Home",
   "nav.language": "Lingua",

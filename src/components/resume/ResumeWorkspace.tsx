@@ -39,14 +39,14 @@ export function ResumeWorkspace({ data, onChange, onEditStep }: Props) {
       id: "personal",
       icon: User,
       label: t("tab.personal"),
-      step: 0,
+      step: 1,
       value: pct([!!p.fullName, !!p.email, !!p.phone, !!p.location]),
     },
     {
       id: "education",
       icon: GraduationCap,
       label: t("tab.education"),
-      step: 1,
+      step: 2,
       value: pct([data.education.length > 0, data.education.some((e) => !!e.institution)]),
     },
     {
@@ -58,7 +58,7 @@ export function ResumeWorkspace({ data, onChange, onEditStep }: Props) {
     },
     { id: "skills", icon: ListChecks, label: t("tab.skills"), step: 3, value: pct([data.skills.length > 0, data.skills.length >= 5]) },
     { id: "languages", icon: Globe, label: t("form.languages"), step: 3, value: pct([data.languages.length > 0]) },
-    { id: "summary", icon: Target, label: t("form.summary"), step: 4, value: pct([!!p.summary, (p.summary || "").length > 120]) },
+    { id: "summary", icon: Target, label: t("form.summary"), step: 3, value: pct([!!p.summary, (p.summary || "").length > 120]) },
   ];
 
   return (

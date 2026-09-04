@@ -459,6 +459,7 @@ export const fr = {
   "auth.register": "S'inscrire",
   "auth.signIn": "Se connecter",
   "auth.signOut": "Se déconnecter",
+  "auth.loginRequired": "Connectez-vous pour utiliser cette fonctionnalité.",
   "auth.haveAccount": "Vous avez déjà un compte ?",
   "auth.noAccount": "Pas encore de compte ?",
   "auth.invalid": "Saisissez un e-mail valide et un mot de passe d'au moins 6 caractères.",
