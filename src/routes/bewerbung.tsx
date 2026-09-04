@@ -120,7 +120,7 @@ function PackagePage() {
                     variant={tier.tier === "premium" ? "default" : "outline"}
                     onClick={() => setCheckoutTier(tier.tier)}
                   >
-                    {`${tier.name} ${t("pkg.choose")}`}
+                    {`${t("pkg.choose")} · ${info.price}`}
                   </Button>
                 </CardContent>
               </Card>
