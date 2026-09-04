@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { ResumeForm } from "./ResumeForm";
 import { ResumePreview } from "./ResumePreview";
 import { PDFExportButton } from "./PDFExportButton";
-import { WordExportButton } from "./WordExportButton";
 import { EmailResumeButton } from "./EmailResumeButton";
 
 import { ResumeScoreCard } from "./ResumeScoreCard";
@@ -15,7 +14,14 @@ import { ResumeWorkspace } from "./ResumeWorkspace";
 import { defaultResumeData, type ResumeData } from "@/lib/resume-types";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
-import { FileText, ArrowLeft, ArrowRight, Check, Cloud, CloudOff, Loader2, Globe2 } from "lucide-react";
+import { FileText, ArrowLeft, ArrowRight, Check, Cloud, CloudOff, Loader2, Globe2, MoreHorizontal, LogOut } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useI18n } from "@/lib/i18n";
 import { SUPPORTED_LOCALES, localeFlags, localeNames, type Locale } from "@/lib/i18n/locales";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -64,7 +70,7 @@ const stepHeadlineKeys = {
 export function ResumeEditor({ template: templateFromSearch }: { template?: TemplateId | undefined } = {}) {
 
   const { t, locale, setLocale, dir } = useI18n();
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, loading: authLoading, signOut } = useAuth();
   const [data, setData] = useState<ResumeData>(defaultResumeData);
   const [isLoaded, setIsLoaded] = useState(false);
   const [languageIntroStage, setLanguageIntroStage] = useState<"interface" | "resume" | null>(null);
@@ -331,29 +337,9 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
               <span className="hidden sm:inline">{t("brand.name")}</span>
             </Link>
             <div className="hidden h-8 w-px bg-border sm:block" />
-            <div className="min-w-0 leading-tight">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                {t("wizard.step")} {stepIndex + 1} {t("wizard.of")} {totalSteps}
-              </p>
-              <p className="truncate text-sm font-semibold text-foreground">{t(stepLabelKeys[currentStep.id])}</p>
-            </div>
+            <p className="min-w-0 truncate text-sm font-semibold text-foreground">{t(stepLabelKeys[currentStep.id])}</p>
           </div>
-          <div className="flex max-w-[68vw] items-center gap-2 overflow-x-auto overscroll-contain sm:max-w-none">
-            <span className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
-              {saveState === "saving" ? (
-                <>
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" /> {t("autosave.saving")}
-                </>
-              ) : saveState === "saved" ? (
-                <>
-                  <Cloud className="h-3.5 w-3.5 text-brand" /> {t("autosave.saved")}
-                </>
-              ) : (
-                <>
-                  <CloudOff className="h-3.5 w-3.5" /> {t("autosave.local")}
-                </>
-              )}
-            </span>
+          <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <DocumentLanguageSwitcher
               value={data.settings.language as Locale}
@@ -361,32 +347,49 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                 updateData((prev) => ({ ...prev, settings: { ...prev.settings, language: next } }))
               }
             />
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/profil">Profil</Link>
-            </Button>
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/anschreiben">Anschreiben</Link>
-            </Button>
-
-            {!authLoading && isAuthenticated ? (
-              <span className="inline-flex shrink-0 rounded-lg border border-brand/35 bg-brand/10 px-3 py-2 text-sm font-semibold text-brand">
-                {t("auth.signedIn")}
-              </span>
-            ) : (
-              <Link
-                to="/auth"
-                onClick={() => rememberAuthReturnPath()}
-                className="inline-flex shrink-0 rounded-lg border border-border px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:border-brand hover:text-brand"
-              >
-                {t("nav.signIn")}
-              </Link>
-            )}
-            <ResumeImportDialog data={data} onImport={(next) => setData(next)} />
             <PDFExportButton data={data} />
-            <WordExportButton data={data} />
-            <EmailResumeButton data={data} />
 
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" aria-label="Menü">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem asChild>
+                  <Link to="/profil">Profil</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/anschreiben">Anschreiben</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <div className="px-1 py-1">
+                  <ResumeImportDialog data={data} onImport={(next) => setData(next)} />
+                </div>
+                <div className="px-1 py-1">
+                  <EmailResumeButton data={data} />
+                </div>
+                <DropdownMenuSeparator />
+                {!authLoading && isAuthenticated ? (
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      void signOut().then(() => toast.success(t("auth.signOut")));
+                    }}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    {t("auth.signOut")}
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem asChild>
+                    <Link to="/auth" onClick={() => rememberAuthReturnPath()}>
+                      {t("nav.signIn")}
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
+
         </div>
         {/* Progress bar */}
         <div className="h-1 w-full bg-muted">
