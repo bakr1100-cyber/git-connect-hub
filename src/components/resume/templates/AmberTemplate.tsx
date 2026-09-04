@@ -40,10 +40,10 @@ export function AmberTemplate({ data }: TemplateProps) {
   const extraSections = (data.extraSections ?? []).filter((s) => s.title.trim() || s.content.trim());
 
   const contactRows = [
-    personalDetails.phone && { value: personalDetails.phone, label: tr("resume.phone") },
-    personalDetails.email && { value: personalDetails.email, label: tr("resume.email") },
-    personalDetails.location && { value: personalDetails.location, label: tr("resume.address") },
-    personalDetails.website && { value: personalDetails.website, label: tr("resume.website") },
+    personalDetails.phone && { value: personalDetails.phone, label: tr("form.phone") },
+    personalDetails.email && { value: personalDetails.email, label: tr("form.email") },
+    personalDetails.location && { value: personalDetails.location, label: tr("form.location") },
+    personalDetails.website && { value: personalDetails.website, label: tr("form.website") },
     personalDetails.linkedin && { value: personalDetails.linkedin, label: "LinkedIn" },
   ].filter(Boolean) as { value: string; label: string }[];
 
