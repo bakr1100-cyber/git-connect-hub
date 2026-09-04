@@ -33,12 +33,18 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
   const [cropped, setCropped] = useState<string | null>(null);
 
 
+  const [fallback, setFallback] = useState(false);
+
   const run = async (source: string) => {
     setBusy(true);
+    let prepared = source;
+    let analysis = { dark: false, blurry: false };
     try {
       // Fix exposure locally first so very dark photos give the model usable input,
       // and tell the server what is wrong with the original.
-      const { image: prepared, analysis } = await autoCorrect(source);
+      const corrected = await autoCorrect(source);
+      prepared = corrected.image;
+      analysis = { dark: corrected.analysis.dark, blurry: corrected.analysis.blurry };
       const res = await fetch("/api/enhance-photo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -51,9 +57,22 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
       const data = (await res.json()) as { image?: string };
       if (!data.image) throw new Error("empty");
       // Final crispness pass — stronger when the original was soft.
+      setFallback(false);
       setResult(await sharpen(data.image, analysis.blurry ? 0.75 : 0.45));
-    } catch {
-      toast.error(t("photo.failed"));
+    } catch (error) {
+      const status = Number((error as Error)?.message);
+      const key =
+        status === 429 ? "photo.failedBusy" : status === 402 || status === 403 ? "photo.failedQuota" : "photo.failed";
+      // Clean fallback: never leave the user empty-handed — offer the locally
+      // brightened and sharpened version instead.
+      try {
+        const local = await sharpen(prepared, analysis.blurry ? 0.8 : 0.5);
+        setFallback(true);
+        setResult(local);
+        toast.warning(t("photo.fallbackUsed"));
+      } catch {
+        toast.error(t(key));
+      }
     } finally {
       setBusy(false);
     }
@@ -97,13 +116,16 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
           if (!open) {
             setResult(null);
             setCropped(null);
+            setFallback(false);
           }
         }}
       >
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>{t("photo.resultTitle")}</DialogTitle>
-            <DialogDescription>{t("photo.crop.desc")}</DialogDescription>
+            <DialogDescription>
+              {fallback ? t("photo.fallbackNote") : t("photo.crop.desc")}
+            </DialogDescription>
           </DialogHeader>
           {result && <PhotoCropper src={result} onCropped={setCropped} />}
           <DialogFooter className="gap-2 sm:justify-between">
@@ -123,6 +145,7 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
                 if (final) onApply(final);
                 setResult(null);
                 setCropped(null);
+                setFallback(false);
                 toast.success(t("photo.applied"));
               }}
             >
