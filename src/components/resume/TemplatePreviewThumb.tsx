@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type ComponentType, type CSSProperties } from "react";
 import type { ResumeData, TemplateId } from "@/lib/resume-types";
 import { getAccent, resolveAccentId } from "@/lib/resume-accents";
 import { MinimalistTemplate } from "./templates/MinimalistTemplate";
@@ -18,7 +18,7 @@ import samplePhoto from "@/assets/sample-cv-photo.jpg";
 const PAGE_WIDTH = 794;
 const PAGE_HEIGHT = 1123;
 
-const templateComponents: Record<TemplateId, (props: { data: ResumeData }) => JSX.Element> = {
+const templateComponents: Record<TemplateId, ComponentType<{ data: ResumeData }>> = {
   minimalist: MinimalistTemplate,
   modern: ModernTemplate,
   european: EuropeanTemplate,
