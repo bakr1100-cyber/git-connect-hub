@@ -284,10 +284,8 @@ function LandingPage() {
           <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
             {[
               { href: "#vorlagen", label: t("templates.eyebrow") },
-              { href: "#funktionen", label: t("nav.features") },
               { href: "#preise", label: t("nav.pricing") },
               { href: "/bewerbung", label: t("pkg.nav") },
-              { href: "#bewertungen", label: t("nav.reviews") },
             ].map((item) => (
               <a
                 key={item.href}
@@ -299,21 +297,11 @@ function LandingPage() {
             ))}
           </nav>
           <div className="flex items-center gap-2">
-            <a href="#kontakt" className="hidden text-sm text-primary-foreground/70 hover:text-primary-foreground lg:inline">
-              {t("nav.contact")}
-            </a>
             <Link
               to="/auth"
               className="hidden text-sm text-primary-foreground/70 hover:text-primary-foreground sm:inline"
             >
               {t("nav.signIn")}
-            </Link>
-
-            <Link
-              to="/anschreiben"
-              className="hidden text-sm text-primary-foreground/70 hover:text-primary-foreground sm:inline"
-            >
-              Anschreiben
             </Link>
 
             <LanguageSwitcher className="text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-primary-foreground" />
