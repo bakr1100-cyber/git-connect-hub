@@ -123,6 +123,16 @@ export function ResumeEditor() {
     setData((prev) => updater(prev));
   }, []);
 
+  // A template picked on the landing page pre-selects the design step.
+  useEffect(() => {
+    if (!isLoaded || !templateFromSearch) return;
+    updateData((prev) =>
+      prev.settings.template === templateFromSearch
+        ? prev
+        : { ...prev, settings: { ...prev.settings, template: templateFromSearch } }
+    );
+  }, [isLoaded, templateFromSearch, updateData]);
+
   const handleRestore = useCallback(
     (restored: ResumeData) => {
       setData(restored);
