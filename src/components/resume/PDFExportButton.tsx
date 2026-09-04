@@ -60,18 +60,9 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
       const imageHeight = (canvas.height * pageWidth) / canvas.width;
       const dataUrl = canvas.toDataURL("image/jpeg", 0.98);
 
-      let position = 0;
-      let heightLeft = imageHeight;
-      pdf.addImage(dataUrl, "JPEG", 0, position, pageWidth, imageHeight);
-      heightLeft -= pageHeight;
-      // Ignore a few millimetres of trailing overflow so a barely-taller
-      // preview does not produce an empty second page.
-      while (heightLeft > 5) {
-        position -= pageHeight;
-        pdf.addPage();
-        pdf.addImage(dataUrl, "JPEG", 0, position, pageWidth, imageHeight);
-        heightLeft -= pageHeight;
-      }
+      // The preview always renders exactly one A4 sheet; clamp to a single
+      // page so minimal height overflow never yields a blank second page.
+      pdf.addImage(dataUrl, "JPEG", 0, 0, pageWidth, Math.min(imageHeight, pageHeight));
       pdf.save(`${data.personalDetails.fullName || "Lebenslauf"}.pdf`);
     } finally {
       setIsExporting(false);
