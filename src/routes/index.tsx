@@ -297,9 +297,6 @@ function LandingPage() {
             ))}
           </nav>
           <div className="flex items-center gap-2">
-            <a href="#kontakt" className="hidden text-sm text-primary-foreground/70 hover:text-primary-foreground lg:inline">
-              {t("nav.contact")}
-            </a>
             <Link
               to="/auth"
               className="hidden text-sm text-primary-foreground/70 hover:text-primary-foreground sm:inline"
