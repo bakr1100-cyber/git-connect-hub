@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { useEntitlements } from "@/lib/entitlements";
 import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
+import { PhotoCropper } from "./PhotoCropper";
+
 
 interface PhotoEnhancerProps {
   /** Current photo as data URL. */
