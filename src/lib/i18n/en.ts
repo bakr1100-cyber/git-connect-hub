@@ -201,7 +201,7 @@ export const en = {
   "photo.ok": "OK, use it",
   "photo.limitHint": "AI touch-up: {n} of 2 attempts left – each run uses credits.",
   "photo.limitLeft": "{n} attempt(s) left",
-  "photo.limitReached": "You"ve used both AI attempts for this photo. Upload a new photo to start again.",
+  "photo.limitReached": "You have used both AI attempts for this photo. Upload a new photo to start again.",
   "photo.limitNote": "Use them wisely: only 2 AI runs per photo, because each run costs credits.",
   "photo.retry": "Generate again",
   "photo.applied": "Photo applied",
