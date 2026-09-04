@@ -19,7 +19,8 @@ const templates: { id: TemplateId; badge?: "recommended" | "new" }[] = [
   { id: "tokyo" },
   { id: "azur" },
   { id: "esmeralda" },
-  { id: "marina", badge: "new" },
+  { id: "marina" },
+  { id: "milano", badge: "new" },
   { id: "european" },
 ];
 
@@ -136,6 +137,35 @@ function TemplateThumb({ template, accent }: { template: TemplateId; accent: str
               <div className="h-1 flex-1 rounded bg-slate-200" />
             </div>
           ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template === "milano") {
+    return (
+      <div className="h-full w-full overflow-hidden p-2.5" style={{ backgroundColor: "#f7f0f3" }}>
+        <div className="flex items-start gap-2 border-b border-slate-300 pb-2">
+          <div className="flex-1 space-y-1">
+            <div className="h-1.5 w-2/3 rounded bg-slate-400" />
+            <div className="h-2.5 w-full rounded" style={{ backgroundColor: color }} />
+            <div className="h-1 w-1/2 rounded bg-slate-300" />
+          </div>
+          <div className="h-9 w-7 shrink-0 border-2 bg-slate-300" style={{ borderColor: color }} />
+        </div>
+        <div className="mt-2 flex gap-2">
+          <div className="flex-1 space-y-1">
+            <div className="h-1.5 w-1/3 rounded" style={{ backgroundColor: color }} />
+            {[...Array(7)].map((_, i) => (
+              <div key={i} className="h-1 rounded bg-slate-300/70" style={{ width: `${60 + ((i * 13) % 35)}%` }} />
+            ))}
+          </div>
+          <div className="w-[34%] space-y-1 border-s border-slate-300 ps-2">
+            <div className="h-1.5 w-2/3 rounded" style={{ backgroundColor: color }} />
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-1 rounded bg-slate-300/70" />
+            ))}
+          </div>
         </div>
       </div>
     );

@@ -281,6 +281,9 @@ export const de = {
   "template.azur": "Azur",
   "template.esmeralda": "Esmeralda",
   "template.marina": "Marina",
+  "resume.contact": "Kontakt",
+  "template.milano": "Milano",
+  "template.milanoDesc": "Pastellpapier mit Blau-Akzent und rechter Infospalte",
 
   // Resume document sections (rendered inside the CV)
   "resume.profile": "Profil",

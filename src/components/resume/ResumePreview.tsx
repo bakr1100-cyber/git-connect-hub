@@ -9,6 +9,7 @@ import { TokyoTemplate } from "./templates/TokyoTemplate";
 import { AzurTemplate } from "./templates/AzurTemplate";
 import { EsmeraldaTemplate } from "./templates/EsmeraldaTemplate";
 import { MarinaTemplate } from "./templates/MarinaTemplate";
+import { MilanoTemplate } from "./templates/MilanoTemplate";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
 import { isRtl } from "@/lib/i18n/locales";
@@ -43,7 +44,9 @@ export function ResumePreview({ data, hideCaption = false }: ResumePreviewProps)
               ? EsmeraldaTemplate
               : data.settings.template === "marina"
                 ? MarinaTemplate
-                : ModernTemplate;
+                : data.settings.template === "milano"
+                  ? MilanoTemplate
+                  : ModernTemplate;
 
   useEffect(() => {
     const frame = frameRef.current;
