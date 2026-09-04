@@ -23,6 +23,8 @@ import { EXPERIENCE_PENDING_KEY, ExperienceAssistantDialog } from "./ExperienceA
 import { VoiceInputButton } from "./VoiceInputButton";
 import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
 import { PhotoEnhancer } from "./PhotoEnhancer";
+import { ProfileSyncButtons } from "./ProfileSyncButtons";
+
 import { useEntitlements } from "@/lib/entitlements";
 
 import { useServerFn } from "@tanstack/react-start";
