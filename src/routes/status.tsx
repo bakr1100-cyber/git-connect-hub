@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageTopBar } from "@/components/layout/PageTopBar";
 import { CheckCircle2, AlertTriangle, Globe, Rocket, ShieldCheck, ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/status")({
