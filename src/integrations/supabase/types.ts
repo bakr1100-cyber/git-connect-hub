@@ -104,6 +104,36 @@ export type Database = {
         }
         Relationships: []
       }
+      user_templates: {
+        Row: {
+          created_at: string
+          id: string
+          mime_type: string
+          name: string
+          note: string | null
+          storage_path: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mime_type: string
+          name: string
+          note?: string | null
+          storage_path: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mime_type?: string
+          name?: string
+          note?: string | null
+          storage_path?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

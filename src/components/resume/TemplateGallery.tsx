@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { motion } from "motion/react";
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Upload } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { templateCopy } from "@/components/templates/templateCopy";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useI18n } from "@/lib/i18n";
@@ -150,7 +152,7 @@ function TemplateThumb({ template, accent }: { template: TemplateId; accent: str
 }
 
 export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const activeTemplate = data.settings.template;
   const activeAccent = data.settings.accent ?? "slate";
@@ -175,14 +177,23 @@ export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
           <h2 className="text-base font-bold text-foreground">{t("gallery.title")}</h2>
           <p className="text-xs text-muted-foreground">{t("gallery.subtitle")}</p>
         </div>
-        <div className="hidden gap-1 sm:flex">
-          <Button variant="outline" size="icon" aria-label={t("gallery.prev")} onClick={() => scrollBy(-1)}>
-            <ChevronLeft className="h-4 w-4" />
+        <div className="flex items-center gap-1">
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/templates">
+              <Upload className="mr-1.5 h-3.5 w-3.5" />
+              {templateCopy(locale).title}
+            </Link>
           </Button>
-          <Button variant="outline" size="icon" aria-label={t("gallery.next")} onClick={() => scrollBy(1)}>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+          <div className="hidden gap-1 sm:flex">
+            <Button variant="outline" size="icon" aria-label={t("gallery.prev")} onClick={() => scrollBy(-1)}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" aria-label={t("gallery.next")} onClick={() => scrollBy(1)}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
+
       </div>
 
       <div
