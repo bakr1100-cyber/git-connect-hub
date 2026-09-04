@@ -53,6 +53,14 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
         useCORS: true,
         logging: false,
         backgroundColor: "#ffffff",
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+        onclone: (clonedDocument) => {
+          const clonedPage = clonedDocument.getElementById("resume-preview-container");
+          if (!clonedPage) return;
+          clonedPage.style.transform = "none";
+          clonedPage.style.boxShadow = "none";
+        },
       });
       const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
       const pageWidth = pdf.internal.pageSize.getWidth();
