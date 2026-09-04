@@ -28,7 +28,7 @@ import { ProfileSyncButtons } from "./ProfileSyncButtons";
 import { useEntitlements } from "@/lib/entitlements";
 
 import { useServerFn } from "@tanstack/react-start";
-import { generateCoverLetter } from "@/lib/resume-ai.functions";
+import { generateCoverLetter, translateText } from "@/lib/resume-ai.functions";
 import { aiErrorKey } from "@/lib/ai-errors";
 import { hasAiSession } from "@/lib/ai-auth";
 import { trackAiAction } from "@/lib/ai-cost";
@@ -249,7 +249,7 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
       }
       toast.success(t("form.translateEntry"));
     } catch (error) {
-      toast.error(t(aiErrorKey(error, "ai.failed")));
+      toast.error(t(aiErrorKey(error, "cover.failed")));
     } finally {
       setTranslatingId(null);
     }
