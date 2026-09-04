@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { motion } from "motion/react";
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Upload } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { templateCopy } from "@/components/templates/templateCopy";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useI18n } from "@/lib/i18n";
@@ -150,7 +152,7 @@ function TemplateThumb({ template, accent }: { template: TemplateId; accent: str
 }
 
 export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const activeTemplate = data.settings.template;
   const activeAccent = data.settings.accent ?? "slate";
