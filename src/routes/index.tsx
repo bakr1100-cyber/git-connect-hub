@@ -96,19 +96,17 @@ function LanguageIntroGate({ onComplete }: { onComplete: () => void }) {
 
 const templateCards: Array<{
   id: string;
-  category: TemplateCategory;
+  nameKey: string;
   badge?: "recommended" | "new" | "european";
   accent: string;
   sidebar?: boolean;
+  header?: boolean;
 }> = [
-  { id: "t1", category: "Minimalist", badge: "recommended", accent: "bg-navy" },
-  { id: "t2", category: "Modern", accent: "bg-brand", sidebar: true },
-  { id: "t3", category: "Modern", badge: "new", accent: "bg-brand-dark", sidebar: true },
-  { id: "t4", category: "Creative", badge: "new", accent: "bg-trust", sidebar: true },
-  { id: "t5", category: "Minimalist", badge: "european", accent: "bg-sand" },
-  { id: "t6", category: "Modern", accent: "bg-navy", sidebar: true },
-  { id: "t7", category: "Creative", accent: "bg-brand", sidebar: true },
-  { id: "t8", category: "Minimalist", accent: "bg-brand-dark" },
+  { id: "modern", nameKey: "template.modern", badge: "recommended", accent: "bg-navy" },
+  { id: "minimalist", nameKey: "template.minimalist", accent: "bg-brand" },
+  { id: "tokyo", nameKey: "template.tokyo", accent: "bg-brand-dark", sidebar: true },
+  { id: "azur", nameKey: "template.azur", badge: "new", accent: "bg-trust", header: true },
+  { id: "european", nameKey: "template.european", badge: "european", accent: "bg-sand", sidebar: true },
 ];
 
 function TemplateThumb({ accent, sidebar }: { accent: string; sidebar?: boolean | undefined }) {
