@@ -137,7 +137,11 @@ export function SofiaTemplate({ data }: TemplateProps) {
         {/* Sidebar */}
         <aside
           className="min-w-0 space-y-[6mm] px-[5mm] py-[5mm] [print-color-adjust:exact]"
-          style={{ backgroundColor: "var(--resume-accent-soft)" }}
+          style={
+            contacts.length > 0 || skills.length > 0 || languages.length > 0
+              ? { backgroundColor: "var(--resume-accent-soft)" }
+              : undefined
+          }
         >
           {contacts.length > 0 && (
             <section className="min-w-0">
