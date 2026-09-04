@@ -11,7 +11,8 @@ export async function generateResumePdfBlob(): Promise<Blob | null> {
   ]);
 
   const canvas = await html2canvas(element, {
-    scale: 2,
+    // 3x keeps the applicant photo and small print sharp at A4 print size (~300 dpi).
+    scale: 3,
     useCORS: true,
     logging: false,
     backgroundColor: "#ffffff",
