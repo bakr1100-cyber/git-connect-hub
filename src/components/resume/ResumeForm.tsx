@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Plus, Trash2, Upload, Loader2, Sparkles, Pencil } from "lucide-react";
+import { Plus, Trash2, Upload, Loader2, Sparkles, Pencil, Languages } from "lucide-react";
 import type { ResumeData, Education, WorkExperience, Skill, Language } from "@/lib/resume-types";
 import { useI18n } from "@/lib/i18n";
 import { SUPPORTED_LOCALES, localeFlags, localeNames, type Locale } from "@/lib/i18n/locales";
@@ -591,9 +591,21 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
               </Button>
             </div>
             {data.workExperience.length === 0 && (
-              <Card className="border-dashed">
-                <CardContent className="py-8 text-center text-sm text-muted-foreground">
-                  {t("form.emptyExperience")}
+              <Card
+                role="button"
+                tabIndex={0}
+                onClick={openNewExperience}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") openNewExperience();
+                }}
+                className="cursor-pointer border-dashed transition-colors hover:border-brand hover:bg-brand-soft/40"
+              >
+                <CardContent className="flex flex-col items-center gap-2 py-8 text-center">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-primary-foreground">
+                    <Plus className="h-5 w-5" />
+                  </span>
+                  <p className="text-sm font-semibold text-foreground">{t("form.addFirstExperience")}</p>
+                  <p className="text-xs text-muted-foreground">{t("form.emptyExperience")}</p>
                 </CardContent>
               </Card>
             )}
