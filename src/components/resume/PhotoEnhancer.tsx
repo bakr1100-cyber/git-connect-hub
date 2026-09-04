@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { useEntitlements } from "@/lib/entitlements";
 import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
+import { PhotoCropper } from "./PhotoCropper";
+
 
 interface PhotoEnhancerProps {
   /** Current photo as data URL. */
@@ -26,6 +28,8 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
   const [showUpsell, setShowUpsell] = useState(false);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [cropped, setCropped] = useState<string | null>(null);
+
 
   const run = async (source: string) => {
     setBusy(true);
@@ -77,19 +81,21 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
         <span className="text-xs">{t("photo.enhance")}</span>
       </Button>
 
-      <Dialog open={result !== null} onOpenChange={(open) => !open && setResult(null)}>
+      <Dialog
+        open={result !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setResult(null);
+            setCropped(null);
+          }
+        }}
+      >
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>{t("photo.resultTitle")}</DialogTitle>
-            <DialogDescription>{t("photo.resultDesc")}</DialogDescription>
+            <DialogDescription>{t("photo.crop.desc")}</DialogDescription>
           </DialogHeader>
-          {result && (
-            <img
-              src={result}
-              alt={t("photo.resultTitle")}
-              className="mx-auto max-h-[55vh] w-auto rounded-lg border border-border object-contain"
-            />
-          )}
+          {result && <PhotoCropper src={result} onCropped={setCropped} />}
           <DialogFooter className="gap-2 sm:justify-between">
             <Button
               type="button"
@@ -103,14 +109,17 @@ export function PhotoEnhancer({ photo, onApply }: PhotoEnhancerProps) {
             <Button
               type="button"
               onClick={() => {
-                if (result) onApply(result);
+                const final = cropped ?? result;
+                if (final) onApply(final);
                 setResult(null);
+                setCropped(null);
                 toast.success(t("photo.applied"));
               }}
             >
               {t("photo.ok")}
             </Button>
           </DialogFooter>
+
         </DialogContent>
       </Dialog>
 
