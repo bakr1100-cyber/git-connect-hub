@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnschreibenRouteImport } from './routes/anschreiben'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BewerbungRouteImport } from './routes/bewerbung'
 import { Route as EditorRouteImport } from './routes/editor'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ProfilRouteImport } from './routes/profil'
@@ -36,6 +37,11 @@ const AnschreibenRoute = AnschreibenRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BewerbungRoute = BewerbungRouteImport.update({
+  id: '/bewerbung',
+  path: '/bewerbung',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EditorRoute = EditorRouteImport.update({
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/anschreiben': typeof AnschreibenRoute
   '/auth': typeof AuthRoute
+  '/bewerbung': typeof BewerbungRoute
   '/editor': typeof EditorRoute
   '/mcp': typeof McpRoute
   '/profil': typeof ProfilRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/anschreiben': typeof AnschreibenRoute
   '/auth': typeof AuthRoute
+  '/bewerbung': typeof BewerbungRoute
   '/editor': typeof EditorRoute
   '/mcp': typeof McpRoute
   '/profil': typeof ProfilRoute
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/anschreiben': typeof AnschreibenRoute
   '/auth': typeof AuthRoute
+  '/bewerbung': typeof BewerbungRoute
   '/editor': typeof EditorRoute
   '/mcp': typeof McpRoute
   '/profil': typeof ProfilRoute
@@ -143,6 +152,7 @@ export interface FileRouteTypes {
     | '/'
     | '/anschreiben'
     | '/auth'
+    | '/bewerbung'
     | '/editor'
     | '/mcp'
     | '/profil'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/'
     | '/anschreiben'
     | '/auth'
+    | '/bewerbung'
     | '/editor'
     | '/mcp'
     | '/profil'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/'
     | '/anschreiben'
     | '/auth'
+    | '/bewerbung'
     | '/editor'
     | '/mcp'
     | '/profil'
@@ -189,6 +201,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnschreibenRoute: typeof AnschreibenRoute
   AuthRoute: typeof AuthRoute
+  BewerbungRoute: typeof BewerbungRoute
   EditorRoute: typeof EditorRoute
   McpRoute: typeof McpRoute
   ProfilRoute: typeof ProfilRoute
@@ -222,6 +235,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bewerbung': {
+      id: '/bewerbung'
+      path: '/bewerbung'
+      fullPath: '/bewerbung'
+      preLoaderRoute: typeof BewerbungRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/editor': {
@@ -301,6 +321,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnschreibenRoute: AnschreibenRoute,
   AuthRoute: AuthRoute,
+  BewerbungRoute: BewerbungRoute,
   EditorRoute: EditorRoute,
   McpRoute: McpRoute,
   ProfilRoute: ProfilRoute,

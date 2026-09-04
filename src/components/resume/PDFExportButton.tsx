@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
-import { STANDARD_PRICE, useEntitlements } from "@/lib/entitlements";
+import { PREMIUM_PRICE, STANDARD_PRICE, useEntitlements } from "@/lib/entitlements";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,8 @@ import type { ResumeData } from "@/lib/resume-types";
 import { useAuth } from "@/hooks/useAuth";
 import { AuthPanel } from "@/components/auth/AuthPanel";
 import { AiCostSummary } from "./AiCostSummary";
+import { CheckoutDialog } from "@/components/pricing/CheckoutDialog";
+import type { Tier } from "@/lib/entitlements";
 
 
 interface PDFExportButtonProps {
@@ -33,6 +35,7 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
   const [showAuth, setShowAuth] = useState(false);
   const [showCost, setShowCost] = useState(false);
   const { standard: isUnlocked, unlock } = useEntitlements();
+  const [checkoutTier, setCheckoutTier] = useState<Tier | null>(null);
   const { isAuthenticated } = useAuth();
   void unlock;
 
@@ -159,12 +162,21 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
             <Button
               className="w-full"
               onClick={() => {
-                toast.info(t("paywall.soonTitle"), {
-                  description: t("paywall.soonDesc"),
-                });
+                setShowPaywall(false);
+                setCheckoutTier("standard");
               }}
             >
-              {t("paywall.unlock")}
+              {`${t("paywall.unlock")} · ${STANDARD_PRICE}`}
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                setShowPaywall(false);
+                setCheckoutTier("premium");
+              }}
+            >
+              {`${t("pricing.premium.name")} · ${PREMIUM_PRICE}`}
             </Button>
             <p className="text-center text-xs text-muted-foreground">
               {t("paywall.methods")}
@@ -172,6 +184,12 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <CheckoutDialog
+        tier={checkoutTier}
+        onOpenChange={(open) => !open && setCheckoutTier(null)}
+        onPurchased={() => setShowCost(true)}
+      />
     </>
   );
 }
