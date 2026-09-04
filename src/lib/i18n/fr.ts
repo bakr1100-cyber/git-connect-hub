@@ -196,7 +196,7 @@ export const fr = {
   "flow.step3": "Télécharger le PDF",
   "flow.title": "Votre candidature en trois étapes",
   "flow.subtitle": "Choisissez un forfait, créez votre CV avec photo IA, téléchargez le PDF — sur cette page.",
-  "flow.locked": "Choisissez d"abord un forfait pour débloquer l"éditeur, la photo IA et le PDF.",
+  "flow.locked": "Choisissez d'abord un forfait pour débloquer l'éditeur, la photo IA et le PDF.",
   "flow.continue": "Continuer vers le CV",
   "flow.back": "Retour",
   "flow.toDownload": "Continuer vers le PDF",
