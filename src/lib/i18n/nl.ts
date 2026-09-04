@@ -92,6 +92,7 @@ export const nl = {
   "editor.previewOff": "Voorbeeld uit",
   "editor.livePreview": "Live voorbeeld",
   "editor.download": "PDF downloaden",
+  "editor.downloadWord": "Word downloaden",
   "tab.design": "Ontwerp",
   "tab.personal": "Persoonlijk",
   "tab.experience": "Werkervaring",

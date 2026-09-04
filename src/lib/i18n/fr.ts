@@ -92,6 +92,7 @@ export const fr = {
   "editor.previewOff": "Masquer l'aperçu",
   "editor.livePreview": "Aperçu en direct",
   "editor.download": "Télécharger le PDF",
+  "editor.downloadWord": "Télécharger en Word",
   "tab.design": "Design",
   "tab.personal": "Personnel",
   "tab.experience": "Expérience",

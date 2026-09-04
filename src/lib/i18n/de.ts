@@ -117,6 +117,7 @@ export const de = {
   "editor.previewOff": "Vorschau aus",
   "editor.livePreview": "Live-Vorschau",
   "editor.download": "PDF herunterladen",
+  "editor.downloadWord": "Word herunterladen",
 
   // Editor tabs
   "tab.design": "Design",

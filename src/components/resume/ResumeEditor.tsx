@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { ResumeForm } from "./ResumeForm";
 import { ResumePreview } from "./ResumePreview";
 import { PDFExportButton } from "./PDFExportButton";
+import { WordExportButton } from "./WordExportButton";
 
 import { ResumeScoreCard } from "./ResumeScoreCard";
 import { ResumeImportDialog } from "./ResumeImportDialog";
@@ -356,6 +357,7 @@ export function ResumeEditor() {
             )}
             <ResumeImportDialog data={data} onImport={(next) => setData(next)} />
             <PDFExportButton data={data} />
+            <WordExportButton data={data} />
 
           </div>
         </div>

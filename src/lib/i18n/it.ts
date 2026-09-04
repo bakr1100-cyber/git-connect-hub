@@ -92,6 +92,7 @@ export const it = {
   "editor.previewOff": "Chiudi anteprima",
   "editor.livePreview": "Anteprima in tempo reale",
   "editor.download": "Scarica PDF",
+  "editor.downloadWord": "Scarica in Word",
   "tab.design": "Design",
   "tab.personal": "Dati personali",
   "tab.experience": "Esperienza lavorativa",
