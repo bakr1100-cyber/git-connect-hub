@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { accentPresets, getAccent } from "@/lib/resume-accents";
+import { accentPresets } from "@/lib/resume-accents";
+import { TemplatePreviewThumb } from "./TemplatePreviewThumb";
 import type { TranslationKey } from "@/lib/i18n";
 import type { ResumeData, ResumeSettings } from "@/lib/resume-types";
 
@@ -156,7 +157,7 @@ export function TemplateGallery({ data, onChange, variant = "full" }: TemplateGa
                 className="block aspect-[210/297] w-full cursor-pointer"
                 aria-label={t(`template.${id}`)}
               >
-                <TemplateThumb template={id} accent={activeAccent} />
+                <TemplatePreviewThumb template={id} accent={activeAccent} />
               </button>
 
               {/* Hover CTA */}
