@@ -240,6 +240,38 @@ export function TemplateGallery({ data, onChange }: TemplateGalleryProps) {
 
       </div>
 
+      {/* Quick pick: small preview tiles for every template */}
+      <div className="flex flex-wrap gap-2">
+        {templates.map(({ id }) => {
+          const isActive = id === activeTemplate;
+          return (
+            <button
+              key={id}
+              type="button"
+              onClick={() => selectTemplate(id)}
+              aria-pressed={isActive}
+              title={t(`template.${id}`)}
+              className={cn(
+                "group/quick flex w-[84px] shrink-0 flex-col overflow-hidden rounded-md border-2 bg-muted/40 transition-transform hover:-translate-y-0.5",
+                isActive ? "border-brand shadow-sm" : "border-border"
+              )}
+            >
+              <span className="relative block h-[64px] w-full">
+                <TemplateThumb template={id} accent={activeAccent} />
+                {isActive && (
+                  <span className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded-full bg-brand text-primary-foreground">
+                    <Check className="h-2.5 w-2.5" />
+                  </span>
+                )}
+              </span>
+              <span className="truncate border-t border-border bg-card px-1.5 py-1 text-[10px] font-medium text-foreground">
+                {t(`template.${id}`)}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       <div
         ref={scrollerRef}
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:thin]"
