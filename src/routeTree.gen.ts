@@ -18,6 +18,7 @@ import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as ShareRouteImport } from './routes/share'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as StatusRouteImport } from './routes/status'
 import { Route as TemplatesRouteImport } from './routes/templates'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as ApiEnhancePhotoRouteImport } from './routes/api/enhance-photo'
@@ -69,6 +70,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StatusRoute = StatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TemplatesRoute = TemplatesRouteImport.update({
   id: '/templates',
   path: '/templates',
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
   '/templates': typeof TemplatesRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/enhance-photo': typeof ApiEnhancePhotoRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
   '/templates': typeof TemplatesRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/enhance-photo': typeof ApiEnhancePhotoRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
   '/templates': typeof TemplatesRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/enhance-photo': typeof ApiEnhancePhotoRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/profil'
     | '/share'
     | '/sitemap.xml'
+    | '/status'
     | '/templates'
     | '/.well-known/oauth-protected-resource'
     | '/api/enhance-photo'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/profil'
     | '/share'
     | '/sitemap.xml'
+    | '/status'
     | '/templates'
     | '/.well-known/oauth-protected-resource'
     | '/api/enhance-photo'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/profil'
     | '/share'
     | '/sitemap.xml'
+    | '/status'
     | '/templates'
     | '/.well-known/oauth-protected-resource'
     | '/api/enhance-photo'
@@ -207,6 +219,7 @@ export interface RootRouteChildren {
   ProfilRoute: typeof ProfilRoute
   ShareRoute: typeof ShareRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  StatusRoute: typeof StatusRoute
   TemplatesRoute: typeof TemplatesRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ApiEnhancePhotoRoute: typeof ApiEnhancePhotoRoute
@@ -279,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/templates': {
       id: '/templates'
       path: '/templates'
@@ -327,6 +347,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfilRoute: ProfilRoute,
   ShareRoute: ShareRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  StatusRoute: StatusRoute,
   TemplatesRoute: TemplatesRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
