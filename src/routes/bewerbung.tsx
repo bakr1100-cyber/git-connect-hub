@@ -11,6 +11,7 @@ import { CheckoutDialog } from "@/components/pricing/CheckoutDialog";
 import { PaymentStatusCard } from "@/components/pricing/PaymentStatusCard";
 import { ResumeEditor } from "@/components/resume/ResumeEditor";
 import { PDFExportButton } from "@/components/resume/PDFExportButton";
+import { PackageDownloadButton } from "@/components/pricing/PackageDownloadButton";
 import { defaultResumeData, type ResumeData } from "@/lib/resume-types";
 
 export const Route = createFileRoute("/bewerbung")({
@@ -219,8 +220,9 @@ function PackagePage() {
                 <CardTitle>{t("flow.downloadTitle")}</CardTitle>
                 <CardDescription>{t("flow.downloadDesc")}</CardDescription>
               </CardHeader>
-              <CardContent className="max-w-sm">
+              <CardContent className="flex flex-wrap items-center gap-3">
                 <PDFExportButton data={draft} label={t("ws.download")} />
+                <PackageDownloadButton data={draft} />
               </CardContent>
             </Card>
           )}

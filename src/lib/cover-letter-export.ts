@@ -63,6 +63,46 @@ body { width: 210mm; min-height: 297mm; padding: 20mm; font-family: Georgia, 'Ti
 }
 
 /**
+ * Renders the letter inside an isolated iframe and returns the page image,
+ * so single-letter and package exports share one renderer.
+ */
+export async function renderCoverLetterImage(
+  doc: CoverLetterDocument
+): Promise<{ dataUrl: string; ratio: number }> {
+  const { default: html2canvas } = await import("html2canvas-pro");
+  const frame = document.createElement("iframe");
+  frame.setAttribute("aria-hidden", "true");
+  frame.style.cssText = "position:fixed;left:-10000px;top:0;width:794px;height:1123px;border:0;";
+  document.body.appendChild(frame);
+  try {
+    const frameDoc = frame.contentDocument;
+    if (!frameDoc) throw new Error("preview missing");
+    frameDoc.open();
+    frameDoc.write(letterHtml(doc));
+    frameDoc.close();
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const canvas = await html2canvas(frameDoc.body, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: "#ffffff",
+      windowWidth: frameDoc.body.scrollWidth,
+      windowHeight: frameDoc.body.scrollHeight,
+    });
+    return {
+      dataUrl: canvas.toDataURL("image/jpeg", 0.98),
+      ratio: canvas.height / canvas.width,
+    };
+  } finally {
+    frame.remove();
+  }
+}
+
+export function coverLetterFileBase(doc: CoverLetterDocument) {
+  return fileBase(doc);
+}
+
+/**
  * Renders the letter inside an isolated iframe so the app's CSS variables
  * (oklch colors) never reach the PDF renderer.
  */
