@@ -4,6 +4,8 @@ export const STANDARD_KEY = "resume-unlocked-v1";
 export const PREMIUM_KEY = "resume-premium-v1";
 /** Purchase record: which package was bought and when access ends. */
 export const PURCHASE_KEY = "resume-purchase-v1";
+/** Belege/Rechnungen der bestätigten Käufe. */
+export const RECEIPTS_KEY = "resume-receipts-v1";
 
 export type Tier = "standard" | "premium";
 
@@ -23,20 +25,36 @@ export const PACKAGES: Record<Tier, PackageInfo> = {
 export const STANDARD_PRICE = PACKAGES.standard.price;
 export const PREMIUM_PRICE = PACKAGES.premium.price;
 
+/** Zahlungsstatus eines Kaufs. Erst "active" schaltet Funktionen frei. */
+export type PurchaseStatus = "pending" | "active" | "failed";
+
 export interface Purchase {
+  id: string;
   tier: Tier;
+  status: PurchaseStatus;
   purchasedAt: number;
   expiresAt: number;
+}
+
+export interface Receipt {
+  id: string;
+  tier: Tier;
+  amountCents: number;
+  currency: "EUR";
+  purchasedAt: number;
+  expiresAt: number;
+  emailSent: boolean;
 }
 
 export interface Entitlements {
   standard: boolean;
   premium: boolean;
   purchase: Purchase | null;
+  receipts: Receipt[];
 }
 
 const EVENT = "resume-entitlements-changed";
-const EMPTY: Entitlements = { standard: false, premium: false, purchase: null };
+const EMPTY: Entitlements = { standard: false, premium: false, purchase: null, receipts: [] };
 
 function readPurchase(): Purchase | null {
   const raw = window.localStorage.getItem(PURCHASE_KEY);
@@ -50,13 +68,28 @@ function readPurchase(): Purchase | null {
   }
 }
 
+export function readReceipts(): Receipt[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(RECEIPTS_KEY) ?? "[]") as Receipt[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 function read(): Entitlements {
   if (typeof window === "undefined") return EMPTY;
   const purchase = readPurchase();
-  const premium = purchase?.tier === "premium" || window.localStorage.getItem(PREMIUM_KEY) === "true";
+  const confirmed = purchase?.status === "active" ? purchase : null;
+  const premium = confirmed?.tier === "premium" || window.localStorage.getItem(PREMIUM_KEY) === "true";
   const standard =
-    premium || purchase?.tier === "standard" || window.localStorage.getItem(STANDARD_KEY) === "true";
-  return { premium, standard, purchase };
+    premium || confirmed?.tier === "standard" || window.localStorage.getItem(STANDARD_KEY) === "true";
+  return { premium, standard, purchase, receipts: readReceipts() };
+}
+
+function emit() {
+  window.dispatchEvent(new Event(EVENT));
 }
 
 export function useEntitlements() {
@@ -75,17 +108,54 @@ export function useEntitlements() {
     };
   }, []);
 
-  const unlock = useCallback((tier: Tier) => {
+  /** Legt einen Kauf im Status "pending" an — schaltet noch nichts frei. */
+  const startPurchase = useCallback((tier: Tier): Purchase => {
     const info = PACKAGES[tier];
     const purchase: Purchase = {
+      id: `INV-${new Date().getFullYear()}-${Date.now().toString(36).toUpperCase()}`,
       tier,
+      status: "pending",
       purchasedAt: Date.now(),
       expiresAt: Date.now() + info.days * 24 * 60 * 60 * 1000,
     };
     window.localStorage.setItem(PURCHASE_KEY, JSON.stringify(purchase));
-    window.localStorage.setItem(tier === "premium" ? PREMIUM_KEY : STANDARD_KEY, "true");
-    window.dispatchEvent(new Event(EVENT));
+    emit();
+    return purchase;
   }, []);
 
-  return { ...entitlements, unlock };
+  /** Bestätigt die Zahlung: erst jetzt sind PDF-Download und KI-Foto frei. */
+  const confirmPurchase = useCallback((purchase: Purchase, emailSent: boolean): Receipt => {
+    const info = PACKAGES[purchase.tier];
+    const active: Purchase = { ...purchase, status: "active" };
+    window.localStorage.setItem(PURCHASE_KEY, JSON.stringify(active));
+    window.localStorage.setItem(purchase.tier === "premium" ? PREMIUM_KEY : STANDARD_KEY, "true");
+    const receipt: Receipt = {
+      id: purchase.id,
+      tier: purchase.tier,
+      amountCents: info.amountCents,
+      currency: info.currency,
+      purchasedAt: purchase.purchasedAt,
+      expiresAt: purchase.expiresAt,
+      emailSent,
+    };
+    window.localStorage.setItem(RECEIPTS_KEY, JSON.stringify([receipt, ...readReceipts()].slice(0, 50)));
+    emit();
+    return receipt;
+  }, []);
+
+  const failPurchase = useCallback((purchase: Purchase) => {
+    window.localStorage.setItem(PURCHASE_KEY, JSON.stringify({ ...purchase, status: "failed" }));
+    emit();
+  }, []);
+
+  /** Direktfreischaltung (z. B. Support) — legt sofort einen aktiven Kauf an. */
+  const unlock = useCallback(
+    (tier: Tier) => {
+      const purchase = startPurchase(tier);
+      confirmPurchase(purchase, false);
+    },
+    [startPurchase, confirmPurchase],
+  );
+
+  return { ...entitlements, unlock, startPurchase, confirmPurchase, failPurchase };
 }
