@@ -60,7 +60,7 @@ export function ResumePreview({ data, hideCaption = false }: ResumePreviewProps)
   }, []);
 
   return (
-    <div className="mx-auto w-full max-w-[210mm]">
+    <div className="mx-auto w-full min-w-0 max-w-[calc(100vw-2rem)] sm:max-w-[210mm]">
       {!hideCaption && (
         <div className="mb-3 flex items-center justify-between px-1">
           <p className="text-xs text-muted-foreground">{t("editor.livePreview")}</p>

@@ -51,7 +51,7 @@ export function EsmeraldaTemplate({ data }: TemplateProps) {
       {/* Oversized watermark word */}
       <span
         aria-hidden
-        className="pointer-events-none absolute -left-[7mm] top-[6mm] select-none text-[76pt] font-light lowercase leading-none tracking-tight text-[var(--resume-accent)] opacity-[0.14] [writing-mode:vertical-rl] [text-orientation:mixed]"
+        className="pointer-events-none absolute top-[6mm] -start-[7mm] select-none text-[76pt] font-light lowercase leading-none tracking-tight text-[var(--resume-accent)] opacity-[0.14] [writing-mode:vertical-rl] [text-orientation:mixed]"
       >
         resume
       </span>

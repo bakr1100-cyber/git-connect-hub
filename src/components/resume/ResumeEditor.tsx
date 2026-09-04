@@ -494,7 +494,7 @@ export function ResumeEditor() {
             </div>
           </aside>
 
-          <div className="mx-auto w-full max-w-5xl">
+          <div className="mx-auto w-full min-w-0 max-w-5xl">
             <div className="space-y-4 px-4 pt-6 lg:px-6">
               <motion.h1
                 key={currentStep.id}
