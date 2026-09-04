@@ -19,9 +19,10 @@ export const Route = createFileRoute("/editor")({
 });
 
 function EditorPage() {
+  const { template } = Route.useSearch();
   return (
     <div className="min-h-screen bg-background">
-      <ResumeEditor />
+      <ResumeEditor template={template} />
     </div>
   );
 }
