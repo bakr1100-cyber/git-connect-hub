@@ -172,6 +172,7 @@ export const de = {
   "template.modernDesc": "Zeitgemäß mit klarem Fokus",
   "template.europeanDesc": "Klassisches europäisches Format",
   "template.tokyoDesc": "Elegante Serifen-Optik mit Aquarell-Akzenten",
+  "template.azurDesc": "Frischer Look mit farbigem Kopfbereich",
 
   // Form: settings
   "form.outputLanguage": "Sprache des Lebenslaufs",
@@ -268,6 +269,7 @@ export const de = {
   "template.modern": "Modern",
   "template.european": "Europäisch",
   "template.tokyo": "Tokyo",
+  "template.azur": "Azur",
 
   // Resume document sections (rendered inside the CV)
   "resume.profile": "Profil",

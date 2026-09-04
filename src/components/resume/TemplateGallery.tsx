@@ -14,7 +14,8 @@ type TemplateId = ResumeSettings["template"];
 const templates: { id: TemplateId; badge?: "recommended" | "new" }[] = [
   { id: "modern", badge: "recommended" },
   { id: "minimalist" },
-  { id: "tokyo", badge: "new" },
+  { id: "tokyo" },
+  { id: "azur", badge: "new" },
   { id: "european" },
 ];
 
@@ -57,6 +58,39 @@ function TemplateThumb({ template, accent }: { template: TemplateId; accent: str
                 <div key={i} className="h-1 rounded bg-slate-200" style={{ width: `${55 + ((i * 17) % 40)}%` }} />
               ))}
             </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (template === "azur") {
+    return (
+      <div className="h-full w-full bg-white">
+        <div className="flex items-center gap-2 p-2.5" style={{ backgroundColor: soft }}>
+          <div className="h-7 w-7 shrink-0 rounded-full border-2 border-white bg-slate-300" />
+          <div className="flex-1 space-y-1">
+            <div className="h-2 w-2/3 rounded bg-slate-700" />
+            <div className="h-1 w-1/2 rounded bg-slate-500/60" />
+            <div className="flex gap-1 pt-0.5">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-0.5 w-1/4 rounded bg-slate-400/70" />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-2 p-2.5">
+          <div className="w-[34%] space-y-1">
+            <div className="h-1.5 w-3/4 rounded" style={{ backgroundColor: color }} />
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="h-1 rounded bg-slate-200" />
+            ))}
+          </div>
+          <div className="flex-1 space-y-1">
+            <div className="h-1.5 w-1/2 rounded" style={{ backgroundColor: color }} />
+            {[...Array(9)].map((_, i) => (
+              <div key={i} className="h-1 rounded bg-slate-200" style={{ width: `${60 + ((i * 13) % 35)}%` }} />
+            ))}
           </div>
         </div>
       </div>

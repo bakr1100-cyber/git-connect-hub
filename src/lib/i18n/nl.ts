@@ -185,6 +185,7 @@ export const nl = {
   "template.modern": "Modern",
   "template.european": "Europees",
   "template.tokyo": "Tokyo",
+  "template.azur": "Azur",
   "resume.profile": "Profiel",
   "resume.experience": "Werkervaring",
   "resume.education": "Opleiding",
@@ -209,6 +210,7 @@ export const nl = {
   "template.modernDesc": "Eigentijds met een duidelijke focus",
   "template.europeanDesc": "Klassiek Europees formaat",
   "template.tokyoDesc": "Elegante serif-stijl met aquarel",
+  "template.azurDesc": "Frisse look met gekleurde kop",
 
   // Reference redesign: navigation, hero bullets, templates, toolkit, score, import
   "nav.contact": "Contact",
