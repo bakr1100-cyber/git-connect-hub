@@ -51,27 +51,11 @@ export interface Entitlements {
 const EVENT = "resume-entitlements-changed";
 const EMPTY: Entitlements = { standard: false, premium: false, purchase: null, receipts: [] };
 
-function readPurchase(): Purchase | null {
-  const raw = window.localStorage.getItem(PURCHASE_KEY);
-  if (!raw) return null;
-  try {
-    const parsed = JSON.parse(raw) as Purchase;
-    if (!parsed?.expiresAt || parsed.expiresAt < Date.now()) return null;
-    return parsed;
-  } catch {
-    return null;
-  }
+/** Lets any mounted hook re-read the account's purchases immediately. */
+function emit() {
+  window.dispatchEvent(new Event(EVENT));
 }
 
-export function readReceipts(): Receipt[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const parsed = JSON.parse(window.localStorage.getItem(RECEIPTS_KEY) ?? "[]") as Receipt[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
 
 function toPurchase(row: StoredPurchase): Purchase {
   return {
