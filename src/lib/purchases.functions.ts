@@ -20,17 +20,18 @@ export interface StoredPurchase {
 
 function map(row: Record<string, any>): StoredPurchase {
   return {
-    id: row.id,
-    invoiceNo: row.invoice_no,
-    tier: row.tier,
-    status: row.status,
-    amountCents: row.amount_cents,
-    currency: row.currency,
-    purchasedAt: row.purchased_at,
-    expiresAt: row.expires_at,
-    emailSent: row.email_sent,
+    id: row["id"],
+    invoiceNo: row["invoice_no"],
+    tier: row["tier"],
+    status: row["status"],
+    amountCents: row["amount_cents"],
+    currency: row["currency"],
+    purchasedAt: row["purchased_at"],
+    expiresAt: row["expires_at"],
+    emailSent: row["email_sent"],
   };
 }
+
 
 /** All purchases of the signed-in user, newest first. */
 export const listMyPurchases = createServerFn({ method: "GET" })
