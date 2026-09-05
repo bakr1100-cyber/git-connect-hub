@@ -53,7 +53,15 @@ export function CheckoutDialog({ tier, onOpenChange, onPurchased }: CheckoutDial
       return;
     }
     setPhase("processing");
-    const purchase = startPurchase(tier);
+    let purchase;
+    try {
+      purchase = await startPurchase(tier);
+    } catch (error) {
+      console.warn("[checkout] could not start purchase", error);
+      setPhase("failed");
+      toast.error(t("pay.status.failed"));
+      return;
+    }
     await new Promise((resolve) => setTimeout(resolve, 900));
 
 
@@ -61,9 +69,8 @@ export function CheckoutDialog({ tier, onOpenChange, onPurchased }: CheckoutDial
     try {
       await new Promise((resolve) => setTimeout(resolve, 600));
 
-      // Die Beleg-E-Mail braucht eine Anmeldung; ohne Login wird sie übersprungen.
       let sent = false;
-      if (isAuthenticated) try {
+      try {
         const result = (await sendPurchaseReceipt({
           data: {
             orderId: purchase.id,
@@ -80,17 +87,18 @@ export function CheckoutDialog({ tier, onOpenChange, onPurchased }: CheckoutDial
         console.warn("[email] receipt failed", error);
       }
 
-      confirmPurchase(purchase, sent);
+      await confirmPurchase(purchase, sent);
       setEmailSent(sent);
       setPhase("active");
       onPurchased?.();
       toast.success(t("checkout.success"), { description: `${name} · ${info.days} ${t("pkg.days")}` });
     } catch (error) {
       console.warn("[checkout] failed", error);
-      failPurchase(purchase);
+      await failPurchase(purchase);
       setPhase("failed");
       toast.error(t("pay.status.failed"));
     }
+
   };
 
   return (
