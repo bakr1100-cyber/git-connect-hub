@@ -257,7 +257,7 @@ export const de = {
   "paywall.f2": "KI-Optimierung & Übersetzung",
   "paywall.f3": "Alle Vorlagen nutzbar",
   "paywall.f4": "Unbegrenzte Änderungen an deinem Lebenslauf",
-  "paywall.unlock": "Für 9,99 € freischalten",
+  "paywall.unlock": "Jetzt freischalten",
   "paywall.methods": "Einmalzahlung · PayPal & Cash Plus Maroc (in Kürze verfügbar)",
   "paywall.soonTitle": "Bezahlung wird gerade eingerichtet",
   "paywall.soonDesc": "PayPal und Cash Plus Maroc folgen im nächsten Schritt.",
@@ -355,7 +355,7 @@ export const de = {
   "premium.f2": "KI-Anschreiben passend zur Stellenanzeige",
   "premium.f3": "Spracheingabe (Darija, Arabisch, Französisch, Deutsch)",
   "premium.f4": "Lebenslauf und Anschreiben als PDF",
-  "premium.unlock": "Premium für 15,00 € freischalten",
+  "premium.unlock": "Premium freischalten",
   "premium.methods": "Einmalzahlung · kein Abo · PayPal & Cash Plus Maroc (in Kürze)",
 
   // Levels
