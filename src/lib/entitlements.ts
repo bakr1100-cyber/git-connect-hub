@@ -1,4 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  createPurchase as createPurchaseFn,
+  confirmPurchase as confirmPurchaseFn,
+  failPurchase as failPurchaseFn,
+  listMyPurchases,
+  type StoredPurchase,
+} from "@/lib/purchases.functions";
 
 export const STANDARD_KEY = "resume-unlocked-v1";
 export const PREMIUM_KEY = "resume-premium-v1";
@@ -7,23 +15,10 @@ export const PURCHASE_KEY = "resume-purchase-v1";
 /** Belege/Rechnungen der bestätigten Käufe. */
 export const RECEIPTS_KEY = "resume-receipts-v1";
 
-export type Tier = "standard" | "premium";
+export { PACKAGES, PREMIUM_PRICE, STANDARD_PRICE } from "@/lib/packages";
+export type { PackageInfo, Tier } from "@/lib/packages";
+import { PACKAGES, type Tier } from "@/lib/packages";
 
-export interface PackageInfo {
-  tier: Tier;
-  price: string;
-  amountCents: number;
-  currency: "EUR";
-  days: number;
-}
-
-export const PACKAGES: Record<Tier, PackageInfo> = {
-  standard: { tier: "standard", price: "9,90 €", amountCents: 990, currency: "EUR", days: 5 },
-  premium: { tier: "premium", price: "19,90 €", amountCents: 1990, currency: "EUR", days: 30 },
-};
-
-export const STANDARD_PRICE = PACKAGES.standard.price;
-export const PREMIUM_PRICE = PACKAGES.premium.price;
 
 /** Zahlungsstatus eines Kaufs. Erst "active" schaltet Funktionen frei. */
 export type PurchaseStatus = "pending" | "active" | "failed";
