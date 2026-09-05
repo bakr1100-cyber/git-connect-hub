@@ -8,9 +8,20 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     const { data: subscription } = supabase.auth.onAuthStateChange((event, nextSession) => {
-      setSession(nextSession);
-      setUser(nextSession?.user ?? null);
+      if (cancelled) return;
+      // Never downgrade a known session on transient events; only trust
+      // explicit SIGNED_OUT to clear it. Everything else either carries a
+      // session or is ignored so a hiccup can't log the user out visually.
+      if (nextSession) {
+        setSession(nextSession);
+        setUser(nextSession.user);
+      } else if (event === "SIGNED_OUT") {
+        setSession(null);
+        setUser(null);
+      }
       setLoading(false);
       if (event === "SIGNED_IN" && nextSession?.user) {
         void import("@/lib/email-triggers").then((m) => m.maybeSendWelcomeEmail(nextSession.user));
@@ -24,16 +35,46 @@ export function useAuth() {
           }
         }
       }
-
     });
 
-    void supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setUser(data.session?.user ?? null);
-      setLoading(false);
-    });
+    const hydrate = async (attempt = 0): Promise<void> => {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        if (cancelled) return;
+        if (error) throw error;
+        if (data.session) {
+          setSession(data.session);
+          setUser(data.session.user);
+        } else {
+          // Only trust "no session" from storage, not a failed fetch.
+          setSession(null);
+          setUser(null);
+        }
+        setLoading(false);
+      } catch {
+        // Transient failure (offline, broker timeout): retry briefly instead
+        // of flashing the logged-out state.
+        if (!cancelled && attempt < 3) {
+          setTimeout(() => void hydrate(attempt + 1), 500 * (attempt + 1));
+        } else if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+    void hydrate();
 
-    return () => subscription.subscription.unsubscribe();
+    // Re-validate (and let auto-refresh run) whenever the tab comes back,
+    // so a long-idle tab never shows a stale logged-out state.
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void hydrate();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+
+    return () => {
+      cancelled = true;
+      document.removeEventListener("visibilitychange", onVisible);
+      subscription.subscription.unsubscribe();
+    };
   }, []);
 
   const signOut = async () => {
