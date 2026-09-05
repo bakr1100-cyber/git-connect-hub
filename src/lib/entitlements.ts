@@ -73,84 +73,107 @@ export function readReceipts(): Receipt[] {
   }
 }
 
-function read(): Entitlements {
-  if (typeof window === "undefined") return EMPTY;
-  const purchase = readPurchase();
-  const confirmed = purchase?.status === "active" ? purchase : null;
-  const premium = confirmed?.tier === "premium" || window.localStorage.getItem(PREMIUM_KEY) === "true";
-  const standard =
-    premium || confirmed?.tier === "standard" || window.localStorage.getItem(STANDARD_KEY) === "true";
-  return { premium, standard, purchase, receipts: readReceipts() };
+function toPurchase(row: StoredPurchase): Purchase {
+  return {
+    id: row.id,
+    tier: row.tier,
+    status: row.status,
+    purchasedAt: new Date(row.purchasedAt).getTime(),
+    expiresAt: new Date(row.expiresAt).getTime(),
+  };
 }
 
-function emit() {
-  window.dispatchEvent(new Event(EVENT));
+function toReceipt(row: StoredPurchase): Receipt {
+  return {
+    id: row.invoiceNo,
+    tier: row.tier,
+    amountCents: row.amountCents,
+    currency: "EUR",
+    purchasedAt: new Date(row.purchasedAt).getTime(),
+    expiresAt: new Date(row.expiresAt).getTime(),
+    emailSent: row.emailSent,
+  };
 }
 
+function derive(rows: StoredPurchase[]): Entitlements {
+  const now = Date.now();
+  const active = rows.filter((r) => r.status === "active" && new Date(r.expiresAt).getTime() > now);
+  const premium = active.some((r) => r.tier === "premium");
+  const standard = premium || active.length > 0;
+  const latest = rows[0] ? toPurchase(rows[0]) : null;
+  return {
+    premium,
+    standard,
+    purchase: latest,
+    receipts: rows.filter((r) => r.status === "active").map(toReceipt),
+  };
+}
+
+/**
+ * Entitlements live in the account, not in the browser: a purchase follows the
+ * user across devices and cannot be faked by editing local storage.
+ */
 export function useEntitlements() {
+  const { isAuthenticated } = useAuth();
   const [entitlements, setEntitlements] = useState<Entitlements>(EMPTY);
 
+  const refresh = useCallback(async () => {
+    if (!isAuthenticated) {
+      setEntitlements(EMPTY);
+      return;
+    }
+    try {
+      const rows = await listMyPurchases();
+      setEntitlements(derive(rows));
+    } catch {
+      setEntitlements(EMPTY);
+    }
+  }, [isAuthenticated]);
+
   useEffect(() => {
-    const sync = () => setEntitlements(read());
-    sync();
-    window.addEventListener(EVENT, sync);
-    window.addEventListener("storage", sync);
-    const timer = window.setInterval(sync, 60_000);
+    void refresh();
+    const onChange = () => void refresh();
+    window.addEventListener(EVENT, onChange);
+    const timer = window.setInterval(onChange, 60_000);
     return () => {
-      window.removeEventListener(EVENT, sync);
-      window.removeEventListener("storage", sync);
+      window.removeEventListener(EVENT, onChange);
       window.clearInterval(timer);
     };
-  }, []);
+  }, [refresh]);
 
   /** Legt einen Kauf im Status "pending" an — schaltet noch nichts frei. */
-  const startPurchase = useCallback((tier: Tier): Purchase => {
-    const info = PACKAGES[tier];
-    const purchase: Purchase = {
-      id: `INV-${new Date().getFullYear()}-${Date.now().toString(36).toUpperCase()}`,
-      tier,
-      status: "pending",
-      purchasedAt: Date.now(),
-      expiresAt: Date.now() + info.days * 24 * 60 * 60 * 1000,
-    };
-    window.localStorage.setItem(PURCHASE_KEY, JSON.stringify(purchase));
+  const startPurchase = useCallback(async (tier: Tier): Promise<Purchase> => {
+    const row = await createPurchaseFn({ data: { tier } });
     emit();
-    return purchase;
+    return toPurchase(row);
   }, []);
 
   /** Bestätigt die Zahlung: erst jetzt sind PDF-Download und KI-Foto frei. */
-  const confirmPurchase = useCallback((purchase: Purchase, emailSent: boolean): Receipt => {
-    const info = PACKAGES[purchase.tier];
-    const active: Purchase = { ...purchase, status: "active" };
-    window.localStorage.setItem(PURCHASE_KEY, JSON.stringify(active));
-    window.localStorage.setItem(purchase.tier === "premium" ? PREMIUM_KEY : STANDARD_KEY, "true");
-    const receipt: Receipt = {
-      id: purchase.id,
-      tier: purchase.tier,
-      amountCents: info.amountCents,
-      currency: info.currency,
-      purchasedAt: purchase.purchasedAt,
-      expiresAt: purchase.expiresAt,
-      emailSent,
-    };
-    window.localStorage.setItem(RECEIPTS_KEY, JSON.stringify([receipt, ...readReceipts()].slice(0, 50)));
-    emit();
-    return receipt;
-  }, []);
+  const confirmPurchase = useCallback(
+    async (purchase: Purchase, emailSent: boolean): Promise<Receipt> => {
+      const row = await confirmPurchaseFn({ data: { id: purchase.id, emailSent } });
+      emit();
+      return toReceipt(row);
+    },
+    [],
+  );
 
-  const failPurchase = useCallback((purchase: Purchase) => {
-    window.localStorage.setItem(PURCHASE_KEY, JSON.stringify({ ...purchase, status: "failed" }));
+  const failPurchase = useCallback(async (purchase: Purchase) => {
+    await failPurchaseFn({ data: { id: purchase.id } });
     emit();
   }, []);
 
   /** Direktfreischaltung (z. B. Support) — legt sofort einen aktiven Kauf an. */
   const unlock = useCallback(
-    (tier: Tier) => {
-      const purchase = startPurchase(tier);
-      confirmPurchase(purchase, false);
+    async (tier: Tier) => {
+      const purchase = await startPurchase(tier);
+      await confirmPurchase(purchase, false);
     },
     [startPurchase, confirmPurchase],
   );
 
-  return { ...entitlements, unlock, startPurchase, confirmPurchase, failPurchase };
+  return { ...entitlements, unlock, startPurchase, confirmPurchase, failPurchase, refresh };
 }
+
+void PACKAGES;
+
