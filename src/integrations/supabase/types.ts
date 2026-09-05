@@ -125,6 +125,48 @@ export type Database = {
         }
         Relationships: []
       }
+      purchases: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          email_sent: boolean
+          expires_at: string
+          id: string
+          invoice_no: string
+          purchased_at: string
+          status: string
+          tier: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          email_sent?: boolean
+          expires_at: string
+          id?: string
+          invoice_no: string
+          purchased_at?: string
+          status?: string
+          tier: string
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          email_sent?: boolean
+          expires_at?: string
+          id?: string
+          invoice_no?: string
+          purchased_at?: string
+          status?: string
+          tier?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       resumes: {
         Row: {
           cover_letter: string | null

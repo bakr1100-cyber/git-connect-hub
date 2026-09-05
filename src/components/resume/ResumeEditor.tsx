@@ -17,6 +17,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { FileText, ArrowLeft, ArrowRight, Check, Cloud, CloudOff, Loader2, Globe2, MoreHorizontal, LogOut } from "lucide-react";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -37,7 +46,7 @@ import type { TemplateId } from "@/lib/resume-types";
 
 const STORAGE_KEY = "resume-draft-v1";
 const LANGUAGE_INTRO_KEY = "resume-language-intro-v3";
-const TEMPLATE_CHOSEN_KEY = "resume-template-chosen-v1";
+
 const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
 /** Five clear stages: design, basics, career, education, skills, finish. */
@@ -68,6 +77,17 @@ const stepHeadlineKeys = {
   finish: "wizard.settings.headline",
 } as const;
 
+/** Shown when the step still misses the minimum information. */
+const stepHintKeys = {
+  design: "wizard.require.design",
+  personal: "wizard.require.personal",
+  experience: "wizard.require.experience",
+  education: "wizard.require.education",
+  skills: "wizard.require.skills",
+  finish: "wizard.require.finish",
+} as const;
+
+
 export function ResumeEditor({ template: templateFromSearch }: { template?: TemplateId | undefined } = {}) {
 
   const { t, locale, setLocale, dir } = useI18n();
@@ -78,6 +98,8 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
   const [selectedInterfaceLanguage, setSelectedInterfaceLanguage] = useState<Locale>(locale);
   const [selectedLanguage, setSelectedLanguage] = useState<Locale>(locale);
   const [stepIndex, setStepIndex] = useState(0);
+  const [savedStepId, setSavedStepId] = useState<WizardStepId | null>(null);
+
   const [mode, setMode] = useState<"wizard" | "workspace">("wizard");
   // When the template was already picked on the landing page the design step is skipped;
   // colour and "another template?" move to the final step instead.
@@ -92,6 +114,24 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
   const progress = useMemo(() => ((stepIndex + 1) / totalSteps) * 100, [stepIndex, totalSteps]);
   const isLastStep = stepIndex === totalSteps - 1;
 
+  // Minimum information per step so nobody can click through to an empty PDF.
+  const stepValid = useMemo(() => {
+    switch (currentStep.id) {
+      case "personal":
+        return (
+          data.personalDetails.fullName.trim().length > 1 &&
+          /.+@.+\..+/.test(data.personalDetails.email.trim())
+        );
+      case "education":
+        return data.workExperience.length > 0 || data.education.length > 0;
+      case "skills":
+        return data.skills.length > 0;
+      default:
+        return true;
+    }
+  }, [currentStep.id, data]);
+
+
   useEffect(() => {
     if (typeof window === "undefined" || !isAuthenticated) return;
     void import("@/lib/email-triggers").then((m) => m.maybeSendUnfinishedReminder());
@@ -105,10 +145,10 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
         const parsed = JSON.parse(saved) as ResumeData;
         setData({ ...defaultResumeData, ...parsed });
       }
-      const savedStep = Number(localStorage.getItem(WIZARD_STEP_KEY));
-      if (Number.isInteger(savedStep) && savedStep >= 0 && savedStep < allWizardSteps.length) {
-        setStepIndex(savedStep);
-      }
+      // Steps are stored by id: the index shifts when the design step is skipped.
+      const savedStep = localStorage.getItem(WIZARD_STEP_KEY);
+      const savedId = allWizardSteps.find((step) => step.id === savedStep)?.id;
+      if (savedId) setSavedStepId(savedId);
     } catch {
       // ignore parse errors
     }
@@ -120,10 +160,19 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data, isLoaded]);
 
+  // Restore the remembered step once the step list is final (design step may be skipped).
+  useEffect(() => {
+    if (!isLoaded || !savedStepId) return;
+    const index = wizardSteps.findIndex((step) => step.id === savedStepId);
+    setSavedStepId(null);
+    if (index >= 0) setStepIndex(index);
+  }, [isLoaded, savedStepId, wizardSteps]);
+
   useEffect(() => {
     if (!isLoaded || typeof window === "undefined") return;
-    localStorage.setItem(WIZARD_STEP_KEY, String(stepIndex));
-  }, [isLoaded, stepIndex]);
+    localStorage.setItem(WIZARD_STEP_KEY, currentStep.id);
+  }, [isLoaded, currentStep.id]);
+
 
   useEffect(() => {
     if (!isLoaded || typeof window === "undefined") return;
@@ -143,16 +192,13 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
     setData((prev) => updater(prev));
   }, []);
 
-  // A template picked on the landing page pre-selects the design step.
+  // A template picked on the landing page pre-selects the design step — for this
+  // visit only. A new resume always starts with the design step again.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (templateFromSearch) {
-      localStorage.setItem(TEMPLATE_CHOSEN_KEY, "1");
-      setTemplatePreselected(true);
-    } else if (localStorage.getItem(TEMPLATE_CHOSEN_KEY) === "1") {
-      setTemplatePreselected(true);
-    }
+    if (templateFromSearch) setTemplatePreselected(true);
   }, [templateFromSearch]);
+
 
   useEffect(() => {
     if (!isLoaded || !templateFromSearch) return;
@@ -171,12 +217,21 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
     [t]
   );
 
-  const { state: saveState } = useResumeAutoSave({ data, ready: isLoaded, onRestore: handleRestore });
+  const {
+    state: saveState,
+    conflict,
+    keepRemote,
+    keepLocal,
+  } = useResumeAutoSave({ data, ready: isLoaded, onRestore: handleRestore });
+
 
   const goTo = useCallback((index: number) => {
+    // Jumping forward is only allowed once the current step has its minimum data.
+    if (index > stepIndex && !stepValid) return;
     setStepIndex(Math.max(0, Math.min(wizardSteps.length - 1, index)));
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [wizardSteps.length]);
+  }, [stepIndex, stepValid, wizardSteps.length]);
+
 
   useEffect(() => {
     setStepIndex((prev) => Math.min(prev, wizardSteps.length - 1));
@@ -240,6 +295,24 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      {/* Two versions exist: ask instead of silently overwriting one of them. */}
+      <Dialog open={Boolean(conflict)} onOpenChange={() => keepLocal()}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t("autosave.conflictTitle")}</DialogTitle>
+            <DialogDescription>{t("autosave.conflictDesc")}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex-col gap-2 sm:flex-col">
+            <Button className="w-full" onClick={keepRemote}>
+              {t("autosave.conflictRemote")}
+            </Button>
+            <Button variant="outline" className="w-full" onClick={keepLocal}>
+              {t("autosave.conflictLocal")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {languageIntroStage && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-navy/80 p-4 backdrop-blur-md"
@@ -575,9 +648,12 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
 
             {currentStep.id === "finish" && (
               <div className="px-4 pt-6 lg:px-6">
-                <TemplateGallery data={data} onChange={updateData} />
+                {/* Only colour and a discreet "another template?" switch here —
+                    the full gallery belongs to the design step. */}
+                <TemplateGallery data={data} onChange={updateData} variant="finish" />
               </div>
             )}
+
 
             {currentStep.forms.map((formStep) => (
               <ResumeForm key={formStep} data={data} onChange={updateData} step={formStep} />
@@ -591,6 +667,19 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
             <div className="px-4 pb-6 pt-4 lg:px-6">
               <ResumeScoreCard data={data} />
             </div>
+
+            {/* Early nudge: without an account the draft only lives in this browser. */}
+            {!authLoading && !isAuthenticated && stepIndex >= 1 && (
+              <div className="px-4 pb-4 lg:px-6">
+                <div className="flex flex-col items-start justify-between gap-3 rounded-xl border border-border bg-muted/40 p-4 sm:flex-row sm:items-center">
+                  <p className="text-sm text-muted-foreground">{t("autosave.loginHint")}</p>
+                  <div className="shrink-0" onClick={() => rememberAuthReturnPath()}>
+                    <AuthButton />
+                  </div>
+                </div>
+              </div>
+            )}
+
 
             {/* Prominent hand-off to the final step: say what unlocks there. */}
             {stepIndex === totalSteps - 2 && (
@@ -619,32 +708,40 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
             )}
 
             {/* Step navigation */}
-            <div className="sticky bottom-0 z-30 flex items-center justify-between gap-3 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md lg:px-6">
-              <Button variant="outline" onClick={() => goTo(stepIndex - 1)} disabled={stepIndex === 0}>
-                <ArrowLeft className="mr-1.5 h-4 w-4" />
-                {t("wizard.back")}
-              </Button>
-              {isLastStep ? (
-                <Button
-                  className="bg-brand font-semibold text-primary-foreground hover:bg-brand-dark"
-                  onClick={() => {
-                    setMode("workspace");
-                    if (typeof window !== "undefined") window.scrollTo({ top: 0 });
-                  }}
-                >
-                  {t("wizard.finish")}
-                  <ArrowRight className="ml-1.5 h-4 w-4" />
-                </Button>
-              ) : (
-                <Button
-                  className="bg-brand font-semibold text-primary-foreground hover:bg-brand-dark"
-                  onClick={() => goTo(stepIndex + 1)}
-                >
-                  {t("wizard.next")}
-                  <ArrowRight className="ml-1.5 h-4 w-4" />
-                </Button>
+            <div className="sticky bottom-0 z-30 flex flex-col gap-2 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md lg:px-6">
+              {!stepValid && (
+                <p className="text-xs font-medium text-destructive">{t(stepHintKeys[currentStep.id])}</p>
               )}
+              <div className="flex items-center justify-between gap-3">
+                <Button variant="outline" onClick={() => goTo(stepIndex - 1)} disabled={stepIndex === 0}>
+                  <ArrowLeft className="mr-1.5 h-4 w-4" />
+                  {t("wizard.back")}
+                </Button>
+                {isLastStep ? (
+                  <Button
+                    className="bg-brand font-semibold text-primary-foreground hover:bg-brand-dark"
+                    onClick={() => {
+                      setMode("workspace");
+                      if (typeof window !== "undefined") window.scrollTo({ top: 0 });
+                    }}
+                  >
+                    {t("wizard.finish")}
+                    <ArrowRight className="ml-1.5 h-4 w-4" />
+                  </Button>
+                ) : (
+                  <Button
+                    className="bg-brand font-semibold text-primary-foreground hover:bg-brand-dark"
+                    disabled={!stepValid}
+                    onClick={() => goTo(stepIndex + 1)}
+                  >
+                    {t("wizard.next")}
+                    <ArrowRight className="ml-1.5 h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
+
+
 
             {/* The full CV stays below the guided input flow and remains available for checking. */}
             <div className="border-t border-border bg-muted/35 px-4 py-8 lg:px-6 lg:py-10">

@@ -14,6 +14,9 @@ import { toast } from "sonner";
 import { buildShareUrl } from "@/lib/resume-share";
 import { useI18n } from "@/lib/i18n";
 import type { ResumeData } from "@/lib/resume-types";
+import { useEntitlements } from "@/lib/entitlements";
+import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
+
 
 interface Props {
   data: ResumeData;
@@ -22,9 +25,12 @@ interface Props {
 
 export function ShareLinkButton({ data, className }: Props) {
   const { t } = useI18n();
+  const { standard } = useEntitlements();
+  const [showUpsell, setShowUpsell] = useState(false);
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const url = open ? buildShareUrl(data) : "";
+
 
   const copy = async () => {
     try {
@@ -49,6 +55,19 @@ export function ShareLinkButton({ data, className }: Props) {
     await copy();
   };
 
+  // A share link hands out the finished resume, so it follows the same paywall.
+  if (!standard) {
+    return (
+      <>
+        <Button variant="outline" className={className} onClick={() => setShowUpsell(true)}>
+          <Share2 className="mr-2 h-4 w-4" />
+          {t("share.button")}
+        </Button>
+        <PremiumUpsellDialog open={showUpsell} onOpenChange={setShowUpsell} feature="download" />
+      </>
+    );
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -57,6 +76,7 @@ export function ShareLinkButton({ data, className }: Props) {
           {t("share.button")}
         </Button>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{t("share.title")}</DialogTitle>

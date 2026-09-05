@@ -47,9 +47,15 @@ export function CheckoutDialog({ tier, onOpenChange, onPurchased }: CheckoutDial
 
   const pay = async () => {
     if (!tier || !info) return;
+    // A purchase without an account cannot be tied to anyone — require sign-in first.
+    if (!isAuthenticated) {
+      toast.info(t("auth.loginRequired"));
+      return;
+    }
     setPhase("processing");
     const purchase = startPurchase(tier);
     await new Promise((resolve) => setTimeout(resolve, 900));
+
 
     setPhase("confirming");
     try {

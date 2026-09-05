@@ -255,13 +255,8 @@ function LandingPage() {
       features: [t("pricing.premium.f1"), t("pricing.premium.f2"), t("pricing.premium.f3"), t("pricing.premium.f4")],
       popular: true,
     },
-    {
-      name: t("pricing.plus.name"),
-      price: "60,00 €",
-      access: t("pricing.access.30"),
-      desc: t("pricing.plus.desc"),
-      features: [t("pricing.plus.f1"), t("pricing.plus.f2"), t("pricing.plus.f3"), t("pricing.plus.f4")],
-    },
+    // No third tier here: only the two packages above can actually be bought.
+
   ];
 
   const testimonials = [
@@ -518,7 +513,7 @@ function LandingPage() {
             <h2 className="text-3xl font-bold tracking-tight text-navy">{t("pricing.title")}</h2>
             <p className="mt-4 text-muted-foreground">{t("pricing.subtitle")}</p>
           </div>
-          <Stagger className="grid gap-6 md:grid-cols-3" stagger={0.1}>
+          <Stagger className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2" stagger={0.1}>
             {tiers.map((tier) => (
               <StaggerItem key={tier.name} className={tier.popular ? "md:-mt-3" : ""}>
               <Card
