@@ -511,6 +511,7 @@ export const de = {
   "auth.success": "Angemeldet.",
   "auth.error": "Anmeldung fehlgeschlagen.",
   "auth.checkEmail": "Bitte bestätige deine E-Mail-Adresse über den Link, den wir dir gesendet haben.",
+  "auth.alreadyRegistered": "Diese E-Mail-Adresse ist bereits registriert – bitte melde dich einfach an.",
   "auth.testimonial": "Intuitiv und benutzerfreundlich. Schnell aber gründlich. Deckt alle Punkte ab, die für einen erfolgreichen Lebenslauf wichtig sind.",
   "auth.testimonialAuthor": "Shannon · 4,6/5 Sterne",
   "extra.title": "Zusätzliche Abschnitte",

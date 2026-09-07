@@ -471,6 +471,7 @@ export const fr = {
   "auth.success": "Connecté.",
   "auth.error": "Échec de la connexion.",
   "auth.checkEmail": "Confirmez votre adresse e-mail via le lien que nous vous avons envoyé.",
+  "auth.alreadyRegistered": "Cette adresse e-mail est déjà enregistrée — connectez-vous simplement.",
   "auth.testimonial": "Intuitif et facile à utiliser. Rapide mais complet. Couvre tous les points essentiels d'un CV réussi.",
   "auth.testimonialAuthor": "Shannon · 4,6/5 étoiles",
   "extra.title": "Sections supplémentaires",

@@ -454,6 +454,7 @@ export const en = {
   "auth.success": "Signed in.",
   "auth.error": "Sign-in failed.",
   "auth.checkEmail": "Please confirm your email address using the link we sent you.",
+  "auth.alreadyRegistered": "This email address is already registered — just sign in.",
   "auth.testimonial": "Intuitive and easy to use. Fast but thorough. Covers everything that matters for a successful resume.",
   "auth.testimonialAuthor": "Shannon · 4.6/5 stars",
   "extra.title": "Additional sections",
