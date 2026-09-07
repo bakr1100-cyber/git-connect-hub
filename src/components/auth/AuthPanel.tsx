@@ -39,7 +39,12 @@ export function AuthPanel({ redirectPath = "/editor", onAuthenticated }: AuthPan
       if (mode === "signup") {
         const { data, error } = await signUpWithEmail(email.trim(), password, redirectPath);
         if (error) throw error;
-        if (data.session) {
+        // Supabase liefert bei bereits registrierter Adresse einen Nutzer ohne
+        // Identitäten zurück und verschickt keine Mail — das sagen wir klar.
+        if (!data.session && data.user && (data.user.identities?.length ?? 0) === 0) {
+          toast.info(t("auth.alreadyRegistered"));
+          setMode("signin");
+        } else if (data.session) {
           toast.success(t("auth.success"));
           onAuthenticated?.();
         } else {
