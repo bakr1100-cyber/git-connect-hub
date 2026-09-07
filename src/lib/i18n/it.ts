@@ -437,4 +437,5 @@ export const it = {
   "example.finish.1": "Add a target position, e.g. “Junior Marketing Manager”.",
   "example.finish.2": "Pick a template and accent colour that fit your industry.",
   "example.finish.3": "Add a cover letter — it clearly raises your response rate.",
+  "auth.alreadyRegistered": "Questo indirizzo email è già registrato: accedi semplicemente.",
 } as const;

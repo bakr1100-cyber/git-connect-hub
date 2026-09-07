@@ -471,6 +471,7 @@ export const es = {
   "auth.success": "Sesión iniciada.",
   "auth.error": "No se pudo iniciar sesión.",
   "auth.checkEmail": "Confirma tu correo electrónico con el enlace que te hemos enviado.",
+  "auth.alreadyRegistered": "Este correo ya está registrado: simplemente inicia sesión.",
   "auth.testimonial": "Intuitivo y fácil de usar. Rápido pero completo. Cubre todos los puntos clave de un CV exitoso.",
   "auth.testimonialAuthor": "Shannon · 4,6/5 estrellas",
   "extra.title": "Secciones adicionales",
