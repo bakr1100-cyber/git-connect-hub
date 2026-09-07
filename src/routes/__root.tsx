@@ -127,6 +127,14 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  // Testlink mit ?reset=1: alle Testdaten löschen, dann sauber neu laden.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("reset")) return;
+    void import("@/lib/test-reset").then((m) => m.runTestReset());
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
