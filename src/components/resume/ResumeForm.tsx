@@ -24,6 +24,7 @@ import { VoiceInputButton } from "./VoiceInputButton";
 import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
 import { PhotoEnhancer } from "./PhotoEnhancer";
 import { ProfileSyncButtons } from "./ProfileSyncButtons";
+import { TemplateGallery } from "./TemplateGallery";
 
 import { useEntitlements } from "@/lib/entitlements";
 
