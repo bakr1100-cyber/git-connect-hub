@@ -14,6 +14,7 @@ import { Route as AnschreibenRouteImport } from './routes/anschreiben'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BewerbungRouteImport } from './routes/bewerbung'
 import { Route as EditorRouteImport } from './routes/editor'
+import { Route as KontoRouteImport } from './routes/konto'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as ShareRouteImport } from './routes/share'
@@ -48,6 +49,11 @@ const BewerbungRoute = BewerbungRouteImport.update({
 const EditorRoute = EditorRouteImport.update({
   id: '/editor',
   path: '/editor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontoRoute = KontoRouteImport.update({
+  id: '/konto',
+  path: '/konto',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/bewerbung': typeof BewerbungRoute
   '/editor': typeof EditorRoute
+  '/konto': typeof KontoRoute
   '/mcp': typeof McpRoute
   '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
@@ -126,6 +133,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/bewerbung': typeof BewerbungRoute
   '/editor': typeof EditorRoute
+  '/konto': typeof KontoRoute
   '/mcp': typeof McpRoute
   '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/bewerbung': typeof BewerbungRoute
   '/editor': typeof EditorRoute
+  '/konto': typeof KontoRoute
   '/mcp': typeof McpRoute
   '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bewerbung'
     | '/editor'
+    | '/konto'
     | '/mcp'
     | '/profil'
     | '/share'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bewerbung'
     | '/editor'
+    | '/konto'
     | '/mcp'
     | '/profil'
     | '/share'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/bewerbung'
     | '/editor'
+    | '/konto'
     | '/mcp'
     | '/profil'
     | '/share'
@@ -215,6 +227,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BewerbungRoute: typeof BewerbungRoute
   EditorRoute: typeof EditorRoute
+  KontoRoute: typeof KontoRoute
   McpRoute: typeof McpRoute
   ProfilRoute: typeof ProfilRoute
   ShareRoute: typeof ShareRoute
@@ -262,6 +275,13 @@ declare module '@tanstack/react-router' {
       path: '/editor'
       fullPath: '/editor'
       preLoaderRoute: typeof EditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/konto': {
+      id: '/konto'
+      path: '/konto'
+      fullPath: '/konto'
+      preLoaderRoute: typeof KontoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -343,6 +363,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BewerbungRoute: BewerbungRoute,
   EditorRoute: EditorRoute,
+  KontoRoute: KontoRoute,
   McpRoute: McpRoute,
   ProfilRoute: ProfilRoute,
   ShareRoute: ShareRoute,

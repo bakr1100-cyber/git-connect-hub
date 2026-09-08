@@ -13,6 +13,9 @@ export function PageTopBar() {
           myCVonline.com
         </Link>
         <div className="flex items-center gap-2">
+          <Link to="/konto" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+            Konto
+          </Link>
           <LanguageSwitcher />
           <AuthButton />
         </div>
