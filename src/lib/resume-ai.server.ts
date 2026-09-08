@@ -363,9 +363,15 @@ export async function readAiUsage(supabase: Parameters<typeof consumeAiQuota>[0]
       .eq("user_id", userId)
       .eq("usage_date", today)
       .maybeSingle(),
-    supabase.from("user_entitlements").select("tier").eq("user_id", userId).maybeSingle(),
+    supabase
+      .from("user_entitlements")
+      .select("tier, expires_at")
+      .eq("user_id", userId)
+      .maybeSingle(),
   ]);
-  const tier = (entitlement?.tier as string | undefined) ?? "free";
+  const expiresAt = (entitlement as { expires_at?: string | null } | null)?.expires_at ?? null;
+  const active = !expiresAt || new Date(expiresAt).getTime() > Date.now();
+  const tier = active ? ((entitlement?.tier as string | undefined) ?? "free") : "free";
   const limit =
     tier === "unlimited12" ? 200 : tier === "unlimited6" ? 150 : tier === "premium" ? 60 : tier === "standard" ? 20 : 3;
   const used = (usage?.calls as number | undefined) ?? 0;
