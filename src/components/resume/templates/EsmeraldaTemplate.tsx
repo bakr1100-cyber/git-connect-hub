@@ -17,7 +17,8 @@ export function EsmeraldaTemplate({ data }: TemplateProps) {
     if (!dateStr) return "";
     const date = new Date(dateStr);
     if (Number.isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString(dateLocales[lang], { month: "2-digit", year: "numeric" });
+    // Fixed numeric format: locale formatting differs between server and browser.
+    return `${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}`;
   };
 
   const heading =
