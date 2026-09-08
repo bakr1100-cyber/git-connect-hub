@@ -1,7 +1,6 @@
 import type { ResumeData } from "@/lib/resume-types";
 import type { TranslationKey } from "@/lib/i18n";
 import { templateTranslate } from "@/lib/i18n/templates";
-import { dateLocales } from "@/lib/i18n/locales";
 import { Mail, Phone, MapPin, Globe, Linkedin, Calendar } from "lucide-react";
 
 interface TemplateProps {
