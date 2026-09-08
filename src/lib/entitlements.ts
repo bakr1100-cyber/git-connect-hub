@@ -15,9 +15,10 @@ export const PURCHASE_KEY = "resume-purchase-v1";
 /** Belege/Rechnungen der bestätigten Käufe. */
 export const RECEIPTS_KEY = "resume-receipts-v1";
 
-export { PACKAGES, PREMIUM_PRICE, STANDARD_PRICE } from "@/lib/packages";
+export { PACKAGES, PREMIUM_PRICE, STANDARD_PRICE, TIERS, isPremiumTier } from "@/lib/packages";
 export type { PackageInfo, Tier } from "@/lib/packages";
-import { PACKAGES, type Tier } from "@/lib/packages";
+import { PACKAGES, isPremiumTier, type Tier } from "@/lib/packages";
+
 
 
 /** Zahlungsstatus eines Kaufs. Erst "active" schaltet Funktionen frei. */
@@ -56,6 +57,12 @@ function emit() {
   window.dispatchEvent(new Event(EVENT));
 }
 
+/** Public trigger after an external payment returned. */
+export function notifyEntitlementsChanged() {
+  if (typeof window !== "undefined") emit();
+}
+
+
 
 function toPurchase(row: StoredPurchase): Purchase {
   return {
@@ -82,7 +89,7 @@ function toReceipt(row: StoredPurchase): Receipt {
 function derive(rows: StoredPurchase[]): Entitlements {
   const now = Date.now();
   const active = rows.filter((r) => r.status === "active" && new Date(r.expiresAt).getTime() > now);
-  const premium = active.some((r) => r.tier === "premium");
+  const premium = active.some((r) => isPremiumTier(r.tier));
   const standard = premium || active.length > 0;
   const latest = rows[0] ? toPurchase(rows[0]) : null;
   return {

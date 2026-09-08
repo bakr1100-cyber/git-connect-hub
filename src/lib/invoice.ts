@@ -9,7 +9,7 @@ function formatAmount(receipt: Receipt) {
 /** Erzeugt eine druckbare Rechnung als HTML-Datei und lädt sie herunter. */
 export function downloadInvoice(receipt: Receipt) {
   const info = PACKAGES[receipt.tier];
-  const name = receipt.tier === "premium" ? "Premium" : "Standard";
+  const name = { standard: "Einzel-Export", premium: "Premium", unlimited6: "Unlimited 6 Monate", unlimited12: "Unlimited 12 Monate" }[receipt.tier];
   const html = `<!doctype html>
 <html lang="de"><head><meta charset="utf-8"><title>Rechnung ${receipt.id}</title>
 <style>

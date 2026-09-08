@@ -243,21 +243,34 @@ function LandingPage() {
     {
       name: t("pricing.standard.name"),
       price: "9,90 €",
-      access: t("pricing.access.5"),
+      access: t("pricing.access.30"),
       desc: t("pricing.standard.desc"),
       features: [t("pricing.standard.f1"), t("pricing.standard.f2"), t("pricing.standard.f3"), t("pricing.standard.f4")],
     },
     {
       name: t("pricing.premium.name"),
-      price: "19,90 €",
+      price: "14,90 €",
       access: t("pricing.access.30"),
       desc: t("pricing.premium.desc"),
       features: [t("pricing.premium.f1"), t("pricing.premium.f2"), t("pricing.premium.f3"), t("pricing.premium.f4")],
+    },
+    {
+      name: t("pricing.unlimited6.name"),
+      price: "29,90 €",
+      access: t("pricing.access.180"),
+      desc: t("pricing.unlimited6.desc"),
+      features: [t("pricing.premium.f1"), t("pricing.premium.f2"), t("pricing.standard.f3"), t("pricing.access.180")],
       popular: true,
     },
-    // No third tier here: only the two packages above can actually be bought.
-
+    {
+      name: t("pricing.unlimited12.name"),
+      price: "44,90 €",
+      access: t("pricing.access.365"),
+      desc: t("pricing.unlimited12.desc"),
+      features: [t("pricing.premium.f1"), t("pricing.premium.f2"), t("pricing.standard.f3"), t("pricing.access.365")],
+    },
   ];
+
 
   const testimonials = [
     { name: "Anja Fischer", role: t("testimonials.1.role"), city: "Berlin", text: t("testimonials.1.text") },
@@ -512,19 +525,21 @@ function LandingPage() {
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-navy">{t("pricing.title")}</h2>
             <p className="mt-4 text-muted-foreground">{t("pricing.subtitle")}</p>
+            <p className="mt-2 text-sm font-medium text-primary">{t("pricing.oneTime")}</p>
           </div>
-          <Stagger className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2" stagger={0.1}>
+          <Stagger className="mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-4" stagger={0.1}>
             {tiers.map((tier) => (
               <StaggerItem key={tier.name} className={tier.popular ? "md:-mt-3" : ""}>
               <Card
                 className={`relative flex h-full flex-col transition-shadow hover:shadow-xl ${tier.popular ? "border-brand shadow-lg ring-1 ring-brand/30" : "border-border/60"}`}
               >
                 {tier.popular && (
-                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">{t("pricing.bestseller")}</Badge>
+                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">{t("pricing.popular")}</Badge>
                 )}
                 <CardContent className="flex flex-1 flex-col pt-6">
                   <h3 className="text-lg font-semibold text-navy">{tier.name}</h3>
                   <div className="mt-2 text-3xl font-bold text-navy">{tier.price}</div>
+                  <p className="mt-1 text-xs text-muted-foreground">{tier.access}</p>
                   <p className="mt-3 text-sm text-muted-foreground">{tier.desc}</p>
                   <ul className="mt-6 flex-1 space-y-2 text-sm">
                     {tier.features.map((f) => (

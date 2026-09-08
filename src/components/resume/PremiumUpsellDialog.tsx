@@ -9,7 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Check } from "lucide-react";
-import { PREMIUM_PRICE, STANDARD_PRICE, type Tier } from "@/lib/entitlements";
+import { PACKAGES, type Tier } from "@/lib/entitlements";
+import type { TranslationKey } from "@/lib/i18n/de";
+
 import { CheckoutDialog } from "@/components/pricing/CheckoutDialog";
 import { useI18n } from "@/lib/i18n";
 
@@ -49,29 +51,25 @@ export function PremiumUpsellDialog({ open, onOpenChange, feature }: PremiumUpse
         </ul>
 
         <DialogFooter className="flex-col gap-2 sm:flex-col">
-          <Button
-            className="w-full"
-            onClick={() => {
-              onOpenChange(false);
-              setCheckoutTier("standard");
-            }}
-          >
-            {`${t("pricing.standard.name")} · ${STANDARD_PRICE}`}
-          </Button>
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => {
-              onOpenChange(false);
-              setCheckoutTier("premium");
-            }}
-          >
-            {`${t("pricing.premium.name")} · ${PREMIUM_PRICE}`}
-          </Button>
+          {(["standard", "premium", "unlimited6", "unlimited12"] as Tier[]).map((tier, index) => (
+            <Button
+              key={tier}
+              className="w-full"
+              variant={index === 0 ? "default" : "outline"}
+              onClick={() => {
+                onOpenChange(false);
+                setCheckoutTier(tier);
+              }}
+            >
+              {`${t(PACKAGES[tier].nameKey as TranslationKey)} · ${PACKAGES[tier].price}`}
+            </Button>
+          ))}
+          <p className="text-center text-xs font-medium text-primary">{t("pricing.oneTime")}</p>
           <p className="text-center text-xs text-muted-foreground">
             {t("premium.methods")}
           </p>
         </DialogFooter>
+
       </DialogContent>
     </Dialog>
 

@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Check, FileText, Image as ImageIcon, Download, Lock, ArrowLeft, ArrowRight } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { PACKAGES, useEntitlements, type Tier } from "@/lib/entitlements";
+import type { TranslationKey } from "@/lib/i18n/de";
+
 import { CheckoutDialog } from "@/components/pricing/CheckoutDialog";
 import { PaymentStatusCard } from "@/components/pricing/PaymentStatusCard";
 import { ResumeEditor } from "@/components/resume/ResumeEditor";
@@ -79,22 +81,30 @@ function PackagePage() {
     { icon: Check, text: t("pkg.include4") },
   ];
 
-  const tiers: Array<{ tier: Tier; name: string; desc: string; features: string[]; active: boolean }> = [
+  const tiers: Array<{ tier: Tier; features: string[]; active: boolean; popular?: boolean }> = [
     {
       tier: "standard",
-      name: t("pricing.standard.name"),
-      desc: t("pricing.standard.desc"),
       features: [t("pkg.include1"), t("pkg.include2"), t("pkg.include3")],
       active: standard && !premium,
     },
     {
       tier: "premium",
-      name: t("pricing.premium.name"),
-      desc: t("pricing.premium.desc"),
       features: [t("pkg.include1"), t("pkg.include2"), t("pkg.include3"), t("pkg.include4")],
-      active: premium,
+      active: premium && purchase?.tier === "premium",
+    },
+    {
+      tier: "unlimited6",
+      features: [t("pkg.include1"), t("pkg.include2"), t("pkg.include3"), t("pkg.include4")],
+      active: premium && purchase?.tier === "unlimited6",
+      popular: true,
+    },
+    {
+      tier: "unlimited12",
+      features: [t("pkg.include1"), t("pkg.include2"), t("pkg.include3"), t("pkg.include4")],
+      active: premium && purchase?.tier === "unlimited12",
     },
   ];
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -157,17 +167,28 @@ function PackagePage() {
               ))}
             </div>
 
-            <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <p className="mt-10 text-center text-sm text-muted-foreground">{t("pricing.freeBuild")}</p>
+            <p className="mt-2 text-center text-xs font-medium text-primary">{t("pricing.oneTime")}</p>
+
+            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {tiers.map((tier) => {
                 const info = PACKAGES[tier.tier];
                 return (
-                  <Card key={tier.tier} className={tier.tier === "premium" ? "border-primary shadow-lg" : ""}>
+                  <Card
+                    key={tier.tier}
+                    className={`relative flex flex-col ${tier.popular ? "border-primary shadow-lg" : ""}`}
+                  >
+                    {tier.popular && (
+                      <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">
+                        {t("pricing.popular")}
+                      </Badge>
+                    )}
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <CardTitle>{tier.name}</CardTitle>
+                        <CardTitle>{t(info.nameKey as TranslationKey)}</CardTitle>
                         {tier.active && <Badge>{t("pkg.active")}</Badge>}
                       </div>
-                      <CardDescription>{tier.desc}</CardDescription>
+                      <CardDescription>{t(info.descKey as TranslationKey)}</CardDescription>
                       <div className="pt-2">
                         <span className="text-3xl font-bold">{info.price}</span>
                         <span className="ml-2 text-sm text-muted-foreground">
@@ -175,8 +196,8 @@ function PackagePage() {
                         </span>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <ul className="space-y-2 text-sm text-muted-foreground">
+                    <CardContent className="flex flex-1 flex-col space-y-4">
+                      <ul className="flex-1 space-y-2 text-sm text-muted-foreground">
                         {tier.features.map((feature) => (
                           <li key={feature} className="flex items-start gap-2">
                             <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -186,7 +207,7 @@ function PackagePage() {
                       </ul>
                       <Button
                         className="w-full"
-                        variant={tier.tier === "premium" ? "default" : "outline"}
+                        variant={tier.popular ? "default" : "outline"}
                         onClick={() => setCheckoutTier(tier.tier)}
                       >
                         {`${t("pkg.choose")} · ${info.price}`}
@@ -196,6 +217,7 @@ function PackagePage() {
                 );
               })}
             </div>
+
 
             <p className="mt-8 text-center text-xs text-muted-foreground">
               {paid ? t("pkg.faq") : t("flow.locked")}

@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { I18nProvider } from "@/lib/i18n";
+import { useCheckoutReturn } from "@/lib/checkout-return";
 
 
 function NotFoundComponent() {
@@ -124,7 +125,14 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/** Confirms a finished payment when the provider sends the buyer back. */
+function CheckoutReturnWatcher() {
+  useCheckoutReturn();
+  return null;
+}
+
 function RootComponent() {
+
   const { queryClient } = Route.useRouteContext();
 
   // Testlink mit ?reset=1: alle Testdaten löschen, dann sauber neu laden.
@@ -138,11 +146,13 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
+        <CheckoutReturnWatcher />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <Toaster position="bottom-right" richColors />
       </I18nProvider>
     </QueryClientProvider>
+
   );
 }
 
