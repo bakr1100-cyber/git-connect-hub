@@ -15,7 +15,18 @@ import { ResumeWorkspace } from "./ResumeWorkspace";
 import { defaultResumeData, type ResumeData } from "@/lib/resume-types";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
-import { FileText, ArrowLeft, ArrowRight, Check, Cloud, CloudOff, Loader2, Globe2, MoreHorizontal, LogOut } from "lucide-react";
+import {
+  FileText,
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Cloud,
+  CloudOff,
+  Loader2,
+  Globe2,
+  MoreHorizontal,
+  LogOut,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -42,7 +53,6 @@ import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { rememberAuthReturnPath, WIZARD_STEP_KEY } from "@/lib/auth-return";
 import type { TemplateId } from "@/lib/resume-types";
-
 
 const STORAGE_KEY = "resume-draft-v1";
 const LANGUAGE_INTRO_KEY = "resume-language-intro-v3";
@@ -89,9 +99,9 @@ const stepHintKeys = {
   finish: "wizard.require.finish",
 } as const;
 
-
-export function ResumeEditor({ template: templateFromSearch }: { template?: TemplateId | undefined } = {}) {
-
+export function ResumeEditor({
+  template: templateFromSearch,
+}: { template?: TemplateId | undefined } = {}) {
   const { t, locale, setLocale, dir } = useI18n();
   const { isAuthenticated, loading: authLoading, signOut } = useAuth();
   const [data, setData] = useState<ResumeData>(defaultResumeData);
@@ -108,8 +118,9 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
   const [templatePreselected, setTemplatePreselected] = useState(true);
 
   const wizardSteps = useMemo(
-    () => (templatePreselected ? allWizardSteps.filter((step) => step.id !== "design") : allWizardSteps),
-    [templatePreselected]
+    () =>
+      templatePreselected ? allWizardSteps.filter((step) => step.id !== "design") : allWizardSteps,
+    [templatePreselected],
   );
   const totalSteps = wizardSteps.length;
   const currentStep = wizardSteps[Math.min(stepIndex, totalSteps - 1)]!;
@@ -132,7 +143,6 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
         return true;
     }
   }, [currentStep.id, data]);
-
 
   useEffect(() => {
     if (typeof window === "undefined" || !isAuthenticated) return;
@@ -175,7 +185,6 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
     localStorage.setItem(WIZARD_STEP_KEY, currentStep.id);
   }, [isLoaded, currentStep.id]);
 
-
   useEffect(() => {
     if (!isLoaded || typeof window === "undefined") return;
     if (localStorage.getItem(LANGUAGE_INTRO_KEY) === "done") return;
@@ -201,13 +210,12 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
     if (templateFromSearch) setTemplatePreselected(true);
   }, [templateFromSearch]);
 
-
   useEffect(() => {
     if (!isLoaded || !templateFromSearch) return;
     updateData((prev) =>
       prev.settings.template === templateFromSearch
         ? prev
-        : { ...prev, settings: { ...prev.settings, template: templateFromSearch } }
+        : { ...prev, settings: { ...prev.settings, template: templateFromSearch } },
     );
   }, [isLoaded, templateFromSearch, updateData]);
 
@@ -216,7 +224,7 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
       setData(restored);
       toast.success(t("autosave.restored"));
     },
-    [t]
+    [t],
   );
 
   const {
@@ -226,14 +234,15 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
     keepLocal,
   } = useResumeAutoSave({ data, ready: isLoaded, onRestore: handleRestore });
 
-
-  const goTo = useCallback((index: number) => {
-    // Jumping forward is only allowed once the current step has its minimum data.
-    if (index > stepIndex && !stepValid) return;
-    setStepIndex(Math.max(0, Math.min(wizardSteps.length - 1, index)));
-    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [stepIndex, stepValid, wizardSteps.length]);
-
+  const goTo = useCallback(
+    (index: number) => {
+      // Jumping forward is only allowed once the current step has its minimum data.
+      if (index > stepIndex && !stepValid) return;
+      setStepIndex(Math.max(0, Math.min(wizardSteps.length - 1, index)));
+      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [stepIndex, stepValid, wizardSteps.length],
+  );
 
   useEffect(() => {
     setStepIndex((prev) => Math.min(prev, wizardSteps.length - 1));
@@ -241,8 +250,10 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
 
   const confirmInterfaceLanguage = useCallback(() => {
     setLocale(selectedInterfaceLanguage);
-    if (typeof window !== "undefined") localStorage.setItem(INTERFACE_LANGUAGE_KEY, selectedInterfaceLanguage);
-    const hasExistingDraft = typeof window !== "undefined" && Boolean(localStorage.getItem(STORAGE_KEY));
+    if (typeof window !== "undefined")
+      localStorage.setItem(INTERFACE_LANGUAGE_KEY, selectedInterfaceLanguage);
+    const hasExistingDraft =
+      typeof window !== "undefined" && Boolean(localStorage.getItem(STORAGE_KEY));
     setSelectedLanguage(hasExistingDraft ? data.settings.language : selectedInterfaceLanguage);
     setLanguageIntroStage("resume");
   }, [data.settings.language, selectedInterfaceLanguage, setLocale]);
@@ -260,7 +271,10 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
     return (
       <div className="min-h-screen bg-background">
         <header className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-background/95 px-4 py-3 backdrop-blur-md">
-          <Link to="/" className="flex items-center gap-2 text-base font-bold tracking-tight text-foreground">
+          <Link
+            to="/"
+            className="flex items-center gap-2 text-base font-bold tracking-tight text-foreground"
+          >
             <FileText className="h-5 w-5 text-brand" />
             <span className="hidden sm:inline">{t("brand.name")}</span>
           </Link>
@@ -290,8 +304,6 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
       </div>
     );
   }
-
-
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -327,7 +339,10 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
             className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/20 bg-background shadow-[0_32px_100px_rgba(0,0,0,0.45)]"
           >
             <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-brand via-trust to-cta" />
-            <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-brand/15 blur-3xl" />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-brand/15 blur-3xl"
+            />
 
             <div className="relative p-6 sm:p-9">
               <div className="flex items-start gap-4">
@@ -336,32 +351,47 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                 </div>
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand">
-                    myCVonline.com · {languageIntroStage === "interface" ? t("languageIntro.step1") : t("languageIntro.step2")}
+                    myCVonline.com ·{" "}
+                    {languageIntroStage === "interface"
+                      ? t("languageIntro.step1")
+                      : t("languageIntro.step2")}
                   </p>
-                  <h2 id="resume-language-title" className="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                    {languageIntroStage === "interface" ? t("languageIntro.interfaceTitle") : t("languageIntro.resumeTitle")}
+                  <h2
+                    id="resume-language-title"
+                    className="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
+                  >
+                    {languageIntroStage === "interface"
+                      ? t("languageIntro.interfaceTitle")
+                      : t("languageIntro.resumeTitle")}
                   </h2>
                   <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-                    {languageIntroStage === "interface" ? t("languageIntro.interfaceDescription") : t("languageIntro.resumeDescription")}
+                    {languageIntroStage === "interface"
+                      ? t("languageIntro.interfaceDescription")
+                      : t("languageIntro.resumeDescription")}
                   </p>
                 </div>
               </div>
 
               <div className="mt-7 rounded-2xl border border-brand/20 bg-brand/5 p-4">
                 <div className="flex items-start gap-3 text-sm text-foreground/80">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-primary-foreground">!</span>
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-primary-foreground">
+                    !
+                  </span>
                   <p>
                     <strong className="text-foreground">{t("languageIntro.important")}</strong>{" "}
-                    {languageIntroStage === "interface" ? t("languageIntro.interfaceNote") : t("languageIntro.resumeNote")}
+                    {languageIntroStage === "interface"
+                      ? t("languageIntro.interfaceNote")
+                      : t("languageIntro.resumeNote")}
                   </p>
                 </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {SUPPORTED_LOCALES.map((code) => {
-                  const selected = languageIntroStage === "interface"
-                    ? selectedInterfaceLanguage === code
-                    : selectedLanguage === code;
+                  const selected =
+                    languageIntroStage === "interface"
+                      ? selectedInterfaceLanguage === code
+                      : selectedLanguage === code;
                   return (
                     <button
                       key={code}
@@ -381,7 +411,9 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                           : "border-border bg-background text-foreground hover:border-brand/50 hover:bg-brand/5"
                       }`}
                     >
-                      <span className="text-xl" aria-hidden="true">{localeFlags[code]}</span>
+                      <span className="text-xl" aria-hidden="true">
+                        {localeFlags[code]}
+                      </span>
                       <span className="text-sm font-semibold">{localeNames[code]}</span>
                       {selected && <Check className="absolute right-2 top-2 h-3.5 w-3.5" />}
                     </button>
@@ -391,14 +423,22 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
 
               <Button
                 size="lg"
-                onClick={languageIntroStage === "interface" ? confirmInterfaceLanguage : confirmResumeLanguage}
+                onClick={
+                  languageIntroStage === "interface"
+                    ? confirmInterfaceLanguage
+                    : confirmResumeLanguage
+                }
                 className="mt-7 w-full bg-cta font-bold uppercase tracking-wide text-cta-foreground shadow-lg shadow-cta/20 hover:bg-cta/90"
               >
-                {languageIntroStage === "interface" ? t("languageIntro.interfaceContinue") : t("languageIntro.resumeContinue")}
+                {languageIntroStage === "interface"
+                  ? t("languageIntro.interfaceContinue")
+                  : t("languageIntro.resumeContinue")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <p className="mt-3 text-center text-xs text-muted-foreground">
-                {languageIntroStage === "interface" ? t("languageIntro.interfaceLater") : t("languageIntro.resumeLater")}
+                {languageIntroStage === "interface"
+                  ? t("languageIntro.interfaceLater")
+                  : t("languageIntro.resumeLater")}
               </p>
             </div>
           </motion.div>
@@ -409,12 +449,17 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
       <header className="sticky top-0 z-50 overflow-hidden border-b border-border bg-background/95 backdrop-blur-md">
         <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:gap-4">
           <div className="flex min-w-0 items-center gap-4">
-            <Link to="/" className="flex items-center gap-2 text-base font-bold tracking-tight text-foreground">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-base font-bold tracking-tight text-foreground"
+            >
               <FileText className="h-5 w-5 text-brand" />
               <span className="hidden sm:inline">{t("brand.name")}</span>
             </Link>
             <div className="hidden h-8 w-px bg-border sm:block" />
-            <p className="min-w-0 truncate text-sm font-semibold text-foreground">{t(stepLabelKeys[currentStep.id])}</p>
+            <p className="min-w-0 truncate text-sm font-semibold text-foreground">
+              {t(stepLabelKeys[currentStep.id])}
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
@@ -491,7 +536,6 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-
         </div>
         {/* Progress bar */}
         <div className="h-1 w-full bg-muted">
@@ -539,7 +583,9 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                     >
                       {isComplete ? <Check className="h-5 w-5" /> : index + 1}
                     </span>
-                    <span className={`text-sm font-bold sm:text-base ${isCurrent || isComplete ? "text-foreground" : "text-muted-foreground"}`}>
+                    <span
+                      className={`text-sm font-bold sm:text-base ${isCurrent || isComplete ? "text-foreground" : "text-muted-foreground"}`}
+                    >
                       {t(stepLabelKeys[wizardStep.id])}
                     </span>
                   </button>
@@ -555,8 +601,14 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
         <div className="mx-auto grid max-w-[1700px] gap-0 xl:grid-cols-[240px_minmax(0,1fr)] 2xl:grid-cols-[240px_minmax(0,1fr)_460px]">
           {/* Persistent desktop step navigation */}
           <aside className="relative hidden overflow-hidden border-r border-brand/30 bg-gradient-to-b from-brand-dark via-brand-dark to-brand text-primary-foreground xl:block">
-            <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-cta/20 blur-3xl" />
-            <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-1/3 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-cta/20 blur-3xl"
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-24 top-1/3 h-56 w-56 rounded-full bg-white/10 blur-3xl"
+            />
             <div className="relative z-10 sticky top-[69px] min-h-[calc(100vh-69px)] px-5 py-8">
               <div className="mb-7 px-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground/60">
@@ -572,7 +624,9 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                 </div>
               </div>
 
-              <nav aria-label={`${t("wizard.step")} ${stepIndex + 1} ${t("wizard.of")} ${totalSteps}`}>
+              <nav
+                aria-label={`${t("wizard.step")} ${stepIndex + 1} ${t("wizard.of")} ${totalSteps}`}
+              >
                 {wizardSteps.map((wizardStep, index) => {
                   const isCurrent = index === stepIndex;
                   const isComplete = index < stepIndex;
@@ -583,7 +637,9 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                         <span
                           aria-hidden="true"
                           className={`absolute left-[27px] top-11 h-[30px] w-px ${
-                            isComplete ? "bg-trust shadow-[0_0_10px_rgba(34,197,94,0.5)]" : "bg-white/20"
+                            isComplete
+                              ? "bg-trust shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+                              : "bg-white/20"
                           }`}
                         />
                       )}
@@ -614,7 +670,9 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                           <span className="block text-base font-bold leading-tight">
                             {t(stepLabelKeys[wizardStep.id])}
                           </span>
-                          <span className={`mt-1 block text-[11px] ${isCurrent ? "text-white/70" : "text-white/40"}`}>
+                          <span
+                            className={`mt-1 block text-[11px] ${isCurrent ? "text-white/70" : "text-white/40"}`}
+                          >
                             {t("wizard.step")} {index + 1} {t("wizard.of")} {totalSteps}
                           </span>
                         </span>
@@ -654,10 +712,17 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
               </div>
             )}
 
-
             {currentStep.forms.map((formStep) => (
               <ResumeForm key={formStep} data={data} onChange={updateData} step={formStep} />
             ))}
+
+            {currentStep.id === "personal" && (
+              <div className="px-4 pb-4 pt-2 lg:px-6">
+                {/* Start with the person's data, then immediately make the
+                    available CV designs visible without adding a sixth step. */}
+                <TemplateGallery data={data} onChange={updateData} />
+              </div>
+            )}
 
             <div className="px-4 pb-2 lg:px-6">
               <ExtraSectionsDialog data={data} onChange={updateData} />
@@ -680,13 +745,14 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
               </div>
             )}
 
-
             {/* Prominent hand-off to the final step: say what unlocks there. */}
             {stepIndex === totalSteps - 2 && (
               <div className="px-4 pb-4 lg:px-6">
                 <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-brand/25 bg-brand/5 p-5 sm:flex-row sm:items-center">
                   <div>
-                    <p className="text-base font-bold text-foreground">{t("wizard.nextStepTitle")}</p>
+                    <p className="text-base font-bold text-foreground">
+                      {t("wizard.nextStepTitle")}
+                    </p>
                     <p className="mt-1 max-w-xl text-sm text-muted-foreground">
                       {t("wizard.nextStepHint")
                         .replace("{n}", String(totalSteps))
@@ -710,10 +776,16 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
             {/* Step navigation */}
             <div className="sticky bottom-0 z-30 flex flex-col gap-2 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md lg:px-6">
               {!stepValid && (
-                <p className="text-xs font-medium text-destructive">{t(stepHintKeys[currentStep.id])}</p>
+                <p className="text-xs font-medium text-destructive">
+                  {t(stepHintKeys[currentStep.id])}
+                </p>
               )}
               <div className="flex items-center justify-between gap-3">
-                <Button variant="outline" onClick={() => goTo(stepIndex - 1)} disabled={stepIndex === 0}>
+                <Button
+                  variant="outline"
+                  onClick={() => goTo(stepIndex - 1)}
+                  disabled={stepIndex === 0}
+                >
                   <ArrowLeft className="mr-1.5 h-4 w-4" />
                   {t("wizard.back")}
                 </Button>
@@ -740,8 +812,6 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
                 )}
               </div>
             </div>
-
-
 
             {/* On narrow screens the CV follows the form; wide screens get the sticky live column. */}
             <div className="border-t border-border bg-muted/35 px-4 py-8 lg:px-6 lg:py-10 2xl:hidden">
