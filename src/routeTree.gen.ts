@@ -10,13 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnschreibenRouteImport } from './routes/anschreiben'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BewerbungRouteImport } from './routes/bewerbung'
 import { Route as EditorRouteImport } from './routes/editor'
+import { Route as KontoRouteImport } from './routes/konto'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as ShareRouteImport } from './routes/share'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as StatusRouteImport } from './routes/status'
+import { Route as TemplatesRouteImport } from './routes/templates'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as ApiEnhancePhotoRouteImport } from './routes/api/enhance-photo'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnschreibenRoute = AnschreibenRouteImport.update({
+  id: '/anschreiben',
+  path: '/anschreiben',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -24,9 +41,29 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BewerbungRoute = BewerbungRouteImport.update({
+  id: '/bewerbung',
+  path: '/bewerbung',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EditorRoute = EditorRouteImport.update({
   id: '/editor',
   path: '/editor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontoRoute = KontoRouteImport.update({
+  id: '/konto',
+  path: '/konto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilRoute = ProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShareRoute = ShareRouteImport.update({
@@ -34,39 +71,173 @@ const ShareRoute = ShareRouteImport.update({
   path: '/share',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatusRoute = StatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TemplatesRoute = TemplatesRouteImport.update({
+  id: '/templates',
+  path: '/templates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiEnhancePhotoRoute = ApiEnhancePhotoRouteImport.update({
+  id: '/api/enhance-photo',
+  path: '/api/enhance-photo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/anschreiben': typeof AnschreibenRoute
   '/auth': typeof AuthRoute
+  '/bewerbung': typeof BewerbungRoute
   '/editor': typeof EditorRoute
+  '/konto': typeof KontoRoute
+  '/mcp': typeof McpRoute
+  '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
+  '/templates': typeof TemplatesRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/enhance-photo': typeof ApiEnhancePhotoRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/anschreiben': typeof AnschreibenRoute
   '/auth': typeof AuthRoute
+  '/bewerbung': typeof BewerbungRoute
   '/editor': typeof EditorRoute
+  '/konto': typeof KontoRoute
+  '/mcp': typeof McpRoute
+  '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
+  '/templates': typeof TemplatesRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/enhance-photo': typeof ApiEnhancePhotoRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/anschreiben': typeof AnschreibenRoute
   '/auth': typeof AuthRoute
+  '/bewerbung': typeof BewerbungRoute
   '/editor': typeof EditorRoute
+  '/konto': typeof KontoRoute
+  '/mcp': typeof McpRoute
+  '/profil': typeof ProfilRoute
   '/share': typeof ShareRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/status': typeof StatusRoute
+  '/templates': typeof TemplatesRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/enhance-photo': typeof ApiEnhancePhotoRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/editor' | '/share'
+  fullPaths:
+    | '/'
+    | '/anschreiben'
+    | '/auth'
+    | '/bewerbung'
+    | '/editor'
+    | '/konto'
+    | '/mcp'
+    | '/profil'
+    | '/share'
+    | '/sitemap.xml'
+    | '/status'
+    | '/templates'
+    | '/.well-known/oauth-protected-resource'
+    | '/api/enhance-photo'
+    | '/.lovable/oauth/consent'
+    | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/editor' | '/share'
-  id: '__root__' | '/' | '/auth' | '/editor' | '/share'
+  to:
+    | '/'
+    | '/anschreiben'
+    | '/auth'
+    | '/bewerbung'
+    | '/editor'
+    | '/konto'
+    | '/mcp'
+    | '/profil'
+    | '/share'
+    | '/sitemap.xml'
+    | '/status'
+    | '/templates'
+    | '/.well-known/oauth-protected-resource'
+    | '/api/enhance-photo'
+    | '/.lovable/oauth/consent'
+    | '/lovable/email/transactional/preview'
+  id:
+    | '__root__'
+    | '/'
+    | '/anschreiben'
+    | '/auth'
+    | '/bewerbung'
+    | '/editor'
+    | '/konto'
+    | '/mcp'
+    | '/profil'
+    | '/share'
+    | '/sitemap.xml'
+    | '/status'
+    | '/templates'
+    | '/.well-known/oauth-protected-resource'
+    | '/api/enhance-photo'
+    | '/.lovable/oauth/consent'
+    | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnschreibenRoute: typeof AnschreibenRoute
   AuthRoute: typeof AuthRoute
+  BewerbungRoute: typeof BewerbungRoute
   EditorRoute: typeof EditorRoute
+  KontoRoute: typeof KontoRoute
+  McpRoute: typeof McpRoute
+  ProfilRoute: typeof ProfilRoute
   ShareRoute: typeof ShareRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  StatusRoute: typeof StatusRoute
+  TemplatesRoute: typeof TemplatesRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiEnhancePhotoRoute: typeof ApiEnhancePhotoRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -78,11 +249,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/anschreiben': {
+      id: '/anschreiben'
+      path: '/anschreiben'
+      fullPath: '/anschreiben'
+      preLoaderRoute: typeof AnschreibenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bewerbung': {
+      id: '/bewerbung'
+      path: '/bewerbung'
+      fullPath: '/bewerbung'
+      preLoaderRoute: typeof BewerbungRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/editor': {
@@ -92,6 +277,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EditorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/konto': {
+      id: '/konto'
+      path: '/konto'
+      fullPath: '/konto'
+      preLoaderRoute: typeof KontoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profil': {
+      id: '/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/share': {
       id: '/share'
       path: '/share'
@@ -99,14 +305,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShareRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/templates': {
+      id: '/templates'
+      path: '/templates'
+      fullPath: '/templates'
+      preLoaderRoute: typeof TemplatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/enhance-photo': {
+      id: '/api/enhance-photo'
+      path: '/api/enhance-photo'
+      fullPath: '/api/enhance-photo'
+      preLoaderRoute: typeof ApiEnhancePhotoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnschreibenRoute: AnschreibenRoute,
   AuthRoute: AuthRoute,
+  BewerbungRoute: BewerbungRoute,
   EditorRoute: EditorRoute,
+  KontoRoute: KontoRoute,
+  McpRoute: McpRoute,
+  ProfilRoute: ProfilRoute,
   ShareRoute: ShareRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  StatusRoute: StatusRoute,
+  TemplatesRoute: TemplatesRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiEnhancePhotoRoute: ApiEnhancePhotoRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,7 +1,8 @@
 import type { ResumeData } from "@/lib/resume-types";
 import { ExtraSectionsBlock } from "./ExtraSectionsBlock";
-import { translate, type TranslationKey } from "@/lib/i18n";
-import { dateLocales } from "@/lib/i18n/locales";
+import type { TranslationKey } from "@/lib/i18n";
+import { templateTranslate } from "@/lib/i18n/templates";
+import { formatDayMonthYear } from "@/lib/date-format";
 import { Mail, Phone, MapPin, Globe, Linkedin, Calendar } from "lucide-react";
 
 interface TemplateProps {
@@ -11,14 +12,7 @@ interface TemplateProps {
 export function TokyoTemplate({ data }: TemplateProps) {
   const { personalDetails, workExperience, education, skills, languages, settings } = data;
   const lang = settings.language;
-  const tr = (key: TranslationKey) => translate(lang, key);
-
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString(dateLocales[lang], { day: "2-digit", month: "short", year: "numeric" });
-  };
+  const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
 
   const heading = "mb-3 border-b border-[var(--resume-accent-soft)] pb-1.5 text-[11pt] font-bold uppercase tracking-[0.14em] text-slate-700";
 
@@ -97,7 +91,7 @@ export function TokyoTemplate({ data }: TemplateProps) {
               {personalDetails.dateOfBirth && (
                 <div className="flex items-start gap-2">
                   <Calendar className="mt-[3px] h-3 w-3 shrink-0 text-slate-400" />
-                  <span>{formatDate(personalDetails.dateOfBirth)}</span>
+                  <span>{formatDayMonthYear(personalDetails.dateOfBirth)}</span>
                 </div>
               )}
               {personalDetails.website && (

@@ -132,41 +132,69 @@ ${data.text}`,
 
 export async function runExperienceSuggestions(data: {
   position: string;
-  company?: string;
+  company?: string | undefined;
   language: Locale;
+  uiLanguage?: Locale | undefined;
 }) {
   const target = languageName(data.language);
+  const uiLocale = data.uiLanguage ?? data.language;
+  const bilingual = uiLocale !== data.language;
+  const uiTarget = languageName(uiLocale);
   const result = await generateText({
     model: gateway()(MODEL),
     system:
-      "You are a career coach helping a CV writer. Generate realistic, role-specific bullet point ideas. " +
-      'Return valid JSON only in the shape {"suggestions":["..."]}. Return exactly 6 concise suggestions in the requested language. ' +
+      "You are a career coach helping a CV writer. Generate realistic, role-specific ideas for a CV. " +
+      'Return valid JSON only in the shape {"suggestions":[{"text":"...","translation":"..."}]}. Return exactly 6 suggestions. ' +
+      "Each suggestion must be ONE short flowing sentence of at most 14 words. " +
+      "Never use bullet characters, dashes, numbering, line breaks or lists inside a suggestion. " +
       "Do not invent the candidate's employers, dates, metrics or achievements; phrase ideas so the user can confirm and adapt them.",
-    prompt: `Role: ${data.position}\nCompany (optional context): ${data.company || "not provided"}\nLanguage: ${target}\n\nGenerate six distinct CV bullet-point ideas covering typical responsibilities, tools or outcomes for this role.`,
+    prompt: `Role: ${data.position}\nCompany (optional context): ${data.company || "not provided"}\n\nGenerate six distinct, compact CV suggestions covering typical responsibilities, tools or outcomes for this role.\n"text" must be written in ${target}.\n${
+      bilingual
+        ? `"translation" must be the faithful translation of "text" into ${uiTarget}.`
+        : `"translation" must be an empty string.`
+    }`,
   });
   const raw = result.text
     .trim()
     .replace(/^```(?:json)?/i, "")
     .replace(/```$/, "")
     .trim();
+  const clean = (value: string) =>
+    value
+      .replace(/^\s*[•\-–*\d.]+\s*/, "")
+      .replace(/\s+/g, " ")
+      .trim();
   try {
     const parsed = JSON.parse(raw) as { suggestions?: unknown };
     if (!Array.isArray(parsed.suggestions) || parsed.suggestions.length < 1)
       throw new Error("invalid suggestions");
-    return {
-      suggestions: parsed.suggestions
-        .filter((item): item is string => typeof item === "string")
-        .slice(0, 6),
-    };
+    const suggestions = parsed.suggestions
+      .map((item) => {
+        if (typeof item === "string") return { text: clean(item), translation: "" };
+        if (item && typeof item === "object") {
+          const record = item as { text?: unknown; translation?: unknown };
+          return {
+            text: typeof record.text === "string" ? clean(record.text) : "",
+            translation:
+              bilingual && typeof record.translation === "string" ? clean(record.translation) : "",
+          };
+        }
+        return { text: "", translation: "" };
+      })
+      .filter((item) => item.text.length > 0)
+      .slice(0, 6);
+    if (!suggestions.length) throw new Error("invalid suggestions");
+    return { suggestions };
   } catch {
     throw new Error("Experience suggestions failed");
   }
 }
 
+
 export async function runComposeExperience(data: {
   position: string;
-  company?: string;
-  location?: string;
+  company?: string | undefined;
+  location?: string | undefined;
   sourceText: string;
   selectedSuggestions: string[];
   language: Locale;
@@ -189,15 +217,21 @@ export async function runComposeExperience(data: {
     const result = await generateText({
       model: gateway()(MODEL),
       system:
-        "You are an experienced CV writer. Turn only the candidate's confirmed notes into concise, ATS-friendly bullet points. " +
-        "Use strong action verbs, avoid repetition, and return only 3-5 bullet points. Never invent dates, employers, locations, tools, numbers, metrics or achievements. " +
+        "You are an experienced CV writer. Turn only the candidate's confirmed notes into one concise, ATS-friendly paragraph of flowing prose. " +
+        "Never use bullet characters, dashes, asterisks, numbering or line breaks; return a single paragraph of 3-5 sentences with strong action verbs and no repetition. " +
+        "Never invent dates, employers, locations, tools, numbers, metrics or achievements. " +
         "Suggestions were explicitly selected by the user and may be incorporated, but no factual detail may be added beyond the supplied evidence." +
         (strictRetry
           ? " A previous answer failed fact validation. Do not introduce any number or factual named entity that is absent from the evidence."
           : ""),
-      prompt: `Target language: ${target}\nRole: ${data.position}\nCompany: ${data.company || "not provided"}\nLocation: ${data.location || "not provided"}\n\nCandidate's editable notes:\n${data.sourceText}\n\nConfirmed suggestion ideas:\n${data.selectedSuggestions.join("\n") || "none"}\n\nCreate one coherent final CV description. Preserve all supplied facts exactly.`,
+      prompt: `Target language: ${target}\nRole: ${data.position}\nCompany: ${data.company || "not provided"}\nLocation: ${data.location || "not provided"}\n\nCandidate's editable notes:\n${data.sourceText}\n\nConfirmed suggestion ideas:\n${data.selectedSuggestions.join("\n") || "none"}\n\nCreate one coherent final CV description as a single flowing paragraph without any list formatting. Preserve all supplied facts exactly.`,
     });
-    return result.text.trim();
+    return result.text
+      .replace(/^\s*[•\-–*]\s*/gm, "")
+      .replace(/\s*\n+\s*/g, " ")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+
   };
 
   let text = await createDescription();
@@ -205,6 +239,112 @@ export async function runComposeExperience(data: {
   if (containsNewNumber(text)) throw new Error("AI_FACT_VALIDATION_FAILED");
   return { text };
 }
+
+// --- cover letter generator ---------------------------------------------------
+
+export async function runCoverSuggestions(data: {
+  position: string;
+  company?: string | undefined;
+  jobDescription?: string | undefined;
+  language: Locale;
+  uiLanguage?: Locale | undefined;
+}) {
+  const target = languageName(data.language);
+  const uiLocale = data.uiLanguage ?? data.language;
+  const bilingual = uiLocale !== data.language;
+  const uiTarget = languageName(uiLocale);
+  const result = await generateText({
+    model: gateway()(MODEL),
+    system:
+      "You are an application coach preparing arguments for a cover letter. " +
+      'Return valid JSON only in the shape {"suggestions":[{"text":"...","translation":"..."}]}. Return exactly 6 suggestions. ' +
+      "Each suggestion must be ONE short flowing sentence of at most 16 words, written in first person. " +
+      "Never use bullet characters, dashes, numbering, line breaks or lists inside a suggestion. " +
+      "Do not invent employers, dates or metrics; phrase ideas so the user can confirm and adapt them.",
+    prompt: `Position: ${data.position}\nCompany: ${data.company || "not provided"}\nJob advert:\n${
+      data.jobDescription || "not provided"
+    }\n\nGenerate six distinct, compact arguments why the candidate fits this job.\n"text" must be written in ${target}.\n${
+      bilingual
+        ? `"translation" must be the faithful translation of "text" into ${uiTarget}.`
+        : `"translation" must be an empty string.`
+    }`,
+  });
+  const raw = result.text
+    .trim()
+    .replace(/^```(?:json)?/i, "")
+    .replace(/```$/, "")
+    .trim();
+  const clean = (value: string) =>
+    value
+      .replace(/^\s*[•\-–*\d.]+\s*/, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  try {
+    const parsed = JSON.parse(raw) as { suggestions?: unknown };
+    if (!Array.isArray(parsed.suggestions)) throw new Error("invalid suggestions");
+    const suggestions = parsed.suggestions
+      .map((item) => {
+        if (typeof item === "string") return { text: clean(item), translation: "" };
+        if (item && typeof item === "object") {
+          const record = item as { text?: unknown; translation?: unknown };
+          return {
+            text: typeof record.text === "string" ? clean(record.text) : "",
+            translation:
+              bilingual && typeof record.translation === "string" ? clean(record.translation) : "",
+          };
+        }
+        return { text: "", translation: "" };
+      })
+      .filter((item) => item.text.length > 0)
+      .slice(0, 6);
+    if (!suggestions.length) throw new Error("invalid suggestions");
+    return { suggestions };
+  } catch {
+    throw new Error("Cover suggestions failed");
+  }
+}
+
+export async function runComposeCoverLetter(data: {
+  position: string;
+  company: string;
+  recipient?: string | undefined;
+  companyAddress?: string | undefined;
+  jobDescription?: string | undefined;
+  selectedPoints: string[];
+  ownNotes?: string | undefined;
+  tone: "professional" | "warm" | "confident";
+  applicant: {
+    fullName: string;
+    email: string;
+    phone: string;
+    location: string;
+  };
+  background?: string | undefined;
+  language: Locale;
+}) {
+  const target = languageName(data.language);
+  const result = await generateText({
+    model: gateway()(MODEL),
+    system:
+      "You are an experienced application coach who writes tailored cover letters. " +
+      "Write flowing prose in short paragraphs, never bullet points or lists. " +
+      "Keep it to one page (roughly 250-320 words). " +
+      "Never invent employers, dates, certificates, numbers or achievements that are not supplied. " +
+      "Return only the letter body: salutation, paragraphs and closing formula with the applicant name. " +
+      "Do not repeat the sender or recipient address block, and do not add a date line.",
+    prompt: `Target language: ${target}\nTone: ${data.tone}\nPosition: ${data.position}\nCompany: ${data.company}\nContact person: ${
+      data.recipient || "unknown, use a neutral salutation"
+    }\n\nApplicant: ${data.applicant.fullName || "not provided"} (${data.applicant.location || "-"})\n\nBackground from the CV:\n${
+      data.background || "not provided"
+    }\n\nJob advert:\n${data.jobDescription || "not provided"}\n\nArguments confirmed by the applicant:\n${
+      data.selectedPoints.join("\n") || "none"
+    }\n\nAdditional notes from the applicant:\n${
+      data.ownNotes || "none"
+    }\n\nWrite the cover letter now, tailored precisely to this job.`,
+  });
+  return { text: result.text.trim() };
+}
+
 
 // --- quota / abuse protection -------------------------------------------------
 
@@ -223,10 +363,17 @@ export async function readAiUsage(supabase: Parameters<typeof consumeAiQuota>[0]
       .eq("user_id", userId)
       .eq("usage_date", today)
       .maybeSingle(),
-    supabase.from("user_entitlements").select("tier").eq("user_id", userId).maybeSingle(),
+    supabase
+      .from("user_entitlements")
+      .select("tier, expires_at")
+      .eq("user_id", userId)
+      .maybeSingle(),
   ]);
-  const tier = (entitlement?.tier as string | undefined) ?? "free";
-  const limit = tier === "premium" ? 60 : tier === "standard" ? 20 : 3;
+  const expiresAt = (entitlement as { expires_at?: string | null } | null)?.expires_at ?? null;
+  const active = !expiresAt || new Date(expiresAt).getTime() > Date.now();
+  const tier = active ? ((entitlement?.tier as string | undefined) ?? "free") : "free";
+  const limit =
+    tier === "unlimited12" ? 200 : tier === "unlimited6" ? 150 : tier === "premium" ? 60 : tier === "standard" ? 20 : 3;
   const used = (usage?.calls as number | undefined) ?? 0;
   return { tier, used, limit, remaining: Math.max(limit - used, 0) };
 }

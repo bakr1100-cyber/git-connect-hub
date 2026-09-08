@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Plus, Trash2, Upload, Loader2, Sparkles, Pencil } from "lucide-react";
+import { Plus, Trash2, Upload, Loader2, Sparkles, Pencil, Languages } from "lucide-react";
 import type { ResumeData, Education, WorkExperience, Skill, Language } from "@/lib/resume-types";
 import { useI18n } from "@/lib/i18n";
 import { SUPPORTED_LOCALES, localeFlags, localeNames, type Locale } from "@/lib/i18n/locales";
@@ -22,10 +22,13 @@ import { AIAssistButton } from "./AIAssistButton";
 import { EXPERIENCE_PENDING_KEY, ExperienceAssistantDialog } from "./ExperienceAssistantDialog";
 import { VoiceInputButton } from "./VoiceInputButton";
 import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
+import { PhotoEnhancer } from "./PhotoEnhancer";
+import { ProfileSyncButtons } from "./ProfileSyncButtons";
+
 import { useEntitlements } from "@/lib/entitlements";
 
 import { useServerFn } from "@tanstack/react-start";
-import { generateCoverLetter } from "@/lib/resume-ai.functions";
+import { generateCoverLetter, translateText } from "@/lib/resume-ai.functions";
 import { aiErrorKey } from "@/lib/ai-errors";
 import { hasAiSession } from "@/lib/ai-auth";
 import { trackAiAction } from "@/lib/ai-cost";
@@ -198,12 +201,60 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
   const [experienceDialogOpen, setExperienceDialogOpen] = useState(false);
   const [editingExperience, setEditingExperience] = useState<WorkExperience | null>(null);
 
+  const [translatingId, setTranslatingId] = useState<string | null>(null);
+  const runTranslateText = useServerFn(translateText);
+
   useEffect(() => {
     if (activeStep !== "experience" || typeof window === "undefined") return;
     if (!sessionStorage.getItem(EXPERIENCE_PENDING_KEY)) return;
     setEditingExperience(null);
     setExperienceDialogOpen(true);
   }, [activeStep]);
+
+  // Each phase always shows one ready-to-fill entry instead of an empty state.
+  useEffect(() => {
+    if (activeStep !== "education" || data.education.length > 0) return;
+    onChange((prev) =>
+      prev.education.length > 0
+        ? prev
+        : {
+            ...prev,
+            education: [
+              {
+                id: crypto.randomUUID(),
+                degree: "",
+                institution: "",
+                location: "",
+                startDate: "",
+                endDate: "",
+                description: "",
+              },
+            ],
+          }
+    );
+  }, [activeStep, data.education.length, onChange]);
+
+  const translateEducationEntry = async (item: Education) => {
+    const target = data.settings.language as Locale;
+    setTranslatingId(item.id);
+    try {
+      if (!(await hasAiSession())) throw new Error("AI_AUTH_REQUIRED");
+      const fields: (keyof Education)[] = ["degree", "institution", "location", "description"];
+      for (const field of fields) {
+        const value = (item[field] as string | undefined)?.trim();
+        if (!value) continue;
+        const result = await runTranslateText({ data: { text: value, targetLanguage: target } });
+        trackAiAction("translate");
+        updateEducation(item.id, field, result.text.trim());
+      }
+      toast.success(t("form.translateEntry"));
+    } catch (error) {
+      toast.error(t(aiErrorKey(error, "cover.failed")));
+    } finally {
+      setTranslatingId(null);
+    }
+  };
+
 
   const handleGenerateCoverLetter = async () => {
     if (!premium) {
@@ -265,12 +316,28 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const allowed = ["image/jpeg", "image/png", "image/webp"];
+    if (!allowed.includes(file.type)) {
+      toast.error(t("photo.upload.invalidType"));
+      e.target.value = "";
+      return;
+    }
+    const maxBytes = 8 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      toast.error(t("photo.upload.tooLarge"));
+      e.target.value = "";
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       updatePersonal("photo", reader.result as string);
     };
+    reader.onerror = () => {
+      toast.error(t("photo.upload.readFailed"));
+    };
     reader.readAsDataURL(file);
   };
+
 
   const openNewExperience = () => {
     setEditingExperience(null);
@@ -387,7 +454,9 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
                 <CardTitle>{t("form.personalTitle")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                <ProfileSyncButtons data={data} onChange={onChange} />
                 <div className="flex items-center gap-4">
+
                   <div
                     className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted"
                     onClick={() => fileInputRef.current?.click()}
@@ -402,15 +471,20 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
                       <Upload className="h-6 w-6 text-muted-foreground" />
                     )}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 space-y-2">
                     <Label htmlFor="photo-upload">{t("form.photoLabel")}</Label>
                     <Input
                       id="photo-upload"
                       ref={fileInputRef}
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg,image/png,image/webp"
                       onChange={handlePhotoUpload}
                       className="mt-1"
+                    />
+                    <p className="text-xs text-muted-foreground">{t("photo.upload.hint")}</p>
+                    <PhotoEnhancer
+                      photo={data.personalDetails.photo}
+                      onApply={(dataUrl) => updatePersonal("photo", dataUrl)}
                     />
                   </div>
                 </div>
@@ -534,9 +608,21 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
               </Button>
             </div>
             {data.workExperience.length === 0 && (
-              <Card className="border-dashed">
-                <CardContent className="py-8 text-center text-sm text-muted-foreground">
-                  {t("form.emptyExperience")}
+              <Card
+                role="button"
+                tabIndex={0}
+                onClick={openNewExperience}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") openNewExperience();
+                }}
+                className="cursor-pointer border-dashed transition-colors hover:border-brand hover:bg-brand-soft/40"
+              >
+                <CardContent className="flex flex-col items-center gap-2 py-8 text-center">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-primary-foreground">
+                    <Plus className="h-5 w-5" />
+                  </span>
+                  <p className="text-sm font-semibold text-foreground">{t("form.addFirstExperience")}</p>
+                  <p className="text-xs text-muted-foreground">{t("form.emptyExperience")}</p>
                 </CardContent>
               </Card>
             )}
@@ -609,12 +695,28 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
             )}
             {data.education.map((item, index) => (
               <Card key={item.id}>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardHeader className="flex flex-row items-center justify-between gap-2 pb-2">
                   <CardTitle className="text-base">{`${t("form.entry")} ${index + 1}`}</CardTitle>
-                  <Button variant="ghost" size="icon" onClick={() => removeEducation(item.id)}>
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={translatingId === item.id}
+                      onClick={() => void translateEducationEntry(item)}
+                    >
+                      {translatingId === item.id ? (
+                        <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Languages className="mr-1.5 h-4 w-4" />
+                      )}
+                      {translatingId === item.id ? t("form.translating") : t("form.translateEntry")}
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={() => removeEducation(item.id)}>
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
                 </CardHeader>
+
                 <CardContent className="space-y-4">
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">

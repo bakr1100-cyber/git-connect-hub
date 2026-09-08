@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://connect-the-dots-gh.lovable.app/sitemap.xml

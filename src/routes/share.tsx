@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AuthButton } from "@/components/auth/AuthButton";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ResumePreview } from "@/components/resume/ResumePreview";
 import { Button } from "@/components/ui/button";
@@ -73,18 +74,20 @@ function SharePage() {
             <Button asChild size="sm">
               <Link to="/editor">{t("share.createOwn")}</Link>
             </Button>
+            <AuthButton />
           </div>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-8">
+        <h1 className="mb-6 text-xl font-bold text-foreground">{t("share.readOnly")} — myCVonline.com</h1>
         {state.status === "loading" && (
           <p className="text-center text-sm text-muted-foreground">{t("share.loading")}</p>
         )}
 
         {state.status === "invalid" && (
           <div className="mx-auto max-w-md rounded-xl border border-border bg-background p-8 text-center">
-            <h1 className="text-lg font-semibold text-foreground">{t("share.invalidTitle")}</h1>
+            <h2 className="text-lg font-semibold text-foreground">{t("share.invalidTitle")}</h2>
             <p className="mt-2 text-sm text-muted-foreground">{t("share.invalidDesc")}</p>
             <Button asChild className="mt-4">
               <Link to="/editor">{t("share.createOwn")}</Link>

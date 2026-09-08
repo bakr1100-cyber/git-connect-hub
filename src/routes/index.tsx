@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { TemplateId } from "@/lib/resume-types";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -22,7 +23,7 @@ import { useI18n } from "@/lib/i18n";
 import { SUPPORTED_LOCALES, localeFlags, localeNames, type Locale } from "@/lib/i18n/locales";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { motion } from "motion/react";
-import { Reveal, Stagger, StaggerItem, HoverLift, AnimatedCounter } from "@/components/motion/Reveal";
+import { Reveal, Stagger, StaggerItem, HoverLift } from "@/components/motion/Reveal";
 import { HeroSection } from "@/components/marketing/HeroSection";
 
 
@@ -48,7 +49,7 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
-type TemplateCategory = "Minimalist" | "Modern" | "Creative";
+
 
 const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
@@ -95,27 +96,72 @@ function LanguageIntroGate({ onComplete }: { onComplete: () => void }) {
 }
 
 const templateCards: Array<{
-  id: string;
-  category: TemplateCategory;
+  id: TemplateId;
+  nameKey: "template.modern" | "template.minimalist" | "template.tokyo" | "template.azur" | "template.esmeralda" | "template.marina" | "template.milano" | "template.verona" | "template.sofia" | "template.amber" | "template.european";
   badge?: "recommended" | "new" | "european";
   accent: string;
   sidebar?: boolean;
+  header?: boolean;
 }> = [
-  { id: "t1", category: "Minimalist", badge: "recommended", accent: "bg-navy" },
-  { id: "t2", category: "Modern", accent: "bg-brand", sidebar: true },
-  { id: "t3", category: "Modern", badge: "new", accent: "bg-brand-dark", sidebar: true },
-  { id: "t4", category: "Creative", badge: "new", accent: "bg-trust", sidebar: true },
-  { id: "t5", category: "Minimalist", badge: "european", accent: "bg-sand" },
-  { id: "t6", category: "Modern", accent: "bg-navy", sidebar: true },
-  { id: "t7", category: "Creative", accent: "bg-brand", sidebar: true },
-  { id: "t8", category: "Minimalist", accent: "bg-brand-dark" },
+  { id: "modern", nameKey: "template.modern", badge: "recommended", accent: "bg-navy" },
+  { id: "minimalist", nameKey: "template.minimalist", accent: "bg-brand" },
+  { id: "tokyo", nameKey: "template.tokyo", accent: "bg-brand-dark", sidebar: true },
+  { id: "azur", nameKey: "template.azur", accent: "bg-trust", header: true },
+  { id: "esmeralda", nameKey: "template.esmeralda", accent: "bg-brand", header: true },
+  { id: "marina", nameKey: "template.marina", accent: "bg-navy", sidebar: true },
+  { id: "milano", nameKey: "template.milano", accent: "bg-navy", header: true },
+  { id: "verona", nameKey: "template.verona", accent: "bg-sand", sidebar: true },
+  { id: "sofia", nameKey: "template.sofia", accent: "bg-brand-dark", header: true },
+  { id: "amber", nameKey: "template.amber", badge: "new", accent: "bg-cta", sidebar: true },
+  { id: "european", nameKey: "template.european", badge: "european", accent: "bg-sand", sidebar: true },
 ];
 
-function TemplateThumb({ accent, sidebar }: { accent: string; sidebar?: boolean | undefined }) {
+function TemplateThumb({ accent, sidebar, header }: { accent: string; sidebar?: boolean | undefined; header?: boolean | undefined }) {
+  if (header) {
+    return (
+      <div className="aspect-[3/4] w-full overflow-hidden rounded-lg border border-border bg-background shadow-sm">
+        <div className={`relative flex h-1/4 items-center gap-2 px-3 ${accent} opacity-80`}>
+          <div className="h-8 w-8 shrink-0 rounded-full border-2 border-white bg-white/60" />
+          <div className="space-y-1">
+            <div className="h-1.5 w-16 rounded bg-white/90" />
+            <div className="h-1 w-10 rounded bg-white/60" />
+          </div>
+        </div>
+        <div className="flex h-3/4">
+          <div className="w-2/5 space-y-2 border-r border-border p-2.5">
+            <div className={`h-1.5 w-2/3 rounded ${accent} opacity-70`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-4/5 rounded bg-muted-foreground/20" />
+              <div className="h-1 w-11/12 rounded bg-muted-foreground/20" />
+            </div>
+            <div className={`h-1.5 w-1/2 rounded ${accent} opacity-70`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-3/5 rounded bg-muted-foreground/20" />
+            </div>
+          </div>
+          <div className="flex-1 space-y-2 p-2.5">
+            <div className={`h-1.5 w-1/2 rounded ${accent}`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-11/12 rounded bg-muted-foreground/20" />
+              <div className="h-1 w-4/5 rounded bg-muted-foreground/20" />
+            </div>
+            <div className={`h-1.5 w-2/5 rounded ${accent} opacity-70`} />
+            <div className="space-y-1">
+              <div className="h-1 w-full rounded bg-muted-foreground/20" />
+              <div className="h-1 w-10/12 rounded bg-muted-foreground/20" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="aspect-[3/4] w-full overflow-hidden rounded-lg border border-border bg-background shadow-sm">
       <div className="flex h-full">
-        {sidebar && <div className={`h-full w-1/3 ${accent}`} />}
+        {sidebar && <div className={`h-full w-1/3 ${accent} opacity-70`} />}
         <div className="flex-1 space-y-2 p-3">
           {!sidebar && <div className={`h-2 w-2/3 rounded ${accent}`} />}
           <div className="h-1.5 w-1/2 rounded bg-muted-foreground/30" />
@@ -141,7 +187,16 @@ function TemplateThumb({ accent, sidebar }: { accent: string; sidebar?: boolean 
   );
 }
 
-const companies = ["Siemens", "SAP", "Allianz", "Bosch", "Deutsche Bahn", "Lufthansa"];
+const companies = [
+  { name: "Atos", domain: "atos.net" },
+  { name: "KPMG", domain: "kpmg.com" },
+  { name: "TRUMPF", domain: "trumpf.com" },
+  { name: "GEA", domain: "gea.com" },
+  { name: "Brainlab", domain: "brainlab.com" },
+  { name: "Fielmann", domain: "fielmann.com" },
+];
+
+const LOGO_TOKEN = import.meta.env["VITE_LOVABLE_CONNECTOR_LOGO_DEV_API_KEY"] as string | undefined;
 
 const trustedBy: Record<string, string> = {
   de: "Nutzer wurden eingestellt bei",
@@ -187,24 +242,35 @@ function LandingPage() {
   const tiers = [
     {
       name: t("pricing.standard.name"),
-      price: "9,99 €",
+      price: "9,90 €",
+      access: t("pricing.access.30"),
       desc: t("pricing.standard.desc"),
       features: [t("pricing.standard.f1"), t("pricing.standard.f2"), t("pricing.standard.f3"), t("pricing.standard.f4")],
     },
     {
       name: t("pricing.premium.name"),
-      price: "15,00 €",
+      price: "14,90 €",
+      access: t("pricing.access.30"),
       desc: t("pricing.premium.desc"),
       features: [t("pricing.premium.f1"), t("pricing.premium.f2"), t("pricing.premium.f3"), t("pricing.premium.f4")],
+    },
+    {
+      name: t("pricing.unlimited6.name"),
+      price: "29,90 €",
+      access: t("pricing.access.180"),
+      desc: t("pricing.unlimited6.desc"),
+      features: [t("pricing.premium.f1"), t("pricing.premium.f2"), t("pricing.standard.f3"), t("pricing.access.180")],
       popular: true,
     },
     {
-      name: t("pricing.plus.name"),
-      price: "60,00 €",
-      desc: t("pricing.plus.desc"),
-      features: [t("pricing.plus.f1"), t("pricing.plus.f2"), t("pricing.plus.f3"), t("pricing.plus.f4")],
+      name: t("pricing.unlimited12.name"),
+      price: "44,90 €",
+      access: t("pricing.access.365"),
+      desc: t("pricing.unlimited12.desc"),
+      features: [t("pricing.premium.f1"), t("pricing.premium.f2"), t("pricing.standard.f3"), t("pricing.access.365")],
     },
   ];
+
 
   const testimonials = [
     { name: "Anja Fischer", role: t("testimonials.1.role"), city: "Berlin", text: t("testimonials.1.text") },
@@ -226,9 +292,7 @@ function LandingPage() {
           <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
             {[
               { href: "#vorlagen", label: t("templates.eyebrow") },
-              { href: "#funktionen", label: t("nav.features") },
-              { href: "#preise", label: t("nav.pricing") },
-              { href: "#bewertungen", label: t("nav.reviews") },
+              { href: "/bewerbung", label: t("pkg.nav") },
             ].map((item) => (
               <a
                 key={item.href}
@@ -240,9 +304,6 @@ function LandingPage() {
             ))}
           </nav>
           <div className="flex items-center gap-2">
-            <a href="#kontakt" className="hidden text-sm text-primary-foreground/70 hover:text-primary-foreground lg:inline">
-              {t("nav.contact")}
-            </a>
             <Link
               to="/auth"
               className="hidden text-sm text-primary-foreground/70 hover:text-primary-foreground sm:inline"
@@ -267,16 +328,26 @@ function LandingPage() {
 
 
       {/* Company logo bar */}
-      <section className="border-b border-border bg-background px-4 py-10">
+      <section className="border-b border-border bg-background px-4 py-12">
         <div className="mx-auto max-w-6xl">
           <p className="text-center text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
             {trustedBy[locale] ?? trustedBy["de"]}
           </p>
-          <Stagger className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+          <Stagger className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
             {companies.map((c) => (
-              <StaggerItem key={c}>
-                <span className="text-lg font-semibold tracking-tight text-navy/50 transition-colors hover:text-navy">
-                  {c}
+              <StaggerItem key={c.name}>
+                <span className="group flex items-center gap-3 text-xl font-semibold tracking-tight text-navy/60 transition-colors hover:text-navy">
+                  {LOGO_TOKEN && (
+                    <img
+                      src={`https://img.logo.dev/${c.domain}?token=${LOGO_TOKEN}&size=128&format=png`}
+                      alt={`${c.name} Logo`}
+                      loading="lazy"
+                      width={48}
+                      height={48}
+                      className="h-12 w-12 rounded object-contain transition-transform duration-300 group-hover:scale-110"
+                    />
+                  )}
+                  {c.name}
                 </span>
               </StaggerItem>
             ))}
@@ -287,15 +358,7 @@ function LandingPage() {
       {/* Counter + stats */}
       <section className="border-y border-border bg-brand-dark px-4 py-12 text-primary-foreground">
         <div className="mx-auto max-w-5xl">
-          <Reveal className="text-center">
-            <div className="font-mono text-3xl font-bold tracking-widest md:text-4xl">
-              <AnimatedCounter value={81838990} locale={locale} />
-            </div>
-            <div className="mt-1 text-xs uppercase tracking-[0.18em] text-primary-foreground/70">
-              {t("hero.counterLabel")}
-            </div>
-          </Reveal>
-          <Stagger className="mt-10 grid gap-8 md:grid-cols-3">
+          <Stagger className="grid gap-8 md:grid-cols-3">
             {stats.map((stat) => (
               <StaggerItem key={stat.label} className="text-center">
                 <div className="text-2xl font-bold text-cta">{stat.value}</div>
@@ -314,7 +377,7 @@ function LandingPage() {
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-dark">{t("templates.eyebrow")}</p>
             <h2 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-navy">{t("templates.title")}</h2>
             <p className="mt-4 max-w-2xl text-muted-foreground">{t("templates.subtitle")}</p>
-            <p className="mt-3 text-sm font-semibold text-primary">32 {t("templates.count")}</p>
+            <p className="mt-3 text-sm font-semibold text-primary">6 {t("templates.count")}</p>
           </Reveal>
 
           <Stagger className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4" stagger={0.06}>
@@ -322,7 +385,7 @@ function LandingPage() {
               <StaggerItem key={tpl.id} className="group w-44 shrink-0 snap-start sm:w-52">
                 <div className="relative">
                   <div className="transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-xl">
-                    <TemplateThumb accent={tpl.accent} sidebar={tpl.sidebar} />
+                    <TemplateThumb accent={tpl.accent} sidebar={tpl.sidebar} header={tpl.header} />
                   </div>
                   {tpl.badge && (
                     <Badge
@@ -338,11 +401,11 @@ function LandingPage() {
                   )}
                 </div>
                 <div className="mt-3 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-navy">{tpl.category}</span>
+                  <span className="text-sm font-semibold text-navy">{t(tpl.nameKey)}</span>
                   <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">ATS</span>
                 </div>
                 <Button variant="outline" size="sm" className="mt-2 w-full" asChild>
-                  <Link to="/editor">{t("templates.use")}</Link>
+                  <Link to="/editor" search={{ template: tpl.id }}>{t("templates.use")}</Link>
                 </Button>
               </StaggerItem>
             ))}
@@ -357,7 +420,7 @@ function LandingPage() {
       </section>
 
       {/* How it works */}
-      <section className="bg-secondary/50 px-4 py-20 md:py-24">
+      <section id="so-gehts" className="bg-secondary/50 px-4 py-20 md:py-24">
         <div className="mx-auto max-w-5xl">
           <p className="text-center text-xs font-bold uppercase tracking-[0.18em] text-brand-dark">{t("how.title")}</p>
           <h2 className="mt-3 text-center text-3xl font-bold tracking-tight text-navy">
@@ -378,6 +441,7 @@ function LandingPage() {
             <Button size="lg" className="uppercase tracking-wide" asChild>
               <Link to="/editor">{t("start.new")}</Link>
             </Button>
+            <span className="text-sm font-medium text-brand">{t("pricing.oneTime")}</span>
             <Button size="lg" variant="outline" className="uppercase tracking-wide" asChild>
               <Link to="/editor">
                 <Upload className="mr-1.5 h-4 w-4" />
@@ -462,20 +526,22 @@ function LandingPage() {
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-navy">{t("pricing.title")}</h2>
             <p className="mt-4 text-muted-foreground">{t("pricing.subtitle")}</p>
+            <p className="mt-2 text-sm font-medium text-primary">{t("pricing.oneTime")}</p>
           </div>
-          <Stagger className="grid gap-6 md:grid-cols-3" stagger={0.1}>
+          <Stagger className="mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-4" stagger={0.1}>
             {tiers.map((tier) => (
               <StaggerItem key={tier.name} className={tier.popular ? "md:-mt-3" : ""}>
               <Card
                 className={`relative flex h-full flex-col transition-shadow hover:shadow-xl ${tier.popular ? "border-brand shadow-lg ring-1 ring-brand/30" : "border-border/60"}`}
               >
                 {tier.popular && (
-                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">{t("pricing.bestseller")}</Badge>
+                  <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">{t("pricing.popular")}</Badge>
                 )}
                 <CardContent className="flex flex-1 flex-col pt-6">
                   <h3 className="text-lg font-semibold text-navy">{tier.name}</h3>
                   <div className="mt-2 text-3xl font-bold text-navy">{tier.price}</div>
-                  <p className="mt-2 text-sm text-muted-foreground">{tier.desc}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{tier.access}</p>
+                  <p className="mt-3 text-sm text-muted-foreground">{tier.desc}</p>
                   <ul className="mt-6 flex-1 space-y-2 text-sm">
                     {tier.features.map((f) => (
                       <li key={f} className="flex items-start gap-2">
@@ -485,7 +551,7 @@ function LandingPage() {
                     ))}
                   </ul>
                   <Button className="mt-6 w-full" variant={tier.popular ? "default" : "outline"} asChild>
-                    <Link to="/editor">{`${tier.name} ${t("pricing.choose")}`}</Link>
+                    <Link to="/bewerbung">{`${tier.name} ${t("pricing.choose")}`}</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -546,6 +612,7 @@ function LandingPage() {
           <Button size="lg" className="relative mt-8 bg-cta font-bold uppercase tracking-wide text-cta-foreground transition-transform hover:scale-[1.03] hover:bg-cta/90" asChild>
             <Link to="/editor">{t("cta.button")}</Link>
           </Button>
+          <p className="relative mt-3 text-sm font-medium text-primary-foreground/80">{t("pricing.oneTime")}</p>
         </Reveal>
       </section>
 

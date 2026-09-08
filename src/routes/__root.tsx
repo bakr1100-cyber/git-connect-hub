@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { I18nProvider } from "@/lib/i18n";
+import { useCheckoutReturn } from "@/lib/checkout-return";
 
 
 function NotFoundComponent() {
@@ -80,6 +81,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { httpEquiv: "Cache-Control", content: "no-cache, no-store, must-revalidate" },
+      { httpEquiv: "Pragma", content: "no-cache" },
+      { httpEquiv: "Expires", content: "0" },
       { title: "myCVonline.com — KI-Lebenslauf Generator" },
       { name: "description", content: "Erstelle professionelle Lebensläufe und Anschreiben mit KI. ATS-optimiert, mehrsprachig, sofort als PDF." },
       { name: "author", content: "myCVonline.com" },
@@ -121,17 +125,34 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/** Confirms a finished payment when the provider sends the buyer back. */
+function CheckoutReturnWatcher() {
+  useCheckoutReturn();
+  return null;
+}
+
 function RootComponent() {
+
   const { queryClient } = Route.useRouteContext();
+
+  // Testlink mit ?reset=1: alle Testdaten löschen, dann sauber neu laden.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("reset")) return;
+    void import("@/lib/test-reset").then((m) => m.runTestReset());
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
+        <CheckoutReturnWatcher />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <Toaster position="bottom-right" richColors />
       </I18nProvider>
     </QueryClientProvider>
+
   );
 }
 

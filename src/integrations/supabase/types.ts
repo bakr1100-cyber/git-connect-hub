@@ -41,6 +41,174 @@ export type Database = {
         }
         Relationships: []
       }
+      applicant_profiles: {
+        Row: {
+          city: string
+          country: string
+          created_at: string
+          date_of_birth: string | null
+          drivers_license: string
+          earliest_start_date: string | null
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          linkedin: string
+          nationality: string
+          phone: string
+          photo_url: string | null
+          postal_code: string
+          preferred_language: string
+          salary_expectation: string
+          street: string
+          summary: string
+          target_position: string
+          updated_at: string
+          user_id: string
+          website: string
+          willing_to_relocate: boolean
+          work_permit: string
+        }
+        Insert: {
+          city?: string
+          country?: string
+          created_at?: string
+          date_of_birth?: string | null
+          drivers_license?: string
+          earliest_start_date?: string | null
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          linkedin?: string
+          nationality?: string
+          phone?: string
+          photo_url?: string | null
+          postal_code?: string
+          preferred_language?: string
+          salary_expectation?: string
+          street?: string
+          summary?: string
+          target_position?: string
+          updated_at?: string
+          user_id: string
+          website?: string
+          willing_to_relocate?: boolean
+          work_permit?: string
+        }
+        Update: {
+          city?: string
+          country?: string
+          created_at?: string
+          date_of_birth?: string | null
+          drivers_license?: string
+          earliest_start_date?: string | null
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          linkedin?: string
+          nationality?: string
+          phone?: string
+          photo_url?: string | null
+          postal_code?: string
+          preferred_language?: string
+          salary_expectation?: string
+          street?: string
+          summary?: string
+          target_position?: string
+          updated_at?: string
+          user_id?: string
+          website?: string
+          willing_to_relocate?: boolean
+          work_permit?: string
+        }
+        Relationships: []
+      }
+      packages: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          days: number
+          is_active: boolean
+          is_popular: boolean
+          name: string
+          price_id: string
+          sort_order: number
+          tier: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          days: number
+          is_active?: boolean
+          is_popular?: boolean
+          name: string
+          price_id: string
+          sort_order?: number
+          tier: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          days?: number
+          is_active?: boolean
+          is_popular?: boolean
+          name?: string
+          price_id?: string
+          sort_order?: number
+          tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      purchases: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          email_sent: boolean
+          expires_at: string
+          id: string
+          invoice_no: string
+          purchased_at: string
+          status: string
+          tier: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          email_sent?: boolean
+          expires_at: string
+          id?: string
+          invoice_no: string
+          purchased_at?: string
+          status?: string
+          tier: string
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          email_sent?: boolean
+          expires_at?: string
+          id?: string
+          invoice_no?: string
+          purchased_at?: string
+          status?: string
+          tier?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       resumes: {
         Row: {
           cover_letter: string | null
@@ -88,18 +256,51 @@ export type Database = {
       }
       user_entitlements: {
         Row: {
+          expires_at: string | null
           tier: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          expires_at?: string | null
           tier?: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          expires_at?: string | null
           tier?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_templates: {
+        Row: {
+          created_at: string
+          id: string
+          mime_type: string
+          name: string
+          note: string | null
+          storage_path: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mime_type: string
+          name: string
+          note?: string | null
+          storage_path: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mime_type?: string
+          name?: string
+          note?: string | null
+          storage_path?: string
           user_id?: string
         }
         Relationships: []

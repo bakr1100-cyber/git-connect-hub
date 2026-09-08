@@ -20,8 +20,9 @@ export interface QuotaResult {
   remaining?: number;
 }
 
-/** Temporary product-development switch. Set to false before the public launch. */
-export const AI_QUOTA_BYPASS_DURING_BUILD = true;
+/** Kill switch for the daily AI limit. Must stay false in production. */
+export const AI_QUOTA_BYPASS_DURING_BUILD = false;
+
 
 export function developmentAiQuota(): QuotaResult {
   return { allowed: true, tier: "development", used: 0, limit: 999_999, remaining: 999_999 };
