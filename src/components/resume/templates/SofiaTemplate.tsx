@@ -1,7 +1,7 @@
 import type { ResumeData } from "@/lib/resume-types";
 import type { TranslationKey } from "@/lib/i18n";
 import { templateTranslate } from "@/lib/i18n/templates";
-import { dateLocales } from "@/lib/i18n/locales";
+import { formatMonthYearShort } from "@/lib/date-format";
 import { Mail, Phone, MapPin, Globe, Linkedin } from "lucide-react";
 
 interface TemplateProps {
@@ -14,13 +14,6 @@ export function SofiaTemplate({ data }: TemplateProps) {
   const { personalDetails, workExperience, education, skills, languages, settings } = data;
   const lang = settings.language;
   const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
-
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString(dateLocales[lang], { month: "short", year: "numeric" });
-  };
 
   const fullName = personalDetails.fullName || tr("resume.yourName");
   const extraSections = (data.extraSections ?? []).filter((s) => s.title.trim() || s.content.trim());
@@ -94,7 +87,7 @@ export function SofiaTemplate({ data }: TemplateProps) {
                       {[item.company, item.location].filter(Boolean).join(" · ")}
                     </p>
                     <p className="text-[8.5pt] uppercase tracking-[0.08em] text-slate-400">
-                      {formatDate(item.startDate)} — {item.endDate ? formatDate(item.endDate) : tr("resume.present")}
+                      {formatMonthYearShort(item.startDate)} — {item.endDate ? formatMonthYearShort(item.endDate) : tr("resume.present")}
                     </p>
                     {item.description && (
                       <p className="mt-[1.5mm] whitespace-pre-wrap text-[9.5pt] leading-relaxed">{item.description}</p>
@@ -116,7 +109,7 @@ export function SofiaTemplate({ data }: TemplateProps) {
                       {[item.institution, item.location].filter(Boolean).join(" · ")}
                     </p>
                     <p className="text-[8.5pt] uppercase tracking-[0.08em] text-slate-400">
-                      {formatDate(item.startDate)} — {item.endDate ? formatDate(item.endDate) : tr("resume.present")}
+                      {formatMonthYearShort(item.startDate)} — {item.endDate ? formatMonthYearShort(item.endDate) : tr("resume.present")}
                     </p>
                     {item.description && (
                       <p className="mt-[1.5mm] whitespace-pre-wrap text-[9.5pt] leading-relaxed">{item.description}</p>

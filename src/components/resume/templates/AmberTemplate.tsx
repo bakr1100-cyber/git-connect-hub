@@ -1,7 +1,7 @@
 import type { ResumeData } from "@/lib/resume-types";
 import type { TranslationKey } from "@/lib/i18n";
 import { templateTranslate } from "@/lib/i18n/templates";
-import { dateLocales } from "@/lib/i18n/locales";
+import { formatYear } from "@/lib/date-format";
 
 interface TemplateProps {
   data: ResumeData;
@@ -25,13 +25,6 @@ export function AmberTemplate({ data }: TemplateProps) {
   const { personalDetails, workExperience, education, skills, languages, settings } = data;
   const lang = settings.language;
   const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
-
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString(dateLocales[lang], { year: "numeric" });
-  };
 
   const fullName = personalDetails.fullName || tr("resume.yourName");
   const parts = fullName.trim().split(" ");
@@ -98,7 +91,7 @@ export function AmberTemplate({ data }: TemplateProps) {
               {education.map((item) => (
                 <div key={item.id} className="min-w-0">
                   <p className="text-[8pt] text-slate-400">
-                    {formatDate(item.startDate)} - {item.endDate ? formatDate(item.endDate) : tr("resume.present")}
+                    {formatYear(item.startDate)} - {item.endDate ? formatYear(item.endDate) : tr("resume.present")}
                   </p>
                   <p className="text-[9pt] font-bold uppercase tracking-[0.04em] text-slate-800">{item.degree}</p>
                   <p className="text-[8.5pt] text-slate-500">
@@ -182,7 +175,7 @@ export function AmberTemplate({ data }: TemplateProps) {
                     className={i > 0 ? "min-w-0 border-t border-slate-200 pt-[4mm]" : "min-w-0"}
                   >
                     <p className="text-[8pt] text-slate-400">
-                      {formatDate(item.startDate)} - {item.endDate ? formatDate(item.endDate) : tr("resume.present")}
+                      {formatYear(item.startDate)} - {item.endDate ? formatYear(item.endDate) : tr("resume.present")}
                     </p>
                     <p className="truncate text-[9.5pt] font-bold uppercase tracking-[0.04em] text-slate-800">
                       {item.position}
