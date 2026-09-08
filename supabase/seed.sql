@@ -46,3 +46,8 @@ on conflict do nothing;
 insert into public.ai_usage (user_id, calls, cost_units)
 values ('11111111-1111-1111-1111-111111111111', 5, 2.5)
 on conflict (user_id, usage_date) do nothing;
+
+-- Admin-Rolle für den lokalen Demo-Nutzer, damit /admin lokal nutzbar ist.
+insert into public.user_roles (user_id, role)
+select id, 'admin'::public.app_role from auth.users where email = 'demo@mycvonline.local'
+on conflict do nothing;
