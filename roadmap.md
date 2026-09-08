@@ -18,3 +18,11 @@
 - [ ] Schritte: Persönliche Daten, Ausbildung, Berufserfahrung, Fähigkeiten/Sprachen, Feinschliff+Anschreiben, Vorschau+Download
 - [ ] KI-Vorschläge nur im jeweiligen Schritt, mit Auswahl/Bearbeitung/Bestätigung
 - [ ] Preis erst im letzten Schritt (Download/Teilen), Hinweis „Einmalzahlung – kein Abo"
+
+## Prüfpunkte (08.09.2026)
+- [ ] Admin-Panel testen: Paket-CRUD, Belege, Nutzer-Zuweisung
+- [ ] Veröffentlichte Adresse klären (connect-the-dots-gh.lovable.app)
+- [ ] GitHub-Push blockiert – Alternative dokumentieren
+- [ ] Stripe: Testmodus vs. Livebetrieb klären
+- [ ] KI: echte API angeschlossen? prüfen
+- [ ] Offene Sicherheitswarnung prüfen/beheben
