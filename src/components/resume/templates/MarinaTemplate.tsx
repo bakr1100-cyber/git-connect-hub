@@ -1,7 +1,7 @@
 import type { ResumeData } from "@/lib/resume-types";
 import type { TranslationKey } from "@/lib/i18n";
 import { templateTranslate } from "@/lib/i18n/templates";
-import { dateLocales } from "@/lib/i18n/locales";
+import { formatMonthYearShort } from "@/lib/date-format";
 import { Mail, Phone, MapPin, Globe, Linkedin, Calendar, Briefcase, GraduationCap } from "lucide-react";
 
 interface TemplateProps {
@@ -15,13 +15,6 @@ export function MarinaTemplate({ data }: TemplateProps) {
   const lang = settings.language;
   const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
 
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString(dateLocales[lang], { month: "short", year: "numeric" });
-  };
-
   const contacts = [
     personalDetails.phone && { icon: Phone, value: personalDetails.phone },
     personalDetails.email && { icon: Mail, value: personalDetails.email },
@@ -29,7 +22,7 @@ export function MarinaTemplate({ data }: TemplateProps) {
   ].filter(Boolean) as { icon: typeof Phone; value: string }[];
 
   const sideContacts = [
-    personalDetails.dateOfBirth && { icon: Calendar, value: formatDate(personalDetails.dateOfBirth) },
+    personalDetails.dateOfBirth && { icon: Calendar, value: formatMonthYearShort(personalDetails.dateOfBirth) },
     personalDetails.linkedin && { icon: Linkedin, value: personalDetails.linkedin },
     personalDetails.website && { icon: Globe, value: personalDetails.website },
   ].filter(Boolean) as { icon: typeof Phone; value: string }[];

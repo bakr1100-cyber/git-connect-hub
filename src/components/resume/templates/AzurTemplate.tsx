@@ -1,6 +1,7 @@
 import type { ResumeData } from "@/lib/resume-types";
 import type { TranslationKey } from "@/lib/i18n";
 import { templateTranslate } from "@/lib/i18n/templates";
+import { formatDayMonthYear } from "@/lib/date-format";
 import { Mail, Phone, MapPin, Globe, Linkedin, Calendar } from "lucide-react";
 
 interface TemplateProps {
@@ -12,21 +13,12 @@ export function AzurTemplate({ data }: TemplateProps) {
   const lang = settings.language;
   const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
 
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return dateStr;
-    // Fixed numeric format: locale formatting differs between server and browser.
-    return `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}`;
-  };
-
   const heading = "mb-2.5 text-[12pt] font-bold uppercase tracking-wide text-slate-900";
 
   const contacts = [
     personalDetails.phone && { icon: Phone, value: personalDetails.phone },
-    personalDetails.dateOfBirth && { icon: Calendar, value: formatDate(personalDetails.dateOfBirth) },
+    personalDetails.dateOfBirth && { icon: Calendar, value: formatDayMonthYear(personalDetails.dateOfBirth) },
     personalDetails.email && { icon: Mail, value: personalDetails.email },
-    
     personalDetails.location && { icon: MapPin, value: personalDetails.location },
     personalDetails.linkedin && { icon: Linkedin, value: personalDetails.linkedin },
     personalDetails.website && { icon: Globe, value: personalDetails.website },

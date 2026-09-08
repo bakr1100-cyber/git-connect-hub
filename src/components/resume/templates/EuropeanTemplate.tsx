@@ -2,7 +2,7 @@ import type { ResumeData } from "@/lib/resume-types";
 import { ExtraSectionsBlock } from "./ExtraSectionsBlock";
 import type { TranslationKey } from "@/lib/i18n";
 import { templateTranslate } from "@/lib/i18n/templates";
-import { dateLocales } from "@/lib/i18n/locales";
+import { formatMonthYear } from "@/lib/date-format";
 import { Mail, Phone, MapPin, Globe, Linkedin, Calendar } from "lucide-react";
 
 interface TemplateProps {
@@ -13,16 +13,6 @@ export function EuropeanTemplate({ data }: TemplateProps) {
   const { personalDetails, workExperience, education, skills, languages, settings } = data;
   const lang = settings.language;
   const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
-
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString(dateLocales[lang], {
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
 
   return (
     <div className="flex min-h-full font-sans text-[11pt] leading-relaxed text-slate-800">
@@ -56,7 +46,7 @@ export function EuropeanTemplate({ data }: TemplateProps) {
           {personalDetails.dateOfBirth && (
             <div className="flex items-center gap-2">
               <Calendar className="h-3.5 w-3.5 text-slate-500" />
-              {formatDate(personalDetails.dateOfBirth)}
+              {formatMonthYear(personalDetails.dateOfBirth)}
             </div>
           )}
           {personalDetails.website && (

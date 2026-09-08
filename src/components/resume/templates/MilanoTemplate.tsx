@@ -1,7 +1,7 @@
 import type { ResumeData } from "@/lib/resume-types";
 import type { TranslationKey } from "@/lib/i18n";
 import { templateTranslate } from "@/lib/i18n/templates";
-import { dateLocales } from "@/lib/i18n/locales";
+import { formatMonthYearShort } from "@/lib/date-format";
 import { Mail, Phone, MapPin, Globe, Linkedin } from "lucide-react";
 
 interface TemplateProps {
@@ -14,13 +14,6 @@ export function MilanoTemplate({ data }: TemplateProps) {
   const { personalDetails, workExperience, education, skills, languages, settings } = data;
   const lang = settings.language;
   const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
-
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString(dateLocales[lang], { month: "short", year: "numeric" });
-  };
 
   const contacts = [
     personalDetails.phone && { icon: Phone, value: personalDetails.phone },
@@ -109,9 +102,9 @@ export function MilanoTemplate({ data }: TemplateProps) {
                     <div className="flex min-w-0 items-baseline justify-between gap-3">
                       <h3 className={`${subHeading} min-w-0 break-words`}>{item.position}</h3>
                       <span className="shrink-0 whitespace-nowrap text-[8.5pt] text-slate-500">
-                        {formatDate(item.startDate)}
+                        {formatMonthYearShort(item.startDate)}
                         {(item.endDate || item.startDate) &&
-                          ` – ${item.endDate ? formatDate(item.endDate) : tr("resume.present")}`}
+                          ` – ${item.endDate ? formatMonthYearShort(item.endDate) : tr("resume.present")}`}
                       </span>
                     </div>
                     <p className="break-words text-[9pt] font-medium text-slate-600">
@@ -138,8 +131,8 @@ export function MilanoTemplate({ data }: TemplateProps) {
                     <div className="flex min-w-0 items-baseline justify-between gap-3">
                       <h3 className={`${subHeading} min-w-0 break-words`}>{item.degree}</h3>
                       <span className="shrink-0 whitespace-nowrap text-[8.5pt] text-slate-500">
-                        {formatDate(item.startDate)}
-                        {item.endDate && ` – ${formatDate(item.endDate)}`}
+                        {formatMonthYearShort(item.startDate)}
+                        {item.endDate && ` – ${formatMonthYearShort(item.endDate)}`}
                       </span>
                     </div>
                     <p className="break-words text-[9pt] text-slate-600">

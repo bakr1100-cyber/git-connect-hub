@@ -1,7 +1,7 @@
 import type { ResumeData } from "@/lib/resume-types";
 import type { TranslationKey } from "@/lib/i18n";
 import { templateTranslate } from "@/lib/i18n/templates";
-import { dateLocales } from "@/lib/i18n/locales";
+import { formatMonthYearShort } from "@/lib/date-format";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 interface TemplateProps {
@@ -29,13 +29,6 @@ export function VeronaTemplate({ data }: TemplateProps) {
   const { personalDetails, workExperience, education, skills, languages, settings } = data;
   const lang = settings.language;
   const tr = (key: TranslationKey) => templateTranslate(settings.template, lang, key);
-
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return "";
-    const date = new Date(dateStr);
-    if (Number.isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString(dateLocales[lang], { month: "short", year: "numeric" });
-  };
 
   const fullName = personalDetails.fullName || tr("resume.yourName");
   const nameParts = fullName.trim().split(" ");
@@ -133,9 +126,9 @@ export function VeronaTemplate({ data }: TemplateProps) {
                 {workExperience.map((item) => (
                   <div key={item.id} className="grid min-w-0 grid-cols-[26mm_1fr] gap-x-[4mm]">
                     <span className="pt-[0.5mm] text-[8.5pt] tracking-[0.06em] text-slate-500">
-                      {formatDate(item.startDate)}
+                      {formatMonthYearShort(item.startDate)}
                       {(item.endDate || item.startDate) &&
-                        ` – ${item.endDate ? formatDate(item.endDate) : tr("resume.present")}`}
+                        ` – ${item.endDate ? formatMonthYearShort(item.endDate) : tr("resume.present")}`}
                     </span>
                     <div className="min-w-0">
                       <h3 className={`${entryTitle} break-words`}>{item.company}</h3>
@@ -162,8 +155,8 @@ export function VeronaTemplate({ data }: TemplateProps) {
                 {education.map((item) => (
                   <div key={item.id} className="grid min-w-0 grid-cols-[26mm_1fr] gap-x-[4mm]">
                     <span className="pt-[0.5mm] text-[8.5pt] tracking-[0.06em] text-slate-500">
-                      {formatDate(item.startDate)}
-                      {item.endDate && ` – ${formatDate(item.endDate)}`}
+                      {formatMonthYearShort(item.startDate)}
+                      {item.endDate && ` – ${formatMonthYearShort(item.endDate)}`}
                     </span>
                     <div className="min-w-0">
                       <h3 className={`${entryTitle} break-words`}>{item.institution}</h3>
