@@ -214,16 +214,19 @@ export type Database = {
       }
       user_entitlements: {
         Row: {
+          expires_at: string | null
           tier: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          expires_at?: string | null
           tier?: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          expires_at?: string | null
           tier?: string
           updated_at?: string
           user_id?: string

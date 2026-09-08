@@ -140,9 +140,16 @@ export const verifyPackageCheckout = createServerFn({ method: "POST" })
           .eq("user_id", context.userId)
           .eq("status", "pending");
         // Server-side truth for AI limits and feature gates.
-        await supabaseAdmin
-          .from("user_entitlements")
-          .upsert({ user_id: context.userId, tier, updated_at: new Date().toISOString() });
+        // Access is time limited: one-time purchase, no auto renewal.
+        const expiresAt = new Date(
+          Date.now() + PACKAGES[tier].days * 24 * 60 * 60 * 1000,
+        ).toISOString();
+        await supabaseAdmin.from("user_entitlements").upsert({
+          user_id: context.userId,
+          tier,
+          expires_at: expiresAt,
+          updated_at: new Date().toISOString(),
+        });
         return { status: "paid", purchaseId, tier };
       }
 
