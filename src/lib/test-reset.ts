@@ -1,23 +1,17 @@
 import { supabase } from "@/integrations/supabase/client";
 
 /**
- * Testmodus: mit ?reset=1 in der URL werden alle Daten des aktuellen Tests
- * entfernt (lokaler Entwurf, gespeicherte Lebensläufe, Profil, Anmeldung),
- * damit jeder Testlauf bei null anfängt.
+ * Testmodus: mit ?reset=1 in der URL werden ausschließlich Browserdaten des
+ * aktuellen Tests entfernt. In Supabase gespeicherte Lebensläufe, Profile,
+ * Käufe und Rechnungen bleiben erhalten.
  */
 export const RESET_PARAM = "reset";
 
 export async function runTestReset(): Promise<void> {
   try {
-    const { data } = await supabase.auth.getSession();
-    const userId = data.session?.user?.id;
-    if (userId) {
-      await supabase.from("resumes").delete().eq("user_id", userId);
-      await supabase.from("applicant_profiles").delete().eq("user_id", userId);
-      await supabase.auth.signOut();
-    }
+    await supabase.auth.signOut();
   } catch {
-    // Auch ohne Verbindung wird lokal aufgeräumt.
+    // Auch ohne Verbindung wird der lokale Testzustand aufgeräumt.
   }
 
   try {
@@ -25,6 +19,24 @@ export async function runTestReset(): Promise<void> {
     window.sessionStorage.clear();
   } catch {
     // ignorieren
+  }
+
+  try {
+    if ("caches" in window) {
+      const cacheNames = await window.caches.keys();
+      await Promise.all(cacheNames.map((name) => window.caches.delete(name)));
+    }
+  } catch {
+    // CacheStorage ist nicht in jedem Browser verfügbar.
+  }
+
+  try {
+    if ("serviceWorker" in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((registration) => registration.unregister()));
+    }
+  } catch {
+    // Ein fehlender Service Worker darf den Reset nicht verhindern.
   }
 
   const url = new URL(window.location.href);
