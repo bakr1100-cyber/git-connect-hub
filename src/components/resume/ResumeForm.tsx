@@ -558,6 +558,8 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
                 </div>
               </CardContent>
             </Card>
+
+            <TemplateGallery data={data} onChange={onChange} variant="full" />
           </TabsContent>
 
           <TabsContent value="summary" className="mt-0 space-y-4">
