@@ -24,6 +24,7 @@ import { VoiceInputButton } from "./VoiceInputButton";
 import { PremiumUpsellDialog } from "./PremiumUpsellDialog";
 import { PhotoEnhancer } from "./PhotoEnhancer";
 import { ProfileSyncButtons } from "./ProfileSyncButtons";
+import { TemplateGallery } from "./TemplateGallery";
 
 import { useEntitlements } from "@/lib/entitlements";
 
@@ -557,6 +558,8 @@ export function ResumeForm({ data, onChange, step: controlledStep }: ResumeFormP
                 </div>
               </CardContent>
             </Card>
+
+            <TemplateGallery data={data} onChange={onChange} variant="full" />
           </TabsContent>
 
           <TabsContent value="summary" className="mt-0 space-y-4">
