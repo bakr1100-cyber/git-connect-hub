@@ -125,6 +125,48 @@ export type Database = {
         }
         Relationships: []
       }
+      packages: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          days: number
+          is_active: boolean
+          is_popular: boolean
+          name: string
+          price_id: string
+          sort_order: number
+          tier: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          days: number
+          is_active?: boolean
+          is_popular?: boolean
+          name: string
+          price_id: string
+          sort_order?: number
+          tier: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          days?: number
+          is_active?: boolean
+          is_popular?: boolean
+          name?: string
+          price_id?: string
+          sort_order?: number
+          tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       purchases: {
         Row: {
           amount_cents: number
