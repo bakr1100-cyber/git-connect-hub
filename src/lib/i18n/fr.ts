@@ -537,4 +537,7 @@ export const fr = {
   "ats.addMissing": "Ajouter les sections manquantes",
   "custom.palettes": "Palettes Tokyo",
   "custom.palettesHint": "Choisissez l'ambiance aquarelle de votre modèle Tokyo.",
+  "preview.live": "Aperçu en direct",
+  "ai.remaining": "Suggestions IA restantes aujourd'hui",
+  "ai.remainingDetail": "{used} sur {limit} utilisées",
 } as const;

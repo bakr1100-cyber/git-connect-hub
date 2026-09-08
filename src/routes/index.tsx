@@ -441,6 +441,7 @@ function LandingPage() {
             <Button size="lg" className="uppercase tracking-wide" asChild>
               <Link to="/editor">{t("start.new")}</Link>
             </Button>
+            <span className="text-sm font-medium text-brand">{t("pricing.oneTime")}</span>
             <Button size="lg" variant="outline" className="uppercase tracking-wide" asChild>
               <Link to="/editor">
                 <Upload className="mr-1.5 h-4 w-4" />
@@ -611,6 +612,7 @@ function LandingPage() {
           <Button size="lg" className="relative mt-8 bg-cta font-bold uppercase tracking-wide text-cta-foreground transition-transform hover:scale-[1.03] hover:bg-cta/90" asChild>
             <Link to="/editor">{t("cta.button")}</Link>
           </Button>
+          <p className="relative mt-3 text-sm font-medium text-primary-foreground/80">{t("pricing.oneTime")}</p>
         </Reveal>
       </section>
 

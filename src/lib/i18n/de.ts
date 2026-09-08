@@ -614,6 +614,9 @@ export const de = {
   "ats.addMissing": "Fehlende Abschnitte hinzufügen",
   "custom.palettes": "Tokyo-Farbpaletten",
   "custom.palettesHint": "Wähle die Aquarell-Stimmung deiner Tokyo-Vorlage.",
+  "preview.live": "Live-Vorschau",
+  "ai.remaining": "KI-Vorschläge heute übrig",
+  "ai.remainingDetail": "{used} von {limit} genutzt",
 } as const;
 
 export type TranslationKey = keyof typeof de;

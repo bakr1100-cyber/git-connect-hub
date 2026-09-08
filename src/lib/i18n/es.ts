@@ -537,4 +537,7 @@ export const es = {
   "ats.addMissing": "Añadir secciones que faltan",
   "custom.palettes": "Paletas Tokyo",
   "custom.palettesHint": "Elige el ambiente acuarela de tu plantilla Tokyo.",
+  "preview.live": "Vista previa en vivo",
+  "ai.remaining": "Sugerencias de IA restantes hoy",
+  "ai.remainingDetail": "{used} de {limit} usadas",
 } as const;

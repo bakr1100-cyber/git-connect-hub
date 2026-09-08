@@ -1,7 +1,6 @@
 import type { ResumeData } from "@/lib/resume-types";
 import type { TranslationKey } from "@/lib/i18n";
 import { templateTranslate } from "@/lib/i18n/templates";
-import { dateLocales } from "@/lib/i18n/locales";
 import { Mail, Phone, MapPin, Globe, Linkedin, Calendar } from "lucide-react";
 
 interface TemplateProps {
@@ -17,7 +16,8 @@ export function AzurTemplate({ data }: TemplateProps) {
     if (!dateStr) return "";
     const date = new Date(dateStr);
     if (Number.isNaN(date.getTime())) return dateStr;
-    return date.toLocaleDateString(dateLocales[lang], { day: "2-digit", month: "2-digit", year: "numeric" });
+    // Fixed numeric format: locale formatting differs between server and browser.
+    return `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()}`;
   };
 
   const heading = "mb-2.5 text-[12pt] font-bold uppercase tracking-wide text-slate-900";

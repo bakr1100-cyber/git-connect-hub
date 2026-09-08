@@ -537,4 +537,7 @@ export const ar = {
   "ats.addMissing": "إضافة الأقسام الناقصة",
   "custom.palettes": "لوحات ألوان Tokyo",
   "custom.palettesHint": "اختر أجواء الألوان المائية لقالب Tokyo.",
+  "preview.live": "معاينة مباشرة",
+  "ai.remaining": "اقتراحات الذكاء الاصطناعي المتبقية اليوم",
+  "ai.remainingDetail": "{used} من {limit} مستخدمة",
 } as const;

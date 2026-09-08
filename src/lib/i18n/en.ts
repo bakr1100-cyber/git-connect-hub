@@ -557,4 +557,7 @@ export const en = {
   "ats.addMissing": "Add missing sections",
   "custom.palettes": "Tokyo colour palettes",
   "custom.palettesHint": "Pick the watercolour mood of your Tokyo template.",
+  "preview.live": "Live preview",
+  "ai.remaining": "AI suggestions left today",
+  "ai.remainingDetail": "{used} of {limit} used",
 } as const;

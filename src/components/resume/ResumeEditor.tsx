@@ -49,15 +49,17 @@ const LANGUAGE_INTRO_KEY = "resume-language-intro-v3";
 
 const INTERFACE_LANGUAGE_KEY = "interface-language-selected-v1";
 
-/** Five clear stages: design, basics, career, education, skills, finish. */
+/** The editor starts straight in the personal details, next to the live preview. */
 const allWizardSteps: { id: WizardStepId; forms: string[] }[] = [
-  { id: "design", forms: [] },
   { id: "personal", forms: ["personal"] },
-  { id: "experience", forms: ["experience"] },
   { id: "education", forms: ["education"] },
+  { id: "experience", forms: ["experience"] },
   { id: "skills", forms: ["skills", "summary"] },
   { id: "finish", forms: ["settings", "cover-letter"] },
 ];
+
+/** The workspace still numbers its sections with the old design-first order. */
+const workspaceStepMap: Record<number, number> = { 0: 0, 1: 0, 2: 2, 3: 1, 4: 3, 5: 4 };
 
 const stepLabelKeys = {
   design: "tab.design",
@@ -103,7 +105,7 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
   const [mode, setMode] = useState<"wizard" | "workspace">("wizard");
   // When the template was already picked on the landing page the design step is skipped;
   // colour and "another template?" move to the final step instead.
-  const [templatePreselected, setTemplatePreselected] = useState(Boolean(templateFromSearch));
+  const [templatePreselected, setTemplatePreselected] = useState(true);
 
   const wizardSteps = useMemo(
     () => (templatePreselected ? allWizardSteps.filter((step) => step.id !== "design") : allWizardSteps),
@@ -282,9 +284,7 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
           onChange={updateData}
           onEditStep={(index) => {
             setMode("wizard");
-            // Workspace step numbers assume the design step; it is skipped when a
-            // template was preselected, so shift the target back by one.
-            goTo(index - (templatePreselected ? 1 : 0));
+            goTo(workspaceStepMap[index] ?? 0);
           }}
         />
       </div>
@@ -552,7 +552,7 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
 
       {/* Wizard Body */}
       <main className="flex-1">
-        <div className="mx-auto grid max-w-[1500px] gap-0 xl:grid-cols-[270px_minmax(0,1fr)]">
+        <div className="mx-auto grid max-w-[1700px] gap-0 xl:grid-cols-[240px_minmax(0,1fr)] 2xl:grid-cols-[240px_minmax(0,1fr)_460px]">
           {/* Persistent desktop step navigation */}
           <aside className="relative hidden overflow-hidden border-r border-brand/30 bg-gradient-to-b from-brand-dark via-brand-dark to-brand text-primary-foreground xl:block">
             <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-cta/20 blur-3xl" />
@@ -743,11 +743,22 @@ export function ResumeEditor({ template: templateFromSearch }: { template?: Temp
 
 
 
-            {/* The full CV stays below the guided input flow and remains available for checking. */}
-            <div className="border-t border-border bg-muted/35 px-4 py-8 lg:px-6 lg:py-10">
+            {/* On narrow screens the CV follows the form; wide screens get the sticky live column. */}
+            <div className="border-t border-border bg-muted/35 px-4 py-8 lg:px-6 lg:py-10 2xl:hidden">
               <ResumePreview data={data} />
             </div>
           </div>
+
+          {/* Sticky live preview: the chosen template updates while typing. */}
+          <aside className="hidden border-l border-border bg-muted/30 2xl:block">
+            <div className="sticky top-[69px] max-h-[calc(100vh-69px)] space-y-4 overflow-y-auto px-5 py-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {t("preview.live")}
+              </p>
+              <ResumePreview data={data} hideCaption />
+              <TemplateGallery data={data} onChange={updateData} variant="finish" />
+            </div>
+          </aside>
         </div>
       </main>
     </div>

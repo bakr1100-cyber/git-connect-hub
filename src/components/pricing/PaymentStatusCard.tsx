@@ -1,3 +1,7 @@
+import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { getAiUsage } from "@/lib/resume-ai.functions";
+import { Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Clock, Download, Mail, XCircle } from "lucide-react";
@@ -5,6 +9,44 @@ import { useI18n } from "@/lib/i18n";
 import { PACKAGES, useEntitlements } from "@/lib/entitlements";
 import type { TranslationKey } from "@/lib/i18n/de";
 import { downloadInvoice, formatReceiptAmount } from "@/lib/invoice";
+
+/** Shows how many AI suggestions the signed-in account has left today. */
+function AiQuotaRow() {
+  const { t } = useI18n();
+  const loadUsage = useServerFn(getAiUsage);
+  const [usage, setUsage] = useState<{ used: number; limit: number; remaining: number } | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    void loadUsage()
+      .then((data) => {
+        if (active) setUsage(data as { used: number; limit: number; remaining: number });
+      })
+      .catch(() => {
+        /* signed out or quota unavailable */
+      });
+    return () => {
+      active = false;
+    };
+  }, [loadUsage]);
+
+  if (!usage) return null;
+
+  return (
+    <div className="mt-5 flex items-center justify-between gap-3 rounded-md border bg-muted/30 p-3">
+      <div className="flex items-center gap-2">
+        <Sparkles className="h-4 w-4 text-primary" />
+        <div>
+          <p className="text-sm font-medium">{t("ai.remaining")}</p>
+          <p className="text-xs text-muted-foreground">
+            {t("ai.remainingDetail").replace("{used}", String(usage.used)).replace("{limit}", String(usage.limit))}
+          </p>
+        </div>
+      </div>
+      <span className="text-lg font-bold">{usage.remaining}</span>
+    </div>
+  );
+}
 
 /** Zeigt den aktuellen Zahlungsstatus und die Rechnungen des Kontos. */
 export function PaymentStatusCard() {
@@ -42,8 +84,11 @@ export function PaymentStatusCard() {
         {status === "active" && <Badge>{t("pkg.active")}</Badge>}
       </div>
 
+      <AiQuotaRow />
+
       <div className="mt-5 border-t pt-4">
         <p className="text-sm font-medium">{t("invoice.title")}</p>
+
         {receipts.length === 0 ? (
           <p className="mt-2 text-sm text-muted-foreground">{t("invoice.none")}</p>
         ) : (

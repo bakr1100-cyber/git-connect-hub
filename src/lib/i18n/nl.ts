@@ -447,4 +447,7 @@ export const nl = {
   "example.finish.2": "Pick a template and accent colour that fit your industry.",
   "example.finish.3": "Add a cover letter — it clearly raises your response rate.",
   "auth.alreadyRegistered": "Dit e-mailadres is al geregistreerd — log gewoon in.",
+  "preview.live": "Live voorbeeld",
+  "ai.remaining": "AI-suggesties vandaag over",
+  "ai.remainingDetail": "{used} van {limit} gebruikt",
 } as const;
