@@ -9,7 +9,9 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Check } from "lucide-react";
-import { PREMIUM_PRICE, STANDARD_PRICE, type Tier } from "@/lib/entitlements";
+import { PACKAGES, type Tier } from "@/lib/entitlements";
+import type { TranslationKey } from "@/lib/i18n/de";
+
 import { CheckoutDialog } from "@/components/pricing/CheckoutDialog";
 import { useI18n } from "@/lib/i18n";
 
