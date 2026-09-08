@@ -151,11 +151,13 @@ function PackagePage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-5xl px-4 pt-10">
+        <PaymentStatusCard />
+      </section>
+
       {step === 0 && (
         <>
-          <section className="mx-auto max-w-5xl px-4 pt-10">
-            <PaymentStatusCard />
-          </section>
+
 
           <section className="mx-auto max-w-5xl px-4 py-12">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
