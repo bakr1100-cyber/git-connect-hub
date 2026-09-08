@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/lib/i18n";
-import { PREMIUM_PRICE, STANDARD_PRICE, useEntitlements } from "@/lib/entitlements";
+import { PACKAGES, STANDARD_PRICE, useEntitlements } from "@/lib/entitlements";
+import type { TranslationKey } from "@/lib/i18n/de";
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -198,29 +200,25 @@ export function PDFExportButton({ data, label }: PDFExportButtonProps) {
           </ul>
 
           <DialogFooter className="flex-col gap-2 sm:flex-col">
-            <Button
-              className="w-full"
-              onClick={() => {
-                setShowPaywall(false);
-                setCheckoutTier("standard");
-              }}
-            >
-              {`${t("paywall.unlock")} · ${STANDARD_PRICE}`}
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => {
-                setShowPaywall(false);
-                setCheckoutTier("premium");
-              }}
-            >
-              {`${t("pricing.premium.name")} · ${PREMIUM_PRICE}`}
-            </Button>
+            {(["standard", "premium", "unlimited6", "unlimited12"] as Tier[]).map((tier, index) => (
+              <Button
+                key={tier}
+                className="w-full"
+                variant={index === 0 ? "default" : "outline"}
+                onClick={() => {
+                  setShowPaywall(false);
+                  setCheckoutTier(tier);
+                }}
+              >
+                {`${t(PACKAGES[tier].nameKey as TranslationKey)} · ${PACKAGES[tier].price}`}
+              </Button>
+            ))}
+            <p className="text-center text-xs font-medium text-primary">{t("pricing.oneTime")}</p>
             <p className="text-center text-xs text-muted-foreground">
               {t("paywall.methods")}
             </p>
           </DialogFooter>
+
         </DialogContent>
       </Dialog>
 

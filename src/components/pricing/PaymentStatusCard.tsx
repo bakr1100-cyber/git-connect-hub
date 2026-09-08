@@ -2,7 +2,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Clock, Download, Mail, XCircle } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
-import { useEntitlements } from "@/lib/entitlements";
+import { PACKAGES, useEntitlements } from "@/lib/entitlements";
+import type { TranslationKey } from "@/lib/i18n/de";
 import { downloadInvoice, formatReceiptAmount } from "@/lib/invoice";
 
 /** Zeigt den aktuellen Zahlungsstatus und die Rechnungen des Kontos. */
@@ -58,7 +59,7 @@ export function PaymentStatusCard() {
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {new Date(receipt.purchasedAt).toLocaleDateString()} ·{" "}
-                    {receipt.tier === "premium" ? t("pricing.premium.name") : t("pricing.standard.name")}
+                    {t(PACKAGES[receipt.tier].nameKey as TranslationKey)}
                     {receipt.emailSent ? ` · ${t("invoice.emailSent")}` : ""}
                   </p>
                 </div>

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { PACKAGES, type Tier } from "@/lib/entitlements";
 
-const tierSchema = z.object({ tier: z.enum(["standard", "premium"]) });
+const tierSchema = z.object({ tier: z.enum(["standard", "premium", "unlimited6", "unlimited12"]) });
 const idSchema = z.object({ id: z.string().uuid(), emailSent: z.boolean().optional() });
 
 export interface StoredPurchase {

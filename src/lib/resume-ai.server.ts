@@ -366,7 +366,8 @@ export async function readAiUsage(supabase: Parameters<typeof consumeAiQuota>[0]
     supabase.from("user_entitlements").select("tier").eq("user_id", userId).maybeSingle(),
   ]);
   const tier = (entitlement?.tier as string | undefined) ?? "free";
-  const limit = tier === "premium" ? 60 : tier === "standard" ? 20 : 3;
+  const limit =
+    tier === "unlimited12" ? 200 : tier === "unlimited6" ? 150 : tier === "premium" ? 60 : tier === "standard" ? 20 : 3;
   const used = (usage?.calls as number | undefined) ?? 0;
   return { tier, used, limit, remaining: Math.max(limit - used, 0) };
 }

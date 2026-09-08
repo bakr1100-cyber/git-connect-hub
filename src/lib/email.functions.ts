@@ -4,7 +4,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const receiptInput = z.object({
   orderId: z.string().min(3).max(64),
-  tier: z.enum(["standard", "premium"]),
+  tier: z.enum(["standard", "premium", "unlimited6", "unlimited12"]),
   packageName: z.string().min(1).max(60),
   price: z.string().min(1).max(20),
   days: z.number().int().positive().max(365),

@@ -3,12 +3,12 @@ import { z } from "zod";
 import Stripe from "stripe";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { createStripeClient, getStripeErrorMessage, type StripeEnv } from "@/lib/stripe.server";
-import { PACKAGES } from "@/lib/packages";
+import { PACKAGES, type Tier } from "@/lib/packages";
 
 const envSchema = z.enum(["sandbox", "live"]);
 
 const startSchema = z.object({
-  tier: z.enum(["standard", "premium"]),
+  tier: z.enum(["standard", "premium", "unlimited6", "unlimited12"]),
   returnUrl: z.string().url(),
   environment: envSchema,
 });
@@ -23,7 +23,7 @@ export type StartCheckoutResult =
   | { error: string };
 
 export type VerifyCheckoutResult =
-  | { status: "paid"; purchaseId: string; tier: "standard" | "premium" }
+  | { status: "paid"; purchaseId: string; tier: Tier }
   | { status: "pending" }
   | { status: "failed"; error: string };
 
@@ -124,7 +124,7 @@ export const verifyPackageCheckout = createServerFn({ method: "POST" })
       const stripe = createStripeClient(data.environment as StripeEnv);
       const session = await stripe.checkout.sessions.retrieve(data.sessionId);
       const purchaseId = session.metadata?.["purchaseId"];
-      const tier = session.metadata?.["tier"] as "standard" | "premium" | undefined;
+      const tier = session.metadata?.["tier"] as Tier | undefined;
       const owner = session.metadata?.["userId"];
       if (!purchaseId || !tier || owner !== context.userId) {
         return { status: "failed", error: "Unknown checkout session" };
@@ -139,6 +139,10 @@ export const verifyPackageCheckout = createServerFn({ method: "POST" })
           .eq("id", purchaseId)
           .eq("user_id", context.userId)
           .eq("status", "pending");
+        // Server-side truth for AI limits and feature gates.
+        await supabaseAdmin
+          .from("user_entitlements")
+          .upsert({ user_id: context.userId, tier, updated_at: new Date().toISOString() });
         return { status: "paid", purchaseId, tier };
       }
 
