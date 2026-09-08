@@ -195,13 +195,13 @@ export const adminUpdatePurchase = createServerFn({ method: "POST" })
   .handler(async ({ context, data }): Promise<{ ok: true }> => {
     await assertAdmin(context as any);
     const db = await admin();
-    const patch: Record<string, unknown> = {};
+    const patch: Record<string, any> = {};
     if (data.status !== undefined) patch["status"] = data.status;
     if (data.invoiceNo !== undefined) patch["invoice_no"] = data.invoiceNo;
     if (data.amountCents !== undefined) patch["amount_cents"] = data.amountCents;
     if (data.expiresAt !== undefined) patch["expires_at"] = new Date(data.expiresAt).toISOString();
     if (data.emailSent !== undefined) patch["email_sent"] = data.emailSent;
-    const { error } = await db.from("purchases").update(patch).eq("id", data.id);
+    const { error } = await db.from("purchases").update(patch as never).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
